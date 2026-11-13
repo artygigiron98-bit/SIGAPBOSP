@@ -271,15 +271,90 @@
 
     <!-- Modal Daftar User Terdaftar (Admin Only) -->
     <div id="userListModal" class="fixed inset-0 bg-slate-900 bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full overflow-hidden max-h-[90vh] flex flex-col">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-5xl w-full overflow-hidden max-h-[90vh] flex flex-col">
             <div class="bg-[#0F2C59] text-white px-6 py-4 flex justify-between items-center">
-                <h3 class="text-base font-bold"><i class="fa-solid fa-users mr-2"></i> Panel Admin: Daftar Pengguna (User) & Verifikasi Akun</h3>
+                <h3 class="text-base font-bold"><i class="fa-solid fa-users mr-2"></i> Panel Admin: Daftar Akun (User &amp; Admin) &amp; Verifikasi</h3>
                 <button onclick="closeUserListModal()" class="text-white hover:text-slate-300 text-xl font-bold">&times;</button>
             </div>
             <div class="p-6 space-y-4 text-xs overflow-y-auto">
-                <div class="bg-blue-50 border-l-4 border-blue-600 p-3 rounded-r-lg">
-                    <p class="font-bold text-blue-900">Verifikasi Akun Baru:</p>
-                    <p class="text-blue-800 mt-0.5">Semua akun baru (Operator Sekolah maupun Admin Dinas) yang mendaftar berstatus "Pending" dan harus disetujui oleh Admin Utama.</p>
+                <div class="bg-blue-50 border-l-4 border-blue-600 p-3 rounded-r-lg flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                        <p class="font-bold text-blue-900">Kelola &amp; Daftarkan Akun User / Admin:</p>
+                        <p class="text-blue-800 mt-0.5">Daftarkan akun baru (Operator Sekolah, Admin Dinas, atau BUD) berdasarkan email Google, atau setujui pendaftar baru yang berstatus Pending.</p>
+                    </div>
+                    <button type="button" id="btnToggleAdminReg" onclick="toggleAdminRegisterForm()" class="bg-[#0F2C59] hover:bg-slate-800 text-white font-bold px-3.5 py-2 rounded-lg text-xs whitespace-nowrap transition cursor-pointer">
+                        <i class="fa-solid fa-user-plus mr-1"></i> Daftar Akun Baru (User / Admin)
+                    </button>
+                </div>
+
+                <!-- Form Pendaftaran Akun oleh Admin -->
+                <div id="adminRegisterBox" class="hidden bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                        <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wide"><i class="fa-solid fa-id-card-clip mr-1 text-indigo-700"></i> Pendaftaran Akun Baru (User / Admin)</h4>
+                        <button type="button" onclick="toggleAdminRegisterForm(false)" class="text-slate-500 hover:text-slate-800 font-bold text-xs">&times; Tutup Form</button>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">Peran Akun *</label>
+                            <select id="regRoleSelect" onchange="onAdminRegRoleChange()" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white font-semibold focus:outline-none focus:ring-2 focus:ring-[#0F2C59]">
+                                <option value="Operator Sekolah">User — Operator Sekolah</option>
+                                <option value="Admin Dinas">Admin — Admin Dinas</option>
+                                <option value="BUD">Admin — BUD</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">Status Awal *</label>
+                            <select id="regStatusSelect" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white font-semibold focus:outline-none focus:ring-2 focus:ring-[#0F2C59]">
+                                <option value="Aktif">Aktif (Langsung Aktif saat Login Google)</option>
+                                <option value="Pending">Pending (Menunggu Verifikasi)</option>
+                            </select>
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block font-bold text-slate-700 mb-1">Email Google Akun *</label>
+                            <input type="email" id="regEmailInput" placeholder="contoh: operator.sd1@gmail.com" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-[#0F2C59]">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block font-bold text-slate-700 mb-1">Nama Lengkap *</label>
+                            <input type="text" id="regNameInput" placeholder="Nama lengkap pengguna / pejabat" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-[#0F2C59]">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">Username (Opsional)</label>
+                            <input type="text" id="regUsernameInput" placeholder="Otomatis dari email" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-[#0F2C59]">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">Nomor WhatsApp</label>
+                            <input type="tel" id="regWaInput" placeholder="081234567890" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-[#0F2C59]">
+                        </div>
+                    </div>
+
+                    <div id="regSchoolSection" class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">Pilih Sekolah dari Master *</label>
+                            <select id="regSchoolSelect" onchange="onAdminRegSchoolPick(this.value)" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-[#0F2C59]">
+                                <option value="">— Pilih Sekolah —</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">Atau Ketik NPSN Sekolah *</label>
+                            <input type="text" id="regNpsnInput" inputmode="numeric" oninput="checkAdminRegNpsn(this.value)" placeholder="Masukkan 8 digit NPSN" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white font-mono focus:outline-none focus:ring-2 focus:ring-[#0F2C59]">
+                            <div id="regNpsnInfo" class="mt-1 text-[11px] text-slate-500 italic">Pilih sekolah atau ketik NPSN yang terdaftar.</div>
+                        </div>
+                    </div>
+
+                    <div id="regJabatanSection" class="hidden pt-1">
+                        <label class="block font-bold text-slate-700 mb-1">Jabatan / Unit Kerja (Admin)</label>
+                        <input type="text" id="regJabatanInput" placeholder="Contoh: Tim Verifikasi BOSP Dinas Pendidikan / Kepala Bidang BUD" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-[#0F2C59]">
+                    </div>
+
+                    <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-200">
+                        <span class="text-[11px] text-slate-500">Saat pemilik email login dengan Google, peran &amp; status akan diterapkan otomatis.</span>
+                        <div class="flex items-center gap-2">
+                            <button type="button" onclick="toggleAdminRegisterForm(false)" class="px-3 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-100 font-semibold text-slate-700 cursor-pointer">Batal</button>
+                            <button type="button" id="btnAdminRegisterAccount" onclick="handleAdminRegisterAccount()" class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold shadow-sm cursor-pointer">
+                                <i class="fa-solid fa-floppy-disk mr-1"></i> Simpan &amp; Daftarkan Akun
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 
                 <!-- Kotak Pencari untuk Kolom Peran/Instansi / Sekolah -->
@@ -288,21 +363,21 @@
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
                             <i class="fa-solid fa-search"></i>
                         </span>
-                        <input type="text" id="searchUserBox" oninput="renderUserTable()" placeholder="Cari berdasarkan sekolah, NPSN, atau peran..." 
+                        <input type="text" id="searchUserBox" oninput="renderUserTable()" placeholder="Cari berdasarkan nama, email, sekolah, NPSN, atau peran..." 
                             class="w-full pl-9 pr-4 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0F2C59]">
                     </div>
                     <div class="font-bold text-slate-700">Total Akun Ditemukan: <span id="userCountBadge">0</span></div>
                 </div>
 
                 <div>
-                    <div class="overflow-y-auto border border-slate-200 rounded-lg max-h-64">
+                    <div class="overflow-y-auto border border-slate-200 rounded-lg max-h-72">
                         <table class="w-full text-left border-collapse text-xs">
                             <thead>
                                 <tr class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200 sticky top-0">
                                     <th class="py-2.5 px-3 w-10">No</th>
-                                    <th class="py-2.5 px-3">Username</th>
+                                    <th class="py-2.5 px-3">Nama &amp; Email</th>
                                     <th class="py-2.5 px-3">Peran (Role)</th>
-                                    <th class="py-2.5 px-3">Peran / Instansi (Sekolah / NPSN)</th>
+                                    <th class="py-2.5 px-3">Instansi / Jabatan / Sekolah</th>
                                     <th class="py-2.5 px-3">WhatsApp</th>
                                     <th class="py-2.5 px-3 text-center">Status</th>
                                     <th class="py-2.5 px-3 text-center">Aksi</th>

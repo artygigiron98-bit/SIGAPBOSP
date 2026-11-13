@@ -752,17 +752,25 @@ function normalizeUserDoc(docId, d) {
     email: d.email || '',
     whatsapp: d.whatsapp || '',
     role: d.role || 'Operator Sekolah',
+    requestedRole: d.requestedRole || d.role || 'Operator Sekolah',
+    jabatan: d.jabatan || '',
     schoolNo: d.schoolNo != null && Number(d.schoolNo) > 0 ? Number(d.schoolNo) : null,
     npsn: d.npsn || '',
     status: d.status || 'Pending'
   };
 }
 
+function isRealFirebaseUid(val) {
+  const s = String(val || '');
+  return !!s && !s.startsWith('user_') && !s.startsWith('invite_');
+}
+
 async function ensureFirestoreUserRecord(fbUser) {
   if (!fbUser || !db) return null;
   const uid = safeId(fbUser.uid);
   const email = cleanStr(fbUser.email || '', 160);
-  const isBootAdmin = isBootstrappedAdminEmail(email);
+  const emailLower = email.toLowerCase();
+  const isBootAdmin = isBootstrappedAdminEmail(emailLower);
 
   if (isBootAdmin) {
     const adminPath = `admins/${uid}`;
@@ -771,7 +779,7 @@ async function ensureFirestoreUserRecord(fbUser) {
       if (!snap.exists()) {
         await setDoc(doc(db, 'admins', uid), {
           uid,
-          email,
+          email: emailLower,
           role: 'Admin Dinas',
           createdAt: serverTimestamp()
         });
@@ -787,17 +795,62 @@ async function ensureFirestoreUserRecord(fbUser) {
   try {
     const snap = await getDoc(doc(db, 'users', uid));
     if (!snap.exists()) {
+      let invite = null;
+      if (!isBootAdmin && emailLower) {
+        try {
+          const invSnap = await getDoc(doc(db, 'account_invites', emailLower));
+          if (invSnap.exists()) {
+            invite = invSnap.data();
+          }
+        } catch (_) {}
+      }
+
+      const invRole = invite && ['Operator Sekolah', 'Admin Dinas', 'BUD'].includes(invite.role)
+        ? invite.role
+        : (isBootAdmin ? 'Admin Dinas' : 'Operator Sekolah');
+      const invStatus = invite && ['Pending', 'Aktif', 'Ditolak'].includes(invite.status)
+        ? invite.status
+        : (isBootAdmin ? 'Aktif' : 'Pending');
+
       const payload = {
         uid,
-        username: cleanStr(email ? email.split('@')[0] : uid, 80, 'user'),
-        name: cleanStr(fbUser.displayName || (isBootAdmin ? 'Administrator Dinas' : 'Pengguna Google'), 140, 'Pengguna'),
-        email,
-        role: isBootAdmin ? 'Admin Dinas' : 'Operator Sekolah',
-        status: isBootAdmin ? 'Aktif' : 'Pending',
+        username: cleanStr((invite && invite.username) || (emailLower ? emailLower.split('@')[0] : uid), 80, 'user'),
+        name: cleanStr((invite && invite.name) || fbUser.displayName || (isBootAdmin ? 'Administrator Dinas' : 'Pengguna Google'), 140, 'Pengguna'),
+        email: emailLower,
+        ...(invite && invite.whatsapp ? { whatsapp: cleanStr(invite.whatsapp, 30) } : {}),
+        role: invRole,
+        requestedRole: invRole,
+        ...(invite && invite.jabatan ? { jabatan: cleanStr(invite.jabatan, 120) } : {}),
+        ...(invite && Number(invite.schoolNo) > 0 ? { schoolNo: Math.max(0, Math.min(10000, Number(invite.schoolNo) || 0)) } : {}),
+        ...(invite && invite.npsn ? { npsn: cleanStr(invite.npsn, 20) } : {}),
+        status: invStatus,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp()
       };
       await setDoc(doc(db, 'users', uid), payload);
+
+      if (!isBootAdmin && invStatus === 'Aktif' && (invRole === 'Admin Dinas' || invRole === 'BUD')) {
+        try {
+          const admSnap = await getDoc(doc(db, 'admins', uid));
+          if (!admSnap.exists()) {
+            await setDoc(doc(db, 'admins', uid), {
+              uid,
+              email: emailLower,
+              role: invRole,
+              createdAt: serverTimestamp()
+            });
+          }
+          cachedAdminUid = fbUser.uid;
+          cachedAdminFlag = true;
+        } catch (admErr) {
+          handleFirestoreError(admErr, OperationType.WRITE, `admins/${uid}`);
+        }
+      }
+
+      if (invStatus === 'Aktif' && invRole === 'Operator Sekolah' && payload.schoolNo > 0) {
+        await linkOperatorUidToSchoolDocs(uid, payload.schoolNo).catch(() => {});
+      }
+
       return normalizeUserDoc(uid, payload);
     }
     return normalizeUserDoc(snap.id, snap.data());
@@ -835,6 +888,16 @@ export async function resolveCurrentUserSession() {
       userRec = normalizeUserDoc(uSnap.id, uSnap.data());
     } else {
       userRec = await ensureFirestoreUserRecord(fbUser);
+      if (!adminRec && userRec && userRec.status === 'Aktif' && (userRec.role === 'Admin Dinas' || userRec.role === 'BUD')) {
+        try {
+          const aSnap2 = await getDoc(doc(db, 'admins', uid));
+          if (aSnap2.exists()) {
+            adminRec = aSnap2.data();
+            cachedAdminUid = fbUser.uid;
+            cachedAdminFlag = true;
+          }
+        } catch (_) {}
+      }
     }
   } catch (err) {
     handleFirestoreError(err, OperationType.GET, userPath);
@@ -850,6 +913,7 @@ export async function resolveCurrentUserSession() {
       name: (userRec && userRec.name) || cleanStr(fbUser.displayName || 'Administrator Dinas', 140),
       email: fbUser.email || (userRec && userRec.email) || '',
       role,
+      requestedRole: role,
       status: 'Aktif'
     };
   }
@@ -862,31 +926,53 @@ export async function getCurrentFirestoreUser() {
   return resolveCurrentUserSession();
 }
 
-export async function completePendingUserProfile({ name, npsn, schoolNo, whatsapp }) {
+export async function completePendingUserProfile({ name, requestedRole, jabatan, npsn, schoolNo, whatsapp }) {
   await initFirebase();
   if (!db || !auth || !auth.currentUser) {
     throw new Error('Silakan login dengan akun Google terlebih dahulu.');
   }
   const uid = safeId(auth.currentUser.uid);
   const path = `users/${uid}`;
-  const cleanNpsn = cleanStr(npsn || '', 20);
+  const reqRole = ['Operator Sekolah', 'Admin Dinas', 'BUD'].includes(requestedRole) ? requestedRole : 'Operator Sekolah';
+  const cleanName = cleanStr(name || '', 140);
   const cleanWa = cleanStr(whatsapp || '', 30);
+  const cleanJabatan = cleanStr(jabatan || '', 120);
+  const cleanNpsn = cleanStr(npsn || '', 20);
   const cleanSchoolNo = Math.max(0, Math.min(10000, Number(schoolNo) || 0));
-  if (!cleanNpsn || cleanSchoolNo < 1) {
-    throw new Error('NPSN sekolah wajib diisi dan ditemukan di Data Master Sekolah.');
-  }
+
   if (!cleanWa) {
     throw new Error('Nomor WhatsApp aktif wajib diisi.');
   }
-  const patch = {
-    whatsapp: cleanWa,
-    npsn: cleanNpsn,
-    schoolNo: cleanSchoolNo,
-    updatedAt: serverTimestamp()
-  };
-  if (name && String(name).trim()) {
-    patch.name = cleanStr(name, 140);
+
+  let patch;
+  if (reqRole === 'Operator Sekolah') {
+    if (!cleanNpsn || cleanSchoolNo < 1) {
+      throw new Error('NPSN sekolah wajib diisi dan ditemukan di Data Master Sekolah.');
+    }
+    patch = {
+      whatsapp: cleanWa,
+      requestedRole: reqRole,
+      jabatan: '',
+      npsn: cleanNpsn,
+      schoolNo: cleanSchoolNo,
+      updatedAt: serverTimestamp()
+    };
+    if (cleanName) patch.name = cleanName;
+  } else {
+    if (!cleanName) {
+      throw new Error('Nama lengkap pendaftar Admin wajib diisi.');
+    }
+    patch = {
+      name: cleanName,
+      whatsapp: cleanWa,
+      requestedRole: reqRole,
+      jabatan: cleanJabatan || (reqRole === 'BUD' ? 'Bendahara Umum Daerah' : 'Admin Dinas Pendidikan'),
+      npsn: '',
+      schoolNo: 0,
+      updatedAt: serverTimestamp()
+    };
   }
+
   try {
     await updateDoc(doc(db, 'users', uid), patch);
     const snap = await getDoc(doc(db, 'users', uid));
@@ -2034,6 +2120,41 @@ export async function linkOperatorUidToSchoolDocs(operatorUid, schoolNo) {
   return linked;
 }
 
+async function upsertAccountInviteDoc({ emailLower, username, name, role, jabatan, npsn, schoolNo, whatsapp, status, userDocId }) {
+  if (!emailLower || !auth || !auth.currentUser) return;
+  const invRef = doc(db, 'account_invites', emailLower);
+  const cleanRole = ['Operator Sekolah', 'Admin Dinas', 'BUD'].includes(role) ? role : 'Operator Sekolah';
+  const cleanStatus = ['Pending', 'Aktif', 'Ditolak'].includes(status) ? status : 'Pending';
+  const cleanSchoolNo = cleanRole === 'Operator Sekolah' ? Math.max(0, Math.min(10000, Number(schoolNo) || 0)) : 0;
+  const existing = await getDoc(invRef);
+  const baseFields = {
+    email: emailLower,
+    username: cleanStr(username || emailLower.split('@')[0], 80, 'user'),
+    name: cleanStr(name || emailLower.split('@')[0], 140, 'Pengguna'),
+    ...(whatsapp ? { whatsapp: cleanStr(whatsapp, 30) } : {}),
+    role: cleanRole,
+    ...(jabatan ? { jabatan: cleanStr(jabatan, 120) } : {}),
+    schoolNo: cleanSchoolNo,
+    ...(cleanRole === 'Operator Sekolah' && npsn ? { npsn: cleanStr(npsn, 20) } : { npsn: '' }),
+    status: cleanStatus,
+    ...(userDocId ? { userDocId: cleanStr(userDocId, 128) } : {}),
+    invitedByUid: safeId(auth.currentUser.uid),
+    updatedAt: serverTimestamp()
+  };
+  if (existing.exists()) {
+    await setDoc(invRef, {
+      ...baseFields,
+      invitedByUid: existing.data().invitedByUid || safeId(auth.currentUser.uid),
+      createdAt: existing.data().createdAt || serverTimestamp()
+    });
+  } else {
+    await setDoc(invRef, {
+      ...baseFields,
+      createdAt: serverTimestamp()
+    });
+  }
+}
+
 /**
  * Memuat daftar User dari Firestore (/users)
  */
@@ -2043,18 +2164,46 @@ export async function loadUsersFromFirestore() {
   const uid = safeId(auth.currentUser.uid);
   const path = 'users';
   try {
-    const q = isBootstrappedAdminUser()
+    const isAdmin = await isCurrentUserAdmin();
+    const q = isAdmin
       ? query(collection(db, 'users'))
       : query(collection(db, 'users'), where('uid', '==', uid));
     const snap = await getDocs(q);
     if (snap.empty) return [];
+    const byEmail = new Map();
     const list = [];
+    const staleInviteIds = [];
     snap.forEach((docSnap) => {
       const d = docSnap.data();
       if (!d || !d.username) return;
-      list.push(normalizeUserDoc(docSnap.id, d));
+      const item = normalizeUserDoc(docSnap.id, d);
+      const em = String(item.email || '').trim().toLowerCase();
+      if (em) {
+        const prev = byEmail.get(em);
+        if (!prev) {
+          byEmail.set(em, item);
+        } else {
+          const itemReal = isRealFirebaseUid(item.docId);
+          const prevReal = isRealFirebaseUid(prev.docId);
+          if (itemReal && !prevReal) {
+            staleInviteIds.push(prev.docId);
+            byEmail.set(em, item);
+          } else if (!itemReal && prevReal) {
+            staleInviteIds.push(item.docId);
+          } else {
+            list.push(item);
+          }
+        }
+      } else {
+        list.push(item);
+      }
     });
-    return list;
+    if (isAdmin && staleInviteIds.length > 0) {
+      staleInviteIds.forEach((id) => {
+        deleteDoc(doc(db, 'users', id)).catch(() => {});
+      });
+    }
+    return [...byEmail.values(), ...list];
   } catch (err) {
     handleFirestoreError(err, OperationType.LIST, path);
     return null;
@@ -2067,37 +2216,46 @@ export async function loadUsersFromFirestore() {
 export async function saveUserToFirestore(u) {
   await initFirebase();
   if (!db || !auth || !auth.currentUser || !u) return null;
-  const docId = safeId(u.docId || (u.uid && !String(u.uid).startsWith('user_') ? u.uid : `user_${String(u.username || '').toLowerCase()}`));
+  const isAdmin = await isCurrentUserAdmin();
+  const emailLower = cleanStr(u.email || '', 160).toLowerCase();
+  const docId = safeId(u.docId || (isRealFirebaseUid(u.uid) ? u.uid : (emailLower ? `invite_${emailLower}` : `user_${String(u.username || '').toLowerCase()}`)));
   const path = `users/${docId}`;
   const role = ['Operator Sekolah', 'Admin Dinas', 'BUD'].includes(u.role) ? u.role : 'Operator Sekolah';
+  const reqRole = ['Operator Sekolah', 'Admin Dinas', 'BUD'].includes(u.requestedRole) ? u.requestedRole : role;
   const status = ['Pending', 'Aktif', 'Ditolak'].includes(u.status) ? u.status : 'Pending';
-  const cleanSchoolNo = Math.max(0, Math.min(10000, Number(u.schoolNo) || 0));
+  const cleanSchoolNo = role === 'Operator Sekolah' ? Math.max(0, Math.min(10000, Number(u.schoolNo) || 0)) : 0;
 
   try {
     const ref = doc(db, 'users', docId);
     const existingSnap = await getDoc(ref);
     if (existingSnap.exists()) {
+      const prev = existingSnap.data();
       const patch = {
-        name: cleanStr(u.name || u.username || existingSnap.data().name, 140),
+        name: cleanStr(u.name || u.username || prev.name, 140),
+        ...(u.username ? { username: cleanStr(u.username, 80) } : {}),
         role,
+        requestedRole: reqRole,
         status,
         schoolNo: cleanSchoolNo,
+        npsn: role === 'Operator Sekolah' ? cleanStr(u.npsn !== undefined ? u.npsn : (prev.npsn || ''), 20) : '',
+        ...(u.jabatan !== undefined ? { jabatan: cleanStr(u.jabatan, 120) } : {}),
         ...(u.whatsapp !== undefined ? { whatsapp: cleanStr(u.whatsapp, 30) } : {}),
-        ...(u.npsn !== undefined ? { npsn: cleanStr(u.npsn, 20) } : {}),
-        ...(u.email ? { email: cleanStr(u.email, 160) } : {}),
+        ...(emailLower ? { email: emailLower } : {}),
         updatedAt: serverTimestamp()
       };
       await updateDoc(ref, patch);
     } else {
       const payload = {
         uid: cleanStr(u.uid || docId, 128, docId),
-        username: cleanStr(u.username || docId, 80),
+        username: cleanStr(u.username || (emailLower ? emailLower.split('@')[0] : docId), 80),
         name: cleanStr(u.name || u.username || docId, 140),
-        ...(u.email ? { email: cleanStr(u.email, 160) } : {}),
+        ...(emailLower ? { email: emailLower } : {}),
         ...(u.whatsapp ? { whatsapp: cleanStr(u.whatsapp, 30) } : {}),
         role,
+        requestedRole: reqRole,
+        ...(u.jabatan ? { jabatan: cleanStr(u.jabatan, 120) } : {}),
         schoolNo: cleanSchoolNo,
-        ...(u.npsn ? { npsn: cleanStr(u.npsn, 20) } : {}),
+        npsn: role === 'Operator Sekolah' ? cleanStr(u.npsn || '', 20) : '',
         status,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp()
@@ -2105,17 +2263,48 @@ export async function saveUserToFirestore(u) {
       await setDoc(ref, payload);
     }
 
-    if (isBootstrappedAdminUser() && status === 'Aktif' && (role === 'Admin Dinas' || role === 'BUD') && u.uid && !String(u.uid).startsWith('user_') && u.email) {
-      await setDoc(doc(db, 'admins', safeId(u.uid)), {
-        uid: safeId(u.uid),
-        email: cleanStr(u.email, 160),
-        role,
-        createdAt: serverTimestamp()
-      });
+    if (isAdmin && emailLower) {
+      if (!isRealFirebaseUid(docId)) {
+        await upsertAccountInviteDoc({
+          emailLower,
+          username: u.username || emailLower.split('@')[0],
+          name: u.name || u.username || emailLower.split('@')[0],
+          role,
+          jabatan: u.jabatan || '',
+          npsn: u.npsn || '',
+          schoolNo: cleanSchoolNo,
+          whatsapp: u.whatsapp || '',
+          status,
+          userDocId: docId
+        });
+      } else {
+        const targetUid = safeId(docId);
+        const adminRef = doc(db, 'admins', targetUid);
+        if (status === 'Aktif' && (role === 'Admin Dinas' || role === 'BUD')) {
+          const admSnap = await getDoc(adminRef);
+          if (admSnap.exists()) {
+            if (!isBootstrappedAdminEmail(emailLower)) {
+              await updateDoc(adminRef, { email: emailLower, role });
+            }
+          } else {
+            await setDoc(adminRef, {
+              uid: targetUid,
+              email: emailLower,
+              role,
+              createdAt: serverTimestamp()
+            });
+          }
+        } else if (!isBootstrappedAdminEmail(emailLower)) {
+          const admSnap = await getDoc(adminRef);
+          if (admSnap.exists()) {
+            await deleteDoc(adminRef).catch(() => {});
+          }
+        }
+      }
     }
 
-    if (status === 'Aktif' && role === 'Operator Sekolah' && cleanSchoolNo > 0 && u.uid && !String(u.uid).startsWith('user_')) {
-      await linkOperatorUidToSchoolDocs(u.uid, cleanSchoolNo).catch(() => {});
+    if (status === 'Aktif' && role === 'Operator Sekolah' && cleanSchoolNo > 0 && isRealFirebaseUid(docId)) {
+      await linkOperatorUidToSchoolDocs(docId, cleanSchoolNo).catch(() => {});
     }
 
     const updatedSnap = await getDoc(ref);
@@ -2126,9 +2315,117 @@ export async function saveUserToFirestore(u) {
   }
 }
 
-export async function approveUserInFirestore(targetUser) {
+export async function registerAccountByAdmin({ email, name, username, role, jabatan, npsn, schoolNo, whatsapp, status }) {
+  await initFirebase();
+  if (!db || !auth || !auth.currentUser) {
+    throw new Error('Silakan login terlebih dahulu.');
+  }
+  const isAdmin = await isCurrentUserAdmin();
+  if (!isAdmin) {
+    throw new Error('Hanya Administrator Dinas yang dapat mendaftarkan akun baru.');
+  }
+  const emailLower = String(email || '').trim().toLowerCase();
+  if (!/^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$/.test(emailLower)) {
+    throw new Error('Format alamat email Google tidak valid.');
+  }
+  const cleanName = cleanStr(name || '', 140);
+  if (!cleanName) {
+    throw new Error('Nama lengkap wajib diisi.');
+  }
+  const cleanRole = ['Operator Sekolah', 'Admin Dinas', 'BUD'].includes(role) ? role : 'Operator Sekolah';
+  const cleanStatus = ['Aktif', 'Pending'].includes(status) ? status : 'Aktif';
+  const cleanUsername = cleanStr(username || emailLower.split('@')[0], 80, 'user');
+  const cleanWa = cleanStr(whatsapp || '', 30);
+  const cleanJabatan = cleanStr(jabatan || '', 120);
+  const cleanNpsn = cleanRole === 'Operator Sekolah' ? cleanStr(npsn || '', 20) : '';
+  const cleanSchoolNo = cleanRole === 'Operator Sekolah' ? Math.max(0, Math.min(10000, Number(schoolNo) || 0)) : 0;
+
+  if (cleanRole === 'Operator Sekolah' && (!cleanNpsn || cleanSchoolNo < 1)) {
+    throw new Error('Untuk akun Operator Sekolah, pilih sekolah atau masukkan NPSN yang valid.');
+  }
+
+  let existingRealDoc = null;
+  try {
+    const q = query(collection(db, 'users'), where('email', '==', emailLower));
+    const snap = await getDocs(q);
+    snap.forEach((docSnap) => {
+      if (isRealFirebaseUid(docSnap.id)) {
+        existingRealDoc = normalizeUserDoc(docSnap.id, docSnap.data());
+      }
+    });
+  } catch (_) {}
+
+  if (existingRealDoc) {
+    if (isBootstrappedAdminEmail(emailLower)) {
+      throw new Error('Akun Admin Utama tidak dapat diubah perannya melalui form pendaftaran.');
+    }
+    const updated = await saveUserToFirestore({
+      ...existingRealDoc,
+      name: cleanName,
+      username: cleanUsername,
+      email: emailLower,
+      role: cleanRole,
+      requestedRole: cleanRole,
+      jabatan: cleanJabatan,
+      npsn: cleanNpsn,
+      schoolNo: cleanSchoolNo,
+      ...(cleanWa ? { whatsapp: cleanWa } : {}),
+      status: cleanStatus
+    });
+    await upsertAccountInviteDoc({
+      emailLower,
+      username: cleanUsername,
+      name: cleanName,
+      role: cleanRole,
+      jabatan: cleanJabatan,
+      npsn: cleanNpsn,
+      schoolNo: cleanSchoolNo,
+      whatsapp: cleanWa,
+      status: cleanStatus,
+      userDocId: existingRealDoc.docId
+    }).catch(() => {});
+    return updated;
+  }
+
+  const inviteDocId = safeId(`invite_${emailLower}`);
+  const created = await saveUserToFirestore({
+    docId: inviteDocId,
+    uid: inviteDocId,
+    username: cleanUsername,
+    name: cleanName,
+    email: emailLower,
+    whatsapp: cleanWa,
+    role: cleanRole,
+    requestedRole: cleanRole,
+    jabatan: cleanJabatan,
+    schoolNo: cleanSchoolNo,
+    npsn: cleanNpsn,
+    status: cleanStatus
+  });
+  return created;
+}
+
+export async function approveUserInFirestore(targetUser, roleOverride) {
   if (!targetUser) return null;
-  return saveUserToFirestore({ ...targetUser, status: 'Aktif' });
+  const nextRole = ['Operator Sekolah', 'Admin Dinas', 'BUD'].includes(roleOverride)
+    ? roleOverride
+    : (['Operator Sekolah', 'Admin Dinas', 'BUD'].includes(targetUser.requestedRole)
+        ? targetUser.requestedRole
+        : (targetUser.role || 'Operator Sekolah'));
+  return saveUserToFirestore({ ...targetUser, role: nextRole, requestedRole: nextRole, status: 'Aktif' });
+}
+
+export async function rejectUserInFirestore(targetUser) {
+  if (!targetUser) return null;
+  return saveUserToFirestore({ ...targetUser, status: 'Ditolak' });
+}
+
+export async function updateUserRoleInFirestore(targetUser, newRole) {
+  if (!targetUser) return null;
+  const nextRole = ['Operator Sekolah', 'Admin Dinas', 'BUD'].includes(newRole)
+    ? newRole
+    : (targetUser.role || 'Operator Sekolah');
+  return saveUserToFirestore({ ...targetUser, role: nextRole, requestedRole: nextRole });
 }
 
 export async function updateUserWhatsappInFirestore(targetUser, whatsapp) {
@@ -2142,14 +2439,20 @@ export async function updateUserWhatsappInFirestore(targetUser, whatsapp) {
 export async function deleteUserFromFirestore(target) {
   await initFirebase();
   if (!db || !auth || !auth.currentUser || !target) return false;
+  const isAdmin = await isCurrentUserAdmin();
   const docId = typeof target === 'object'
-    ? safeId(target.docId || (target.uid && !String(target.uid).startsWith('user_') ? target.uid : `user_${String(target.username || '').toLowerCase()}`))
-    : safeId(String(target).startsWith('user_') ? target : `user_${String(target).toLowerCase()}`);
+    ? safeId(target.docId || (isRealFirebaseUid(target.uid) ? target.uid : (target.email ? `invite_${String(target.email).trim().toLowerCase()}` : `user_${String(target.username || '').toLowerCase()}`)))
+    : safeId(String(target).startsWith('user_') || String(target).startsWith('invite_') ? target : `user_${String(target).toLowerCase()}`);
   const path = `users/${docId}`;
   try {
     await deleteDoc(doc(db, 'users', docId));
-    if (isBootstrappedAdminUser() && typeof target === 'object' && target.uid && !String(target.uid).startsWith('user_')) {
-      await deleteDoc(doc(db, 'admins', safeId(target.uid))).catch(() => {});
+    if (isAdmin && typeof target === 'object') {
+      if (isRealFirebaseUid(target.uid) && !isBootstrappedAdminEmail(target.email)) {
+        await deleteDoc(doc(db, 'admins', safeId(target.uid))).catch(() => {});
+      }
+      if (target.email && !isBootstrappedAdminEmail(target.email)) {
+        await deleteDoc(doc(db, 'account_invites', String(target.email).trim().toLowerCase())).catch(() => {});
+      }
     }
     return true;
   } catch (err) {
@@ -2170,7 +2473,8 @@ export async function loadMonthlyFromFirestore(year) {
   const path = 'monthly_reports';
 
   try {
-    const snaps = isBootstrappedAdminUser()
+    const isAdmin = await isCurrentUserAdmin();
+    const snaps = isAdmin
       ? [await getDocs(query(collection(db, 'monthly_reports'), where('year', '==', y)))]
       : await Promise.all([
           getDocs(query(collection(db, 'monthly_reports'), where('ownerUid', '==', uid))),
@@ -2338,7 +2642,8 @@ export async function loadAnggaranFromFirestore(year, filterSchoolNo = null) {
   const path = 'anggaran_records';
 
   try {
-    const snaps = isBootstrappedAdminUser()
+    const isAdmin = await isCurrentUserAdmin();
+    const snaps = isAdmin
       ? [await getDocs(query(collection(db, 'anggaran_records'), where('year', '==', y)))]
       : await Promise.all([
           getDocs(query(collection(db, 'anggaran_records'), where('ownerUid', '==', uid))),
@@ -2633,7 +2938,8 @@ export async function loadAuditLogsFromFirestore(limitCount = 150, actionFilter 
   const uid = safeId(auth.currentUser.uid);
   const path = 'audit_logs';
   try {
-    const q = isBootstrappedAdminUser()
+    const isAdmin = await isCurrentUserAdmin();
+    const q = isAdmin
       ? query(collection(db, 'audit_logs'))
       : query(collection(db, 'audit_logs'), where('userUid', '==', uid));
     const snap = await getDocs(q);
@@ -3035,7 +3341,10 @@ window.SigapFirebaseDrive = {
   linkOperatorUidToSchoolDocs,
   loadUsersFromFirestore,
   saveUserToFirestore,
+  registerAccountByAdmin,
   approveUserInFirestore,
+  rejectUserInFirestore,
+  updateUserRoleInFirestore,
   updateUserWhatsappInFirestore,
   deleteUserFromFirestore,
   loadMonthlyFromFirestore,

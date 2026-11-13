@@ -17,6 +17,10 @@ service cloud.firestore {
       return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
     }
 
+    function isValidEmailId(id) {
+      return id is string && id.size() >= 3 && id.size() <= 160 && id.matches('^[a-z0-9._%+\\-]+@[a-z0-9.\\-]+\\.[a-z]{2,}$');
+    }
+
     function incoming() {
       return request.resource.data;
     }
@@ -64,7 +68,7 @@ service cloud.firestore {
 
     function isValidUserProfile(data) {
       return data.keys().hasAll(['uid', 'username', 'name', 'role', 'status', 'createdAt', 'updatedAt']) &&
-        data.keys().hasOnly(['uid', 'username', 'name', 'email', 'whatsapp', 'passwordHash', 'role', 'schoolNo', 'npsn', 'status', 'createdAt', 'updatedAt']) &&
+        data.keys().hasOnly(['uid', 'username', 'name', 'email', 'whatsapp', 'passwordHash', 'role', 'requestedRole', 'jabatan', 'schoolNo', 'npsn', 'status', 'createdAt', 'updatedAt']) &&
         data.uid is string && data.uid.size() >= 1 && data.uid.size() <= 128 && data.uid.matches('^[a-zA-Z0-9_\\-]+$') &&
         data.username is string && data.username.size() >= 1 && data.username.size() <= 80 &&
         data.name is string && data.name.size() >= 1 && data.name.size() <= 140 &&
@@ -73,10 +77,30 @@ service cloud.firestore {
         (!('passwordHash' in data) || (data.passwordHash is string && data.passwordHash.size() <= 120)) &&
         data.role is string && data.role.size() >= 1 && data.role.size() <= 32 &&
         (data.role == 'Operator Sekolah' || data.role == 'Admin Dinas' || data.role == 'BUD') &&
+        (!('requestedRole' in data) || (data.requestedRole is string && (data.requestedRole == 'Operator Sekolah' || data.requestedRole == 'Admin Dinas' || data.requestedRole == 'BUD'))) &&
+        (!('jabatan' in data) || (data.jabatan is string && data.jabatan.size() <= 120)) &&
         (!('schoolNo' in data) || (data.schoolNo is number && data.schoolNo >= 0 && data.schoolNo <= 10000)) &&
         (!('npsn' in data) || (data.npsn is string && data.npsn.size() <= 20)) &&
         data.status is string && data.status.size() >= 1 && data.status.size() <= 20 &&
         (data.status == 'Pending' || data.status == 'Aktif' || data.status == 'Ditolak') &&
+        data.createdAt is timestamp &&
+        data.updatedAt is timestamp;
+    }
+
+    function isValidAccountInvite(data) {
+      return data.keys().hasAll(['email', 'username', 'name', 'role', 'status', 'invitedByUid', 'createdAt', 'updatedAt']) &&
+        data.keys().hasOnly(['email', 'username', 'name', 'whatsapp', 'role', 'jabatan', 'schoolNo', 'npsn', 'status', 'userDocId', 'invitedByUid', 'createdAt', 'updatedAt']) &&
+        data.email is string && data.email.size() >= 3 && data.email.size() <= 160 &&
+        data.username is string && data.username.size() >= 1 && data.username.size() <= 80 &&
+        data.name is string && data.name.size() >= 1 && data.name.size() <= 140 &&
+        (!('whatsapp' in data) || (data.whatsapp is string && data.whatsapp.size() <= 30)) &&
+        data.role is string && (data.role == 'Operator Sekolah' || data.role == 'Admin Dinas' || data.role == 'BUD') &&
+        (!('jabatan' in data) || (data.jabatan is string && data.jabatan.size() <= 120)) &&
+        (!('schoolNo' in data) || (data.schoolNo is number && data.schoolNo >= 0 && data.schoolNo <= 10000)) &&
+        (!('npsn' in data) || (data.npsn is string && data.npsn.size() <= 20)) &&
+        data.status is string && (data.status == 'Pending' || data.status == 'Aktif' || data.status == 'Ditolak') &&
+        (!('userDocId' in data) || (data.userDocId is string && data.userDocId.size() <= 128)) &&
+        data.invitedByUid is string && data.invitedByUid.size() >= 1 && data.invitedByUid.size() <= 128 && data.invitedByUid.matches('^[a-zA-Z0-9_\\-]+$') &&
         data.createdAt is timestamp &&
         data.updatedAt is timestamp;
     }
@@ -250,52 +274,90 @@ service cloud.firestore {
     // /admins/{adminId}
     match /admins/{adminId} {
       allow get: if isSignedIn() && isValidId(adminId) && (isOwner(adminId) || isAdmin());
-      allow list: if isBootstrappedAdmin() || (isVerifiedUser() && resource.data.uid == request.auth.uid);
+      allow list: if isAdmin() || (isVerifiedUser() && resource.data.uid == request.auth.uid);
       allow create: if isSignedIn() && isValidId(adminId) && isValidAdminRecord(incoming()) &&
-        incoming().createdAt == request.time &&
-        isBootstrappedAdmin();
+        incoming().createdAt == request.time && (
+          isAdmin() || (
+            isVerifiedUser() &&
+            adminId == request.auth.uid &&
+            incoming().uid == request.auth.uid &&
+            incoming().email == request.auth.token.email &&
+            exists(/databases/$(database)/documents/account_invites/$(request.auth.token.email)) &&
+            get(/databases/$(database)/documents/account_invites/$(request.auth.token.email)).data.status == 'Aktif' &&
+            (get(/databases/$(database)/documents/account_invites/$(request.auth.token.email)).data.role == 'Admin Dinas' ||
+             get(/databases/$(database)/documents/account_invites/$(request.auth.token.email)).data.role == 'BUD') &&
+            incoming().role == get(/databases/$(database)/documents/account_invites/$(request.auth.token.email)).data.role
+          )
+        );
       allow update: if isSignedIn() && isValidId(adminId) && isValidAdminRecord(incoming()) &&
         incoming().uid == existing().uid &&
         incoming().createdAt == existing().createdAt &&
-        isBootstrappedAdmin() &&
+        isAdmin() &&
+        existing().email != 'artygigiron98@gmail.com' &&
         incoming().diff(existing()).affectedKeys().hasOnly(['email', 'role']);
-      allow delete: if isSignedIn() && isValidId(adminId) && isBootstrappedAdmin();
+      allow delete: if isSignedIn() && isValidId(adminId) && isAdmin() && existing().email != 'artygigiron98@gmail.com';
     }
 
     // /users/{userId} — PII Isolated to Owner or Admin
     match /users/{userId} {
       allow get: if isSignedIn() && isValidId(userId) && (isOwner(userId) || isAdmin());
-      allow list: if isVerifiedUser() && (resource.data.uid == request.auth.uid || isBootstrappedAdmin());
+      allow list: if isVerifiedUser() && (resource.data.uid == request.auth.uid || isAdmin());
       allow create: if isSignedIn() && isVerifiedUser() && isValidId(userId) && isValidUserProfile(incoming()) &&
         incoming().createdAt == request.time &&
         incoming().updatedAt == request.time && (
           isAdmin() || (
             userId == request.auth.uid &&
-            incoming().uid == request.auth.uid &&
-            incoming().role == 'Operator Sekolah' &&
-            incoming().status == 'Pending'
+            incoming().uid == request.auth.uid && (
+              (
+                !exists(/databases/$(database)/documents/account_invites/$(request.auth.token.email)) &&
+                incoming().role == 'Operator Sekolah' &&
+                incoming().status == 'Pending'
+              ) || (
+                exists(/databases/$(database)/documents/account_invites/$(request.auth.token.email)) &&
+                incoming().role == get(/databases/$(database)/documents/account_invites/$(request.auth.token.email)).data.role &&
+                incoming().status == get(/databases/$(database)/documents/account_invites/$(request.auth.token.email)).data.status
+              )
+            )
           )
         );
       allow update: if isSignedIn() && isVerifiedUser() && isValidId(userId) && isValidUserProfile(incoming()) &&
         incoming().updatedAt == request.time && (
           isAdmin() ||
-          // Action: Operator updates own contact/school registration details (cannot alter role or status)
+          // Action: Operator updates own contact/school/role-request registration details (cannot alter role or status)
           (
             isOwner(userId) &&
             incoming().uid == existing().uid &&
             incoming().createdAt == existing().createdAt &&
             incoming().role == existing().role &&
             incoming().status == existing().status &&
-            incoming().diff(existing()).affectedKeys().hasOnly(['name', 'whatsapp', 'npsn', 'schoolNo', 'updatedAt'])
+            incoming().diff(existing()).affectedKeys().hasOnly(['name', 'whatsapp', 'npsn', 'schoolNo', 'requestedRole', 'jabatan', 'updatedAt'])
           )
         );
-      allow delete: if isSignedIn() && isValidId(userId) && isAdmin();
+      allow delete: if isSignedIn() && isValidId(userId) && isAdmin() && existing().email != 'artygigiron98@gmail.com';
+    }
+
+    // /account_invites/{emailKey} — Admin pre-registered user/admin invite keyed by lowercase email
+    match /account_invites/{emailKey} {
+      allow get: if isVerifiedUser() && (emailKey == request.auth.token.email || isAdmin());
+      allow list: if isVerifiedUser() && isAdmin();
+      allow create: if isVerifiedUser() && isValidEmailId(emailKey) && isValidAccountInvite(incoming()) &&
+        isAdmin() &&
+        incoming().email == emailKey &&
+        incoming().invitedByUid == request.auth.uid &&
+        incoming().createdAt == request.time &&
+        incoming().updatedAt == request.time;
+      allow update: if isVerifiedUser() && isValidEmailId(emailKey) && isValidAccountInvite(incoming()) &&
+        isAdmin() &&
+        incoming().email == existing().email &&
+        incoming().createdAt == existing().createdAt &&
+        incoming().updatedAt == request.time;
+      allow delete: if isVerifiedUser() && isValidEmailId(emailKey) && isAdmin();
     }
 
     // /schools/{schoolId}
     match /schools/{schoolId} {
       allow get: if isSignedIn() && isValidId(schoolId) && (isVerifiedUser() || isAdmin());
-      allow list: if isVerifiedUser() && (resource.data.updatedByUid == request.auth.uid || resource.data.no >= 1 || isBootstrappedAdmin());
+      allow list: if isVerifiedUser() && (resource.data.updatedByUid == request.auth.uid || resource.data.no >= 1 || isAdmin());
       allow create: if isSignedIn() && isVerifiedUser() && isValidId(schoolId) && isValidSchool(incoming()) &&
         incoming().updatedAt == request.time &&
         isAdmin();
@@ -326,7 +388,7 @@ service cloud.firestore {
       allow list: if isVerifiedUser() && (
         resource.data.ownerUid == request.auth.uid ||
         ('allowedUids' in resource.data && request.auth.uid in resource.data.allowedUids) ||
-        isBootstrappedAdmin()
+        isAdmin()
       );
       allow create: if isSignedIn() && isVerifiedUser() && isValidId(reportId) && isValidMonthlyReport(incoming()) &&
         incoming().updatedAt == request.time && (
@@ -367,7 +429,7 @@ service cloud.firestore {
       allow list: if isVerifiedUser() && (
         resource.data.ownerUid == request.auth.uid ||
         ('allowedUids' in resource.data && request.auth.uid in resource.data.allowedUids) ||
-        isBootstrappedAdmin()
+        isAdmin()
       );
       allow create: if isSignedIn() && isVerifiedUser() && isValidId(recordId) && isValidAnggaranRecord(incoming()) &&
         incoming().updatedAt == request.time && (
@@ -414,7 +476,7 @@ service cloud.firestore {
     // /drive_files/{fileId}
     match /drive_files/{fileId} {
       allow get: if isSignedIn() && isValidId(fileId) && (resource.data.uploadedByUid == request.auth.uid || isAdmin());
-      allow list: if isVerifiedUser() && (resource.data.uploadedByUid == request.auth.uid || isBootstrappedAdmin());
+      allow list: if isVerifiedUser() && (resource.data.uploadedByUid == request.auth.uid || isAdmin());
       allow create: if isSignedIn() && isVerifiedUser() && isValidId(fileId) && isValidDriveFileRecord(incoming()) &&
         incoming().createdAt == request.time &&
         incoming().uploadedByUid == request.auth.uid;
@@ -434,7 +496,7 @@ service cloud.firestore {
     // /sp2b_kab/{yearId}
     match /sp2b_kab/{yearId} {
       allow get: if isSignedIn() && isValidId(yearId) && isAdmin();
-      allow list: if isBootstrappedAdmin();
+      allow list: if isAdmin();
       allow create: if isSignedIn() && isVerifiedUser() && isValidId(yearId) && isValidSp2bKabStore(incoming()) &&
         incoming().updatedAt == request.time &&
         isAdmin();
@@ -449,7 +511,7 @@ service cloud.firestore {
     // /audit_logs/{logId}
     match /audit_logs/{logId} {
       allow get: if isSignedIn() && isValidId(logId) && (resource.data.userUid == request.auth.uid || isAdmin());
-      allow list: if isBootstrappedAdmin() || (isVerifiedUser() && resource.data.userUid == request.auth.uid);
+      allow list: if isAdmin() || (isVerifiedUser() && resource.data.userUid == request.auth.uid);
       allow create: if isSignedIn() && isVerifiedUser() && isValidId(logId) && isValidAuditLog(incoming()) &&
         incoming().createdAt == request.time &&
         incoming().userUid == request.auth.uid;
@@ -459,7 +521,7 @@ service cloud.firestore {
     // /app_meta/{docId}
     match /app_meta/{docId} {
       allow get: if isSignedIn() && isValidId(docId) && (isVerifiedUser() || isAdmin());
-      allow list: if isBootstrappedAdmin();
+      allow list: if isAdmin();
       allow create, update: if isSignedIn() && isVerifiedUser() && isValidId(docId) &&
         isAdmin() &&
         isValidAppMeta(incoming()) &&
@@ -470,7 +532,7 @@ service cloud.firestore {
     // /public_ranks/{rankId} — Non-PII public leaderboard point-get
     match /public_ranks/{rankId} {
       allow get: if isValidId(rankId);
-      allow list: if isVerifiedUser() && isBootstrappedAdmin();
+      allow list: if isVerifiedUser() && isAdmin();
       allow create, update: if isSignedIn() && isVerifiedUser() && isValidId(rankId) &&
         isAdmin() &&
         isValidPublicRank(incoming()) &&
@@ -481,7 +543,7 @@ service cloud.firestore {
     // /public_directory/{docId} — Non-PII school list for registration NPSN lookup
     match /public_directory/{docId} {
       allow get: if docId == 'schools';
-      allow list: if isVerifiedUser() && isBootstrappedAdmin();
+      allow list: if isVerifiedUser() && isAdmin();
       allow create, update: if isSignedIn() && isVerifiedUser() && docId == 'schools' &&
         isAdmin() &&
         isValidPublicDirectory(incoming()) &&

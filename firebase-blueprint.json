@@ -79,6 +79,17 @@
           "enum": ["Operator Sekolah", "Admin Dinas", "BUD"],
           "maxLength": 32
         },
+        "requestedRole": {
+          "type": "string",
+          "description": "Requested role submitted during self-registration (pending admin approval).",
+          "enum": ["Operator Sekolah", "Admin Dinas", "BUD"],
+          "maxLength": 32
+        },
+        "jabatan": {
+          "type": "string",
+          "description": "Position or unit name for Admin Dinas / BUD registration.",
+          "maxLength": 120
+        },
         "schoolNo": {
           "type": "number",
           "description": "Assigned school number for Operator Sekolah (0 for Dinas/BUD)."
@@ -106,6 +117,74 @@
         }
       },
       "required": ["uid", "username", "name", "role", "status", "createdAt", "updatedAt"]
+    },
+    "AccountInvite": {
+      "title": "AccountInvite",
+      "description": "Admin-registered user or admin pre-provisioning record keyed by verified Google email.",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Lowercase Google email address of the registered user/admin.",
+          "minLength": 3,
+          "maxLength": 160
+        },
+        "username": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 140
+        },
+        "whatsapp": {
+          "type": "string",
+          "maxLength": 30
+        },
+        "role": {
+          "type": "string",
+          "enum": ["Operator Sekolah", "Admin Dinas", "BUD"],
+          "maxLength": 32
+        },
+        "jabatan": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "schoolNo": {
+          "type": "number"
+        },
+        "npsn": {
+          "type": "string",
+          "maxLength": 20
+        },
+        "status": {
+          "type": "string",
+          "enum": ["Pending", "Aktif", "Ditolak"],
+          "maxLength": 20
+        },
+        "userDocId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "invitedByUid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["email", "username", "name", "role", "status", "invitedByUid", "createdAt", "updatedAt"]
     },
     "School": {
       "title": "School",
@@ -681,6 +760,10 @@
     "/users/{userId}": {
       "schema": { "$ref": "#/entities/UserProfile" },
       "description": "User profiles containing role bindings and PII (restricted to owner and admin)."
+    },
+    "/account_invites/{emailKey}": {
+      "schema": { "$ref": "#/entities/AccountInvite" },
+      "description": "Admin-registered user or admin pre-provisioning invites keyed by lowercase Google email."
     },
     "/schools/{schoolId}": {
       "schema": { "$ref": "#/entities/School" },

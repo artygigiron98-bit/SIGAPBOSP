@@ -419,6 +419,57 @@
             }
         }
 
+        function switchAuthModalMode(mode) {
+            const isReg = mode === "register";
+            window.__sigapAuthModalMode = isReg ? "register" : "login";
+            const tLogin = document.getElementById("authModeTabLogin");
+            const tReg = document.getElementById("authModeTabRegister");
+            const roleBox = document.getElementById("authRegisterRoleBox");
+            const lead = document.getElementById("authGoogleLead");
+            const btnLabel = document.getElementById("btnGoogleAuthLabel");
+            if (tLogin && tReg) {
+                tLogin.className = isReg
+                    ? "py-2 px-3 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition cursor-pointer"
+                    : "py-2 px-3 rounded-lg text-xs font-bold bg-[#0F2C59] text-white shadow-sm transition cursor-pointer";
+                tReg.className = isReg
+                    ? "py-2 px-3 rounded-lg text-xs font-bold bg-[#0F2C59] text-white shadow-sm transition cursor-pointer"
+                    : "py-2 px-3 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition cursor-pointer";
+            }
+            if (roleBox) roleBox.classList.toggle("hidden", !isReg);
+            if (lead) {
+                lead.innerHTML = isReg
+                    ? '<i class="fa-brands fa-google mr-1 text-indigo-700"></i> Daftar Akun Baru dengan Akun Google'
+                    : '<i class="fa-brands fa-google mr-1 text-indigo-700"></i> Masuk dengan Akun Google';
+            }
+            if (btnLabel) {
+                btnLabel.textContent = isReg ? "Daftar dengan Google" : "Lanjutkan dengan Google";
+            }
+            if (isReg) {
+                selectAuthRegRole(window.__sigapAuthRegIntent || "Operator Sekolah");
+            }
+        }
+
+        function selectAuthRegRole(role) {
+            const clean = ["Operator Sekolah", "Admin Dinas", "BUD"].includes(role) ? role : "Operator Sekolah";
+            window.__sigapAuthRegIntent = clean;
+            document.querySelectorAll(".auth-reg-role-btn").forEach((btn) => {
+                const active = btn.getAttribute("data-reg-role") === clean;
+                btn.className = active
+                    ? "auth-reg-role-btn py-2 px-2 rounded-lg border border-[#0F2C59] bg-[#0F2C59] text-white text-[11px] font-bold text-center transition cursor-pointer"
+                    : "auth-reg-role-btn py-2 px-2 rounded-lg border border-slate-300 bg-white text-slate-700 text-[11px] font-bold text-center transition cursor-pointer";
+            });
+            const hint = document.getElementById("authRegisterHint");
+            if (hint) {
+                if (clean === "Operator Sekolah") {
+                    hint.textContent = "Setelah verifikasi akun Google, lengkapi NPSN Sekolah & WhatsApp untuk diajukan ke Admin Dinas.";
+                } else if (clean === "Admin Dinas") {
+                    hint.textContent = "Setelah verifikasi akun Google, lengkapi Nama, Jabatan Dinas & WhatsApp untuk disetujui Admin Utama.";
+                } else {
+                    hint.textContent = "Setelah verifikasi akun Google, lengkapi Nama, Jabatan BUD & WhatsApp untuk disetujui Admin Utama.";
+                }
+            }
+        }
+
         function openAuthModal() {
             const googleBox = document.getElementById("googleAuthBox");
             const pendingBox = document.getElementById("pendingProfileBox");
@@ -426,6 +477,7 @@
             if (googleBox) googleBox.classList.remove("hidden");
             if (pendingBox) pendingBox.classList.add("hidden");
             if (title) title.textContent = "Masuk / Daftar SIGAP-BOSP";
+            switchAuthModalMode("login");
             const ySel = document.getElementById("loginYearSelect");
             if (ySel) ySel.value = String(activeYear);
             if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.clearGoogleAuthFeedback === "function") {
@@ -744,17 +796,44 @@
             }
         }
 
+        function setPendingRoleType(role) {
+            const reqRole = ["Operator Sekolah", "Admin Dinas", "BUD"].includes(role) ? role : "Operator Sekolah";
+            const roleSel = document.getElementById("pendingRoleSelect");
+            const schoolFields = document.getElementById("pendingSchoolFields");
+            const adminFields = document.getElementById("pendingAdminFields");
+            const title = document.getElementById("authTitle");
+            if (roleSel && roleSel.value !== reqRole) roleSel.value = reqRole;
+            const isOp = reqRole === "Operator Sekolah";
+            if (schoolFields) schoolFields.classList.toggle("hidden", !isOp);
+            if (adminFields) adminFields.classList.toggle("hidden", isOp);
+            if (title) {
+                title.textContent = isOp
+                    ? "Lengkapi Pendaftaran Akun User"
+                    : `Lengkapi Pendaftaran Akun ${reqRole}`;
+            }
+        }
+
         function openPendingProfileBox(pendingUser) {
             const googleBox = document.getElementById("googleAuthBox");
             const pendingBox = document.getElementById("pendingProfileBox");
-            const title = document.getElementById("authTitle");
             if (googleBox) googleBox.classList.add("hidden");
             if (pendingBox) pendingBox.classList.remove("hidden");
-            if (title) title.textContent = "Lengkapi Data Akun Operator";
+
+            const initRole = window.__sigapAuthRegIntent || (pendingUser && (pendingUser.requestedRole || pendingUser.role)) || "Operator Sekolah";
+            setPendingRoleType(initRole);
+
+            const nameInput = document.getElementById("pendingNameInput");
+            const jabatanInput = document.getElementById("pendingJabatanInput");
             const npsnInput = document.getElementById("pendingNpsnInput");
             const waInput = document.getElementById("pendingWhatsappInput");
             const emailText = document.getElementById("pendingGoogleEmail");
+
             if (emailText && pendingUser) emailText.textContent = pendingUser.email || pendingUser.name || "";
+            if (nameInput) {
+                const rawName = pendingUser && pendingUser.name ? String(pendingUser.name).trim() : "";
+                nameInput.value = rawName && rawName !== "Pengguna Google" ? rawName : "";
+            }
+            if (jabatanInput) jabatanInput.value = (pendingUser && pendingUser.jabatan) || "";
             if (npsnInput) npsnInput.value = (pendingUser && pendingUser.npsn) || "";
             if (waInput) waInput.value = (pendingUser && pendingUser.whatsapp) ? waDisplay(pendingUser.whatsapp) : "";
             checkNpsnMaster(npsnInput ? npsnInput.value : "");
@@ -779,7 +858,7 @@
                 if (res && res.status === "pending") {
                     await loadPublicDirectory();
                     openPendingProfileBox(res.user || null);
-                    appToast("Akun Google berhasil terdaftar dengan status Pending. Lengkapi NPSN & WhatsApp lalu tunggu persetujuan Admin Dinas.", "info");
+                    appToast("Akun Google berhasil terdaftar dengan status Pending. Lengkapi data pendaftaran akun lalu kirim untuk verifikasi Admin Dinas.", "info");
                 }
             } catch (e) {
                 appToast((e && e.message) || "Gagal masuk dengan Google.", "err");
@@ -789,36 +868,218 @@
         }
 
         async function savePendingOperatorProfile() {
+            const roleSel = document.getElementById("pendingRoleSelect");
+            const nameInput = document.getElementById("pendingNameInput");
+            const jabatanInput = document.getElementById("pendingJabatanInput");
             const npsnInput = document.getElementById("pendingNpsnInput");
             const waInput = document.getElementById("pendingWhatsappInput");
+
+            const reqRole = roleSel ? roleSel.value : "Operator Sekolah";
+            const nameVal = String(nameInput ? nameInput.value : "").trim();
+            const jabatanVal = String(jabatanInput ? jabatanInput.value : "").trim();
             const npsnVal = String(npsnInput ? npsnInput.value : "").trim();
             const waVal = waNormalize(waInput ? waInput.value : "");
-            if (!npsnVal) {
-                appToast("Nomor NPSN sekolah wajib diisi.", "err");
-                return;
-            }
-            const matchedSchool = checkNpsnMaster(npsnVal);
-            if (!matchedSchool) {
-                appToast("NPSN tidak ditemukan di Data Master Sekolah.", "err");
-                return;
-            }
+
             if (!waVal) {
                 appToast("Nomor WhatsApp tidak valid. Contoh: 081234567890.", "err");
                 return;
             }
-            const btn = document.getElementById("btnSavePendingProfile");
-            if (btn) btn.disabled = true;
-            try {
-                await window.SigapFirebaseDrive.completePendingUserProfile({
-                    name: `Operator ${matchedSchool.name}`,
+
+            let payload = null;
+            if (reqRole === "Operator Sekolah") {
+                if (!npsnVal) {
+                    appToast("Nomor NPSN sekolah wajib diisi.", "err");
+                    return;
+                }
+                const matchedSchool = checkNpsnMaster(npsnVal);
+                if (!matchedSchool) {
+                    appToast("NPSN tidak ditemukan di Data Master Sekolah.", "err");
+                    return;
+                }
+                payload = {
+                    name: nameVal || `Operator ${matchedSchool.name}`,
+                    requestedRole: "Operator Sekolah",
+                    jabatan: "",
                     npsn: matchedSchool.npsn,
                     schoolNo: matchedSchool.no,
                     whatsapp: waVal
-                });
-                appToast("Profil sekolah berhasil disimpan! Status akun: Pending — menunggu persetujuan Admin Dinas.", "ok");
+                };
+            } else {
+                if (!nameVal) {
+                    appToast("Nama lengkap pendaftar Admin wajib diisi.", "err");
+                    return;
+                }
+                payload = {
+                    name: nameVal,
+                    requestedRole: reqRole,
+                    jabatan: jabatanVal || (reqRole === "BUD" ? "Bendahara Umum Daerah" : "Admin Dinas Pendidikan"),
+                    npsn: "",
+                    schoolNo: 0,
+                    whatsapp: waVal
+                };
+            }
+
+            const btn = document.getElementById("btnSavePendingProfile");
+            if (btn) btn.disabled = true;
+            try {
+                await window.SigapFirebaseDrive.completePendingUserProfile(payload);
+                window.__sigapAuthRegIntent = null;
+                appToast(`Pendaftaran akun (${reqRole}) berhasil dikirim! Status akun: Pending — menunggu persetujuan Admin Dinas.`, "ok");
                 closeAuthModal();
             } catch (e) {
-                appToast("Gagal menyimpan profil: " + ((e && e.message) || e), "err");
+                appToast("Gagal menyimpan pendaftaran: " + ((e && e.message) || e), "err");
+            } finally {
+                if (btn) btn.disabled = false;
+            }
+        }
+
+        function populateAdminRegSchools() {
+            const sel = document.getElementById("regSchoolSelect");
+            if (!sel) return;
+            const prev = sel.value;
+            const sorted = [...baseSchools].sort((a, b) => Number(a.no) - Number(b.no));
+            sel.innerHTML = '<option value="">— Pilih Sekolah —</option>' + sorted.map(s =>
+                `<option value="${escHtml(s.no)}">${escHtml(s.npsn)} — ${escHtml(s.name)} (${escHtml(s.kecamatan)})</option>`
+            ).join("");
+            if (prev) sel.value = prev;
+        }
+
+        function toggleAdminRegisterForm(forceState) {
+            const box = document.getElementById("adminRegisterBox");
+            if (!box) return;
+            const show = typeof forceState === "boolean" ? forceState : box.classList.contains("hidden");
+            box.classList.toggle("hidden", !show);
+            if (show) {
+                populateAdminRegSchools();
+                const ids = ["regEmailInput", "regNameInput", "regUsernameInput", "regWaInput", "regNpsnInput", "regJabatanInput"];
+                ids.forEach((id) => {
+                    const el = document.getElementById(id);
+                    if (el) el.value = "";
+                });
+                const roleSel = document.getElementById("regRoleSelect");
+                if (roleSel) roleSel.value = "Operator Sekolah";
+                const stSel = document.getElementById("regStatusSelect");
+                if (stSel) stSel.value = "Aktif";
+                const schSel = document.getElementById("regSchoolSelect");
+                if (schSel) schSel.value = "";
+                checkAdminRegNpsn("");
+                onAdminRegRoleChange();
+            }
+        }
+
+        function onAdminRegRoleChange() {
+            const roleSel = document.getElementById("regRoleSelect");
+            const role = roleSel ? roleSel.value : "Operator Sekolah";
+            const schSec = document.getElementById("regSchoolSection");
+            const jabSec = document.getElementById("regJabatanSection");
+            const isOp = role === "Operator Sekolah";
+            if (schSec) schSec.classList.toggle("hidden", !isOp);
+            if (jabSec) jabSec.classList.toggle("hidden", isOp);
+        }
+
+        function onAdminRegSchoolPick(schoolNo) {
+            const npsnInput = document.getElementById("regNpsnInput");
+            const sch = baseSchools.find(s => Number(s.no) === Number(schoolNo));
+            if (npsnInput) npsnInput.value = sch ? sch.npsn : "";
+            checkAdminRegNpsn(sch ? sch.npsn : "");
+        }
+
+        function checkAdminRegNpsn(npsnVal) {
+            const infoEl = document.getElementById("regNpsnInfo");
+            const schSel = document.getElementById("regSchoolSelect");
+            const clean = String(npsnVal || "").trim();
+            if (!infoEl) return null;
+            if (!clean) {
+                infoEl.innerHTML = "Pilih sekolah atau ketik NPSN yang terdaftar.";
+                infoEl.className = "mt-1 text-[11px] text-slate-500 italic";
+                return null;
+            }
+            const found = baseSchools.find(s => String(s.npsn).trim() === clean);
+            if (found) {
+                if (schSel && String(schSel.value) !== String(found.no)) schSel.value = String(found.no);
+                infoEl.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> <b class="text-emerald-800">${escHtml(found.name)}</b> (Kec. ${escHtml(found.kecamatan)})`;
+                infoEl.className = "mt-1 text-[11px] text-emerald-700 font-semibold";
+                return found;
+            }
+            infoEl.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600 mr-1"></i> NPSN "${escHtml(clean)}" tidak ditemukan di Data Master.`;
+            infoEl.className = "mt-1 text-[11px] text-rose-700 font-semibold";
+            return null;
+        }
+
+        async function handleAdminRegisterAccount() {
+            if (!isPrimaryAdmin()) {
+                appToast("Hanya Admin Dinas yang dapat mendaftarkan akun baru.", "err");
+                return;
+            }
+            const role = (document.getElementById("regRoleSelect") || {}).value || "Operator Sekolah";
+            const status = (document.getElementById("regStatusSelect") || {}).value || "Aktif";
+            const email = String((document.getElementById("regEmailInput") || {}).value || "").trim().toLowerCase();
+            const name = String((document.getElementById("regNameInput") || {}).value || "").trim();
+            const username = String((document.getElementById("regUsernameInput") || {}).value || "").trim();
+            const rawWa = String((document.getElementById("regWaInput") || {}).value || "").trim();
+            const npsn = String((document.getElementById("regNpsnInput") || {}).value || "").trim();
+            const jabatan = String((document.getElementById("regJabatanInput") || {}).value || "").trim();
+
+            if (!/^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$/.test(email)) {
+                appToast("Masukkan alamat email Google yang valid.", "err");
+                return;
+            }
+            if (!name) {
+                appToast("Nama lengkap wajib diisi.", "err");
+                return;
+            }
+            let waVal = "";
+            if (rawWa) {
+                waVal = waNormalize(rawWa);
+                if (!waVal) {
+                    appToast("Format nomor WhatsApp tidak valid. Contoh: 081234567890.", "err");
+                    return;
+                }
+            }
+
+            let schoolNo = 0;
+            let matchedNpsn = "";
+            if (role === "Operator Sekolah") {
+                const matchedSch = checkAdminRegNpsn(npsn);
+                if (!matchedSch) {
+                    appToast("Pilih sekolah atau masukkan NPSN yang valid untuk akun Operator Sekolah.", "err");
+                    return;
+                }
+                schoolNo = Number(matchedSch.no);
+                matchedNpsn = matchedSch.npsn;
+            }
+
+            const btn = document.getElementById("btnAdminRegisterAccount");
+            if (btn) btn.disabled = true;
+            try {
+                const saved = await window.SigapFirebaseDrive.registerAccountByAdmin({
+                    email,
+                    name,
+                    username,
+                    role,
+                    jabatan,
+                    npsn: matchedNpsn,
+                    schoolNo,
+                    whatsapp: waVal,
+                    status
+                });
+                await window.SigapFirebaseDrive.logAuditToFirestore("register_account", {
+                    email,
+                    role,
+                    status,
+                    schoolNo
+                }, currentUser);
+                if (typeof window.SigapFirebaseDrive.loadUsersFromFirestore === "function") {
+                    const fbUsers = await window.SigapFirebaseDrive.loadUsersFromFirestore();
+                    if (Array.isArray(fbUsers)) usersDB = fbUsers.map(normalizeUser);
+                } else if (saved) {
+                    usersDB.unshift(normalizeUser(saved));
+                }
+                toggleAdminRegisterForm(false);
+                renderUserTable();
+                appToast(`Akun ${role} (${email}) berhasil didaftarkan dengan status ${status}!`, "ok");
+            } catch (e) {
+                appToast("Gagal mendaftarkan akun: " + ((e && e.message) || e), "err");
             } finally {
                 if (btn) btn.disabled = false;
             }
@@ -830,6 +1091,8 @@
                 return;
             }
             document.getElementById("searchUserBox").value = "";
+            toggleAdminRegisterForm(false);
+            populateAdminRegSchools();
             if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.loadUsersFromFirestore === "function") {
                 try {
                     const fbUsers = await window.SigapFirebaseDrive.loadUsersFromFirestore();
@@ -856,7 +1119,12 @@
         function findUserRecord(uidOrUsername) {
             const key = String(uidOrUsername || "").trim();
             if (!key) return null;
-            return usersDB.find(u => String(u.uid || "") === key || String(u.username || "") === key || String(u.email || "").toLowerCase() === key.toLowerCase()) || null;
+            return usersDB.find(u =>
+                String(u.docId || "") === key ||
+                String(u.uid || "") === key ||
+                String(u.username || "") === key ||
+                String(u.email || "").toLowerCase() === key.toLowerCase()
+            ) || null;
         }
 
         function isProtectedAdminAccount(u) {
@@ -875,15 +1143,21 @@
 
             const filteredUsers = usersDB.filter(u => {
                 let instansiText = "";
-                if (u.role === "Operator Sekolah") {
+                const effRole = u.status === "Pending" && u.requestedRole ? u.requestedRole : u.role;
+                if (effRole === "Operator Sekolah") {
                     const foundSch = findSchoolForUser(u);
                     instansiText = foundSch ? `${foundSch.name} ${foundSch.npsn} ${foundSch.kecamatan}` : `${u.npsn || ''}`;
                 } else {
-                    instansiText = "administrator dinas pendidikan kabupaten";
+                    instansiText = `administrator dinas pendidikan kabupaten bud ${u.jabatan || ''}`;
                 }
 
-                const searchTarget = `${u.name || ''} ${u.email || ''} ${u.username || ''} ${u.role || ''} ${instansiText} ${u.whatsapp || ''}`.toLowerCase();
+                const searchTarget = `${u.name || ''} ${u.email || ''} ${u.username || ''} ${u.role || ''} ${u.requestedRole || ''} ${u.jabatan || ''} ${u.status || ''} ${instansiText} ${u.whatsapp || ''}`.toLowerCase();
                 return searchTarget.includes(keyword);
+            }).sort((a, b) => {
+                const rank = s => s === "Pending" ? 0 : (s === "Aktif" ? 1 : 2);
+                const rDiff = rank(a.status) - rank(b.status);
+                if (rDiff !== 0) return rDiff;
+                return String(a.name || a.email || "").localeCompare(String(b.name || b.email || ""));
             });
 
             document.getElementById("userCountBadge").textContent = filteredUsers.length;
@@ -894,16 +1168,19 @@
             }
 
             filteredUsers.forEach((u, idx) => {
+                const effRole = u.status === "Pending" && u.requestedRole ? u.requestedRole : u.role;
                 let instansiColumn = "-";
-                if (u.role === "Operator Sekolah") {
+                if (effRole === "Operator Sekolah") {
                     const foundSch = findSchoolForUser(u);
                     if (foundSch) {
                         instansiColumn = `<b>${escHtml(foundSch.name)}</b><br><span class="text-slate-500 font-mono">NPSN: ${escHtml(foundSch.npsn)} | Kec. ${escHtml(foundSch.kecamatan)}</span>`;
                     } else {
-                        instansiColumn = `<span class="text-rose-600">NPSN: ${escHtml(u.npsn || '-')} (Master Tidak Ditemukan)</span>`;
+                        instansiColumn = `<span class="text-rose-600">NPSN: ${escHtml(u.npsn || '-')} (Belum Dilengkapi)</span>`;
                     }
+                } else if (effRole === "BUD") {
+                    instansiColumn = `<span class="font-semibold text-indigo-800">Bendahara Umum Daerah (BUD)</span>` + (u.jabatan ? `<br><span class="text-slate-500">${escHtml(u.jabatan)}</span>` : "");
                 } else {
-                    instansiColumn = `<span class="font-semibold text-amber-800">Admin Dinas Pendidikan</span>`;
+                    instansiColumn = `<span class="font-semibold text-amber-800">Admin Dinas Pendidikan</span>` + (u.jabatan ? `<br><span class="text-slate-500">${escHtml(u.jabatan)}</span>` : "");
                 }
 
                 let statusBadge = `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">Aktif</span>`;
@@ -912,15 +1189,44 @@
                 } else if (u.status === "Ditolak") {
                     statusBadge = `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-100 text-rose-800">Ditolak</span>`;
                 }
+                if (String(u.docId || "").startsWith("invite_")) {
+                    statusBadge += `<div class="text-[9px] text-slate-500 mt-0.5">Menunggu login Google</div>`;
+                }
 
-                const userKey = escHtml(u.uid || u.username || u.email || "");
+                const roleBadgeColor = u.role === 'Admin Dinas'
+                    ? 'bg-amber-100 text-amber-800'
+                    : (u.role === 'BUD' ? 'bg-indigo-100 text-indigo-800' : 'bg-blue-100 text-blue-800');
+                let roleCellHtml = `<span class="px-2 py-0.5 rounded text-[10px] font-bold ${roleBadgeColor}">${escHtml(u.role)}</span>`;
+                if (u.status === "Pending" && u.requestedRole && u.requestedRole !== u.role) {
+                    roleCellHtml += `<div class="text-[10px] font-semibold text-amber-700 mt-1">Ajuan: ${escHtml(u.requestedRole)}</div>`;
+                }
+
+                const userKey = escHtml(u.docId || u.uid || u.username || u.email || "");
                 let actionButtons = '';
 
                 if (u.status === "Pending" && isPrimaryAdmin()) {
-                    actionButtons += `<button onclick="verifyUserAccount('${userKey}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2 py-1 rounded text-[10px] mr-1" title="Setujui Akun"><i class="fa-solid fa-check"></i> Setujui</button>`;
+                    const reqRoleVal = ["Operator Sekolah", "Admin Dinas", "BUD"].includes(u.requestedRole) ? u.requestedRole : (u.role || "Operator Sekolah");
+                    actionButtons += `<div class="inline-flex flex-wrap items-center justify-center gap-1">` +
+                        `<select id="approveRole_${idx}" class="border border-slate-300 rounded px-1.5 py-1 text-[10px] font-semibold bg-white" title="Pilih peran saat disetujui">` +
+                        `<option value="Operator Sekolah" ${reqRoleVal === 'Operator Sekolah' ? 'selected' : ''}>Operator Sekolah</option>` +
+                        `<option value="Admin Dinas" ${reqRoleVal === 'Admin Dinas' ? 'selected' : ''}>Admin Dinas</option>` +
+                        `<option value="BUD" ${reqRoleVal === 'BUD' ? 'selected' : ''}>BUD</option>` +
+                        `</select>` +
+                        `<button onclick="verifyUserAccount('${userKey}', 'approveRole_${idx}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2 py-1 rounded text-[10px] font-bold cursor-pointer" title="Setujui Akun"><i class="fa-solid fa-check"></i> Setujui</button>` +
+                        `<button onclick="rejectUserAccount('${userKey}')" class="bg-amber-600 hover:bg-amber-700 text-white px-2 py-1 rounded text-[10px] font-bold cursor-pointer" title="Tolak Pendaftaran"><i class="fa-solid fa-xmark"></i></button>` +
+                        `</div>`;
+                } else if (u.status === "Ditolak" && isPrimaryAdmin() && !isProtectedAdminAccount(u)) {
+                    actionButtons += `<button onclick="verifyUserAccount('${userKey}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2 py-1 rounded text-[10px] mr-1 cursor-pointer" title="Aktifkan Kembali"><i class="fa-solid fa-rotate-left"></i> Aktifkan</button>`;
+                } else if (u.status === "Aktif" && isPrimaryAdmin() && !isProtectedAdminAccount(u)) {
+                    actionButtons += `<select onchange="changeUserRole('${userKey}', this.value)" class="border border-slate-300 rounded px-1.5 py-1 text-[10px] font-semibold bg-white mr-1" title="Ubah peran akun">` +
+                        `<option value="Operator Sekolah" ${u.role === 'Operator Sekolah' ? 'selected' : ''}>Operator</option>` +
+                        `<option value="Admin Dinas" ${u.role === 'Admin Dinas' ? 'selected' : ''}>Admin Dinas</option>` +
+                        `<option value="BUD" ${u.role === 'BUD' ? 'selected' : ''}>BUD</option>` +
+                        `</select>`;
                 }
+
                 if (isPrimaryAdmin() && !isProtectedAdminAccount(u)) {
-                    actionButtons += ` <button onclick="deleteUser('${userKey}')" class="bg-rose-600 hover:bg-rose-700 text-white px-2 py-1 rounded text-[10px]" title="Hapus User"><i class="fa-solid fa-trash"></i></button>`;
+                    actionButtons += ` <button onclick="deleteUser('${userKey}')" class="bg-rose-600 hover:bg-rose-700 text-white px-2 py-1 rounded text-[10px] cursor-pointer" title="Hapus Akun"><i class="fa-solid fa-trash"></i></button>`;
                 }
 
                 const displayIdentity = u.email ? `${escHtml(u.name || u.username)}<br><span class="text-[10px] text-slate-500 font-normal">${escHtml(u.email)}</span>` : escHtml(u.username || u.name || "-");
@@ -929,7 +1235,7 @@
                 tr.innerHTML = `
                     <td class="py-2.5 px-3">${idx + 1}</td>
                     <td class="py-2.5 px-3 font-mono font-bold">${displayIdentity}</td>
-                    <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${u.role === 'Admin Dinas' ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'}">${escHtml(u.role)}</span></td>
+                    <td class="py-2.5 px-3">${roleCellHtml}</td>
                     <td class="py-2.5 px-3">${instansiColumn}</td>
                     <td class="py-2.5 px-3 whitespace-nowrap">${waCellHtml(u)}</td>
                     <td class="py-2.5 px-3 text-center">${statusBadge}</td>
@@ -939,22 +1245,87 @@
             });
         }
 
-        async function verifyUserAccount(uidOrUsername) {
+        async function verifyUserAccount(uidOrUsername, roleSelectId) {
             if (!isPrimaryAdmin()) {
                 appToast("Hanya Admin Dinas yang dapat menyetujui akun baru.", "err");
                 return;
             }
             const targetUser = findUserRecord(uidOrUsername);
             if (!targetUser) return;
+            const selEl = roleSelectId ? document.getElementById(roleSelectId) : null;
+            const chosenRole = selEl ? selEl.value : (targetUser.requestedRole || targetUser.role || "Operator Sekolah");
+            if (chosenRole === "Operator Sekolah" && !findSchoolForUser(targetUser)) {
+                appToast("Akun Operator Sekolah belum memiliki NPSN / sekolah di Data Master. Gunakan Form Daftar Akun Baru atau ubah peran menjadi Admin.", "err");
+                return;
+            }
             try {
-                await window.SigapFirebaseDrive.approveUserInFirestore(targetUser);
+                const updated = await window.SigapFirebaseDrive.approveUserInFirestore(targetUser, chosenRole);
                 targetUser.status = "Aktif";
-                await window.SigapFirebaseDrive.logAuditToFirestore("approve_user", { targetUid: targetUser.uid || "", email: targetUser.email || "", username: targetUser.username || "" }, currentUser);
+                targetUser.role = chosenRole;
+                targetUser.requestedRole = chosenRole;
+                if (updated) Object.assign(targetUser, normalizeUser(updated));
+                await window.SigapFirebaseDrive.logAuditToFirestore("approve_user", { targetUid: targetUser.uid || "", email: targetUser.email || "", role: chosenRole }, currentUser);
                 renderUserTable();
                 try { waNotifyAccountApproved(targetUser); } catch (e) {}
-                appToast("Akun (" + (targetUser.email || targetUser.username || targetUser.name) + ") berhasil disetujui & diaktifkan di Firebase!", "ok");
+                appToast("Akun (" + (targetUser.email || targetUser.username || targetUser.name) + ") disetujui sebagai " + chosenRole + "!", "ok");
             } catch (e) {
                 appToast("Gagal menyetujui akun: " + ((e && e.message) || e), "err");
+            }
+        }
+
+        async function rejectUserAccount(uidOrUsername) {
+            if (!isPrimaryAdmin()) {
+                appToast("Akses ditolak!", "err");
+                return;
+            }
+            const targetUser = findUserRecord(uidOrUsername);
+            if (!targetUser || isProtectedAdminAccount(targetUser)) return;
+            const label = targetUser.email || targetUser.username || targetUser.name || "user";
+            const ok = await appConfirm("Tolak Pendaftaran Akun", `Tolak pengajuan akun "${label}"?`, true, "Ya, Tolak");
+            if (!ok) return;
+            try {
+                await window.SigapFirebaseDrive.rejectUserInFirestore(targetUser);
+                targetUser.status = "Ditolak";
+                await window.SigapFirebaseDrive.logAuditToFirestore("reject_user", { targetUid: targetUser.uid || "", email: targetUser.email || "" }, currentUser);
+                renderUserTable();
+                appToast(`Pendaftaran akun "${label}" ditolak.`, "info");
+            } catch (e) {
+                appToast("Gagal menolak akun: " + ((e && e.message) || e), "err");
+            }
+        }
+
+        async function changeUserRole(uidOrUsername, newRole) {
+            if (!isPrimaryAdmin()) {
+                appToast("Hanya Admin Dinas yang dapat mengubah peran akun.", "err");
+                return;
+            }
+            const targetUser = findUserRecord(uidOrUsername);
+            if (!targetUser || isProtectedAdminAccount(targetUser)) {
+                renderUserTable();
+                return;
+            }
+            if (newRole === "Operator Sekolah" && !findSchoolForUser(targetUser)) {
+                appToast("Untuk mengubah menjadi Operator Sekolah, daftarkan ulang email tersebut dengan NPSN sekolah melalui tombol 'Daftar Akun Baru'.", "err");
+                renderUserTable();
+                return;
+            }
+            const label = targetUser.email || targetUser.username || targetUser.name || "user";
+            const ok = await appConfirm("Ubah Peran Akun", `Ubah peran akun "${label}" menjadi ${newRole}?`, false, "Simpan Peran");
+            if (!ok) {
+                renderUserTable();
+                return;
+            }
+            try {
+                const updated = await window.SigapFirebaseDrive.updateUserRoleInFirestore(targetUser, newRole);
+                targetUser.role = newRole;
+                targetUser.requestedRole = newRole;
+                if (updated) Object.assign(targetUser, normalizeUser(updated));
+                await window.SigapFirebaseDrive.logAuditToFirestore("change_role", { targetUid: targetUser.uid || "", email: targetUser.email || "", role: newRole }, currentUser);
+                renderUserTable();
+                appToast(`Peran "${label}" berhasil diubah menjadi ${newRole}.`, "ok");
+            } catch (e) {
+                appToast("Gagal mengubah peran akun: " + ((e && e.message) || e), "err");
+                renderUserTable();
             }
         }
 
@@ -4589,7 +4960,7 @@
                 var p = (typeof periodLabel === "function") ? periodLabel() : "";
                 if (currentUser.role === "Admin Dinas") {
                     var pending = 0;
-                    try { pending = (usersDB || []).filter(function (x) { return x.status !== "Aktif"; }).length; } catch (e) {}
+                    try { pending = (usersDB || []).filter(function (x) { return x.status === "Pending"; }).length; } catch (e) {}
                     el.innerHTML =
                         '<div><small class="k"><i class="fa-solid fa-sun mr-1"></i>' + greet() + '</small>' +
                         '<h2>' + h(currentUser.name || "Administrator") + '</h2>' +
