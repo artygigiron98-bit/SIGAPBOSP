@@ -280,6 +280,15 @@
           "type": "object",
           "description": "Bank reconciliation fields map."
         },
+        "saManual": {
+          "type": "object",
+          "description": "Manual opening balance override (reg, kin, bukan, tunai) for months after January."
+        },
+        "allowedUids": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "List of Firebase UIDs authorized to access/update this school report."
+        },
         "documents": {
           "type": "object",
           "description": "Supporting PDF documents map (Google Drive URLs and check status)."
@@ -343,6 +352,11 @@
           "minLength": 1,
           "maxLength": 128,
           "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "allowedUids": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "List of Firebase UIDs authorized to access/update this school RKAS record."
         },
         "fileName": {
           "type": "string",
@@ -583,6 +597,80 @@
         }
       },
       "required": ["action", "userUid", "username", "role", "detail", "createdAt"]
+    },
+    "AppMeta": {
+      "title": "AppMeta",
+      "description": "System metadata and JSON-to-Firebase migration state.",
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "completed": {
+          "type": "boolean"
+        },
+        "migratedByUid": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "migratedAt": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "counts": {
+          "type": "object",
+          "description": "Migrated record counts per collection."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["updatedAt"]
+    },
+    "PublicRank": {
+      "title": "PublicRank",
+      "description": "Non-PII public reconciliation speed leaderboard summary per year and month.",
+      "type": "object",
+      "properties": {
+        "year": { "type": "number" },
+        "month": { "type": "string", "maxLength": 10 },
+        "rowsMap": {
+          "type": "object",
+          "description": "Bounded map of public leaderboard entries (schoolNo, name, kecamatan, doneAt, durasi)."
+        },
+        "updatedByUid": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["year", "month", "rowsMap", "updatedByUid", "updatedAt"]
+    },
+    "PublicDirectory": {
+      "title": "PublicDirectory",
+      "description": "Non-PII public school directory index for registration NPSN lookup.",
+      "type": "object",
+      "properties": {
+        "count": { "type": "number" },
+        "itemsMap": {
+          "type": "object",
+          "description": "Bounded map of public school entries (no, npsn, name, kecamatan, jenjang, status)."
+        },
+        "updatedByUid": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["count", "itemsMap", "updatedByUid", "updatedAt"]
     }
   },
   "firestore": {
@@ -617,6 +705,18 @@
     "/audit_logs/{logId}": {
       "schema": { "$ref": "#/entities/AuditLog" },
       "description": "Immutable security and activity audit logs."
+    },
+    "/app_meta/{docId}": {
+      "schema": { "$ref": "#/entities/AppMeta" },
+      "description": "System metadata and JSON-to-Firebase migration state."
+    },
+    "/public_ranks/{rankId}": {
+      "schema": { "$ref": "#/entities/PublicRank" },
+      "description": "Public non-PII reconciliation speed leaderboard."
+    },
+    "/public_directory/{docId}": {
+      "schema": { "$ref": "#/entities/PublicDirectory" },
+      "description": "Non-PII public school directory index for registration NPSN lookup."
     }
   }
 }

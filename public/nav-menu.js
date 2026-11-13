@@ -52,7 +52,6 @@
         items: [
           { icon: "fa-school-flag", label: "Data Master Sekolah", action: "master" },
           { icon: "fa-users", label: "Daftar User Terdaftar", action: "users" },
-          { icon: "fa-key", label: "Ubah Password Admin", action: "password" },
           { icon: "fa-brands fa-whatsapp", label: "Notifikasi WhatsApp", action: "wa" },
           { icon: "fa-clock-rotate-left", label: "Audit Log", action: "audit" },
           { icon: "fa-download", label: "Backup Data", action: "backup" }

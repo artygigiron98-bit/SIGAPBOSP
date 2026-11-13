@@ -103,12 +103,13 @@ service cloud.firestore {
 
     function isValidMonthlyReport(data) {
       return data.keys().hasAll(['year', 'schoolNo', 'month', 'ownerUid', 'verifStatus', 'pendapatan', 'belanja', 'documents', 'updatedAt']) &&
-        data.keys().hasOnly(['year', 'schoolNo', 'month', 'ownerUid', 'verifStatus', 'reconDone', 'reconDoneAt', 'verifiedAt', 'verifiedBy', 'verifiedBulk', 'submittedAt', 'submittedBy', 'approvedAt', 'approvedBy', 'unverifiedAt', 'unverifiedBy', 'unverifyReason', 'pendapatan', 'belanja', 'rekon', 'documents', 'saldoAwalCustom', 'saldoReguler', 'saldoKinerja', 'saldoNonBOS', 'saldoTunai', 'updatedAt']) &&
+        data.keys().hasOnly(['year', 'schoolNo', 'month', 'ownerUid', 'allowedUids', 'verifStatus', 'reconDone', 'reconDoneAt', 'verifiedAt', 'verifiedBy', 'verifiedBulk', 'submittedAt', 'submittedBy', 'approvedAt', 'approvedBy', 'unverifiedAt', 'unverifiedBy', 'unverifyReason', 'pendapatan', 'belanja', 'rekon', 'saManual', 'documents', 'saldoAwalCustom', 'saldoReguler', 'saldoKinerja', 'saldoNonBOS', 'saldoTunai', 'updatedAt']) &&
         data.year is number && data.year >= 2020 && data.year <= 2100 &&
         data.schoolNo is number && data.schoolNo >= 1 && data.schoolNo <= 10000 &&
         data.month is string && data.month.size() >= 1 && data.month.size() <= 10 &&
         (data.month == 'Jan' || data.month == 'Feb' || data.month == 'Mar' || data.month == 'Apr' || data.month == 'Mei' || data.month == 'Jun' || data.month == 'Jul' || data.month == 'Agus' || data.month == 'Sep' || data.month == 'Okt' || data.month == 'Nov' || data.month == 'Des') &&
         data.ownerUid is string && data.ownerUid.size() >= 1 && data.ownerUid.size() <= 128 && data.ownerUid.matches('^[a-zA-Z0-9_\\-]+$') &&
+        (!('allowedUids' in data) || (data.allowedUids is list && data.allowedUids.size() <= 10)) &&
         data.verifStatus is string && data.verifStatus.size() >= 1 && data.verifStatus.size() <= 32 &&
         (data.verifStatus == 'Draft' || data.verifStatus == 'Diajukan Sekolah' || data.verifStatus == 'Diverifikasi Dinas' || data.verifStatus == 'Disahkan BUD') &&
         (!('reconDone' in data) || data.reconDone is bool) &&
@@ -126,6 +127,7 @@ service cloud.firestore {
         data.pendapatan is map && data.pendapatan.keys().size() <= 20 &&
         data.belanja is map && data.belanja.keys().size() <= 20 &&
         (!('rekon' in data) || (data.rekon is map && data.rekon.keys().size() <= 20)) &&
+        (!('saManual' in data) || (data.saManual is map && data.saManual.keys().size() <= 10)) &&
         data.documents is map && data.documents.keys().size() <= 20 &&
         (!('saldoAwalCustom' in data) || data.saldoAwalCustom is number) &&
         (!('saldoReguler' in data) || data.saldoReguler is number) &&
@@ -137,7 +139,7 @@ service cloud.firestore {
 
     function isValidAnggaranRecord(data) {
       return data.keys().hasAll(['year', 'schoolNo', 'tahap', 'sumber', 'ownerUid', 'fileName', 'fileUrl', 'status', 'totals', 'canSubmit', 'updatedAt']) &&
-        data.keys().hasOnly(['year', 'schoolNo', 'tahap', 'sumber', 'ownerUid', 'fileName', 'fileUrl', 'driveFileId', 'status', 'catatan', 'totals', 'meta', 'itemsMap', 'warningsMap', 'blockingMap', 'basis', 'stats', 'uploadedAt', 'uploadedBy', 'submittedAt', 'verifiedAt', 'verifiedBy', 'itemCount', 'canSubmit', 'hasBlocking', 'updatedAt']) &&
+        data.keys().hasOnly(['year', 'schoolNo', 'tahap', 'sumber', 'ownerUid', 'allowedUids', 'fileName', 'fileUrl', 'driveFileId', 'status', 'catatan', 'totals', 'meta', 'itemsMap', 'warningsMap', 'blockingMap', 'basis', 'stats', 'uploadedAt', 'uploadedBy', 'submittedAt', 'verifiedAt', 'verifiedBy', 'itemCount', 'canSubmit', 'hasBlocking', 'updatedAt']) &&
         data.year is number && data.year >= 2020 && data.year <= 2100 &&
         data.schoolNo is number && data.schoolNo >= 1 && data.schoolNo <= 10000 &&
         data.tahap is string && data.tahap.size() >= 1 && data.tahap.size() <= 16 &&
@@ -145,6 +147,7 @@ service cloud.firestore {
         data.sumber is string && data.sumber.size() >= 1 && data.sumber.size() <= 24 &&
         (data.sumber == 'reguler' || data.sumber == 'kinerja' || data.sumber == 'prestasi' || data.sumber == 'silpaKinerja') &&
         data.ownerUid is string && data.ownerUid.size() >= 1 && data.ownerUid.size() <= 128 && data.ownerUid.matches('^[a-zA-Z0-9_\\-]+$') &&
+        (!('allowedUids' in data) || (data.allowedUids is list && data.allowedUids.size() <= 10)) &&
         data.fileName is string && data.fileName.size() >= 1 && data.fileName.size() <= 200 &&
         data.fileUrl is string && data.fileUrl.size() >= 1 && data.fileUrl.size() <= 500 &&
         (!('driveFileId' in data) || (data.driveFileId is string && data.driveFileId.size() <= 128)) &&
@@ -208,6 +211,38 @@ service cloud.firestore {
         data.createdAt is timestamp;
     }
 
+    function isValidAppMeta(data) {
+      return data.keys().hasAll(['updatedAt']) &&
+        data.keys().hasOnly(['version', 'completed', 'migratedByUid', 'migratedAt', 'counts', 'updatedAt']) &&
+        (!('version' in data) || (data.version is string && data.version.size() <= 40)) &&
+        (!('completed' in data) || data.completed is bool) &&
+        (!('migratedByUid' in data) || (data.migratedByUid is string && data.migratedByUid.size() <= 128)) &&
+        (!('migratedAt' in data) || (data.migratedAt is string && data.migratedAt.size() <= 40)) &&
+        (!('counts' in data) || (data.counts is map && data.counts.keys().size() <= 20)) &&
+        data.updatedAt is timestamp;
+    }
+
+    function isValidPublicRank(data) {
+      return data.keys().hasAll(['year', 'month', 'rowsMap', 'updatedByUid', 'updatedAt']) &&
+        data.keys().hasOnly(['year', 'month', 'rowsMap', 'updatedByUid', 'updatedAt']) &&
+        data.year is number && data.year >= 2020 && data.year <= 2100 &&
+        data.month is string && data.month.size() >= 1 && data.month.size() <= 10 &&
+        data.rowsMap is map && data.rowsMap.keys().size() <= 250 &&
+        data.updatedByUid is string && data.updatedByUid.size() >= 1 && data.updatedByUid.size() <= 128 &&
+        data.updatedByUid == request.auth.uid &&
+        data.updatedAt is timestamp;
+    }
+
+    function isValidPublicDirectory(data) {
+      return data.keys().hasAll(['count', 'itemsMap', 'updatedByUid', 'updatedAt']) &&
+        data.keys().hasOnly(['count', 'itemsMap', 'updatedByUid', 'updatedAt']) &&
+        data.count is number && data.count >= 0 && data.count <= 10000 &&
+        data.itemsMap is map && data.itemsMap.keys().size() <= 500 &&
+        data.updatedByUid is string && data.updatedByUid.size() >= 1 && data.updatedByUid.size() <= 128 &&
+        data.updatedByUid == request.auth.uid &&
+        data.updatedAt is timestamp;
+    }
+
     // =========================================================================
     // 4. COLLECTION MATCH BLOCKS
     // =========================================================================
@@ -244,14 +279,14 @@ service cloud.firestore {
       allow update: if isSignedIn() && isVerifiedUser() && isValidId(userId) && isValidUserProfile(incoming()) &&
         incoming().updatedAt == request.time && (
           isAdmin() ||
-          // Action: Operator updates own profile contact details (cannot alter role or status)
+          // Action: Operator updates own contact/school registration details (cannot alter role or status)
           (
             isOwner(userId) &&
             incoming().uid == existing().uid &&
             incoming().createdAt == existing().createdAt &&
             incoming().role == existing().role &&
             incoming().status == existing().status &&
-            incoming().diff(existing()).affectedKeys().hasOnly(['name', 'whatsapp', 'updatedAt'])
+            incoming().diff(existing()).affectedKeys().hasOnly(['name', 'whatsapp', 'npsn', 'schoolNo', 'updatedAt'])
           )
         );
       allow delete: if isSignedIn() && isValidId(userId) && isAdmin();
@@ -283,8 +318,16 @@ service cloud.firestore {
 
     // /monthly_reports/{reportId}
     match /monthly_reports/{reportId} {
-      allow get: if isSignedIn() && isValidId(reportId) && (resource.data.ownerUid == request.auth.uid || isAdmin());
-      allow list: if isVerifiedUser() && (resource.data.ownerUid == request.auth.uid || isBootstrappedAdmin());
+      allow get: if isSignedIn() && isValidId(reportId) && (
+        resource.data.ownerUid == request.auth.uid ||
+        ('allowedUids' in resource.data && request.auth.uid in resource.data.allowedUids) ||
+        isAdmin()
+      );
+      allow list: if isVerifiedUser() && (
+        resource.data.ownerUid == request.auth.uid ||
+        ('allowedUids' in resource.data && request.auth.uid in resource.data.allowedUids) ||
+        isBootstrappedAdmin()
+      );
       allow create: if isSignedIn() && isVerifiedUser() && isValidId(reportId) && isValidMonthlyReport(incoming()) &&
         incoming().updatedAt == request.time && (
           isAdmin() || (
@@ -302,11 +345,11 @@ service cloud.firestore {
             existing().verifStatus != 'Disahkan BUD' &&
             existing().verifStatus != 'Diverifikasi Dinas' &&
             incoming().ownerUid == existing().ownerUid &&
-            existing().ownerUid == request.auth.uid && (
+            (existing().ownerUid == request.auth.uid || ('allowedUids' in existing() && request.auth.uid in existing().allowedUids)) && (
               // Action 1: Save or Submit Monthly Realization & Documents
               (
                 (incoming().verifStatus == 'Draft' || incoming().verifStatus == 'Diajukan Sekolah') &&
-                incoming().diff(existing()).affectedKeys().hasOnly(['pendapatan', 'belanja', 'rekon', 'documents', 'verifStatus', 'reconDone', 'reconDoneAt', 'submittedAt', 'submittedBy', 'saldoAwalCustom', 'saldoReguler', 'saldoKinerja', 'saldoNonBOS', 'saldoTunai', 'updatedAt'])
+                incoming().diff(existing()).affectedKeys().hasOnly(['pendapatan', 'belanja', 'rekon', 'saManual', 'documents', 'verifStatus', 'reconDone', 'reconDoneAt', 'submittedAt', 'submittedBy', 'saldoAwalCustom', 'saldoReguler', 'saldoKinerja', 'saldoNonBOS', 'saldoTunai', 'updatedAt'])
               )
             )
           )
@@ -316,8 +359,16 @@ service cloud.firestore {
 
     // /anggaran_records/{recordId}
     match /anggaran_records/{recordId} {
-      allow get: if isSignedIn() && isValidId(recordId) && (resource.data.ownerUid == request.auth.uid || isAdmin());
-      allow list: if isVerifiedUser() && (resource.data.ownerUid == request.auth.uid || isBootstrappedAdmin());
+      allow get: if isSignedIn() && isValidId(recordId) && (
+        resource.data.ownerUid == request.auth.uid ||
+        ('allowedUids' in resource.data && request.auth.uid in resource.data.allowedUids) ||
+        isAdmin()
+      );
+      allow list: if isVerifiedUser() && (
+        resource.data.ownerUid == request.auth.uid ||
+        ('allowedUids' in resource.data && request.auth.uid in resource.data.allowedUids) ||
+        isBootstrappedAdmin()
+      );
       allow create: if isSignedIn() && isVerifiedUser() && isValidId(recordId) && isValidAnggaranRecord(incoming()) &&
         incoming().updatedAt == request.time && (
           isAdmin() || (
@@ -336,7 +387,7 @@ service cloud.firestore {
             existing().status != 'Terverifikasi' &&
             existing().status != 'Diajukan' &&
             incoming().ownerUid == existing().ownerUid &&
-            existing().ownerUid == request.auth.uid && (
+            (existing().ownerUid == request.auth.uid || ('allowedUids' in existing() && request.auth.uid in existing().allowedUids)) && (
               // Action 1: Reclassify / Re-upload Draft
               (
                 incoming().status == 'Draft' &&
@@ -353,7 +404,7 @@ service cloud.firestore {
         );
       allow delete: if isSignedIn() && isVerifiedUser() && isValidId(recordId) && (
         isAdmin() || (
-          existing().ownerUid == request.auth.uid &&
+          (existing().ownerUid == request.auth.uid || ('allowedUids' in existing() && request.auth.uid in existing().allowedUids)) &&
           existing().status != 'Terverifikasi' &&
           existing().status != 'Diajukan'
         )
@@ -403,6 +454,39 @@ service cloud.firestore {
         incoming().createdAt == request.time &&
         incoming().userUid == request.auth.uid;
       allow update, delete: if false;
+    }
+
+    // /app_meta/{docId}
+    match /app_meta/{docId} {
+      allow get: if isSignedIn() && isValidId(docId) && (isVerifiedUser() || isAdmin());
+      allow list: if isBootstrappedAdmin();
+      allow create, update: if isSignedIn() && isVerifiedUser() && isValidId(docId) &&
+        isAdmin() &&
+        isValidAppMeta(incoming()) &&
+        incoming().updatedAt == request.time;
+      allow delete: if isSignedIn() && isValidId(docId) && isBootstrappedAdmin();
+    }
+
+    // /public_ranks/{rankId} — Non-PII public leaderboard point-get
+    match /public_ranks/{rankId} {
+      allow get: if isValidId(rankId);
+      allow list: if isVerifiedUser() && isBootstrappedAdmin();
+      allow create, update: if isSignedIn() && isVerifiedUser() && isValidId(rankId) &&
+        isAdmin() &&
+        isValidPublicRank(incoming()) &&
+        incoming().updatedAt == request.time;
+      allow delete: if isSignedIn() && isValidId(rankId) && isAdmin();
+    }
+
+    // /public_directory/{docId} — Non-PII school list for registration NPSN lookup
+    match /public_directory/{docId} {
+      allow get: if docId == 'schools';
+      allow list: if isVerifiedUser() && isBootstrappedAdmin();
+      allow create, update: if isSignedIn() && isVerifiedUser() && docId == 'schools' &&
+        isAdmin() &&
+        isValidPublicDirectory(incoming()) &&
+        incoming().updatedAt == request.time;
+      allow delete: if isSignedIn() && isValidId(docId) && isBootstrappedAdmin();
     }
   }
 }

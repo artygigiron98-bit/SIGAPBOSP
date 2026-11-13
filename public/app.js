@@ -2,76 +2,56 @@
         const PAGE = (document.body && document.body.getAttribute("data-page")) || "beranda";
 
         // ============================================================
-        // MODE API:
-        // - Jika dibuka lewat server Node (npm start) → pakai backend lokal (uploads/, data/)
-        // - Jika ingin pakai Google Apps Script → set window.REKON_USE_GAS = true
-        //   dan/atau window.REKON_API_BASE = "https://script.google.com/.../exec"
+        // MODE CLOUD: 100% Firebase Auth + Cloud Firestore + Google Drive
         // ============================================================
-        const USE_NODE_BACKEND = (typeof window.REKON_USE_GAS === "boolean")
-            ? !window.REKON_USE_GAS
-            : (window.location.protocol === "http:" || window.location.protocol === "https:")
-                && window.location.hostname !== ""
-                && window.location.hostname !== "null";
-
-        const NODE_API_BASE = (typeof window.REKON_API_BASE === "string" && window.REKON_API_BASE.trim()
-            && window.REKON_API_BASE.indexOf("script.google.com") === -1)
-            ? window.REKON_API_BASE.trim().replace(/\/$/, "")
-            : (window.location.origin || "http://localhost:3000");
-
-        // URL GAS (hanya dipakai jika USE_NODE_BACKEND = false)
-        const GAS_WEB_APP_URL = (typeof window.REKON_API_BASE === "string" && window.REKON_API_BASE.indexOf("script.google.com") !== -1)
-            ? window.REKON_API_BASE.trim()
-            : "https://script.google.com/macros/s/AKfycbxdGspNfrgKY95DgBZvWIv2j0unWBsmOWJ6ueg4jSnsPPVtz4OopXfPabk9NrEYlBGm/exec";
-
-        function isGasConfigured() {
-            if (USE_NODE_BACKEND) return false; // pakai Node, bukan GAS
-            return typeof GAS_WEB_APP_URL === "string"
-                && GAS_WEB_APP_URL.indexOf("script.google.com") !== -1
-                && GAS_WEB_APP_URL.indexOf("PASTE_DEPLOYMENT_ID") === -1;
+        function appToast(msg, type) {
+            if (typeof window.rkToast === "function") {
+                window.rkToast(msg, type);
+            } else if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.showDriveToast === "function") {
+                window.SigapFirebaseDrive.showDriveToast(String(msg || ""), type || "info");
+            }
         }
-
-        function isNodeBackend() {
-            return !!USE_NODE_BACKEND;
+        async function appConfirm(title, message, danger, confirmText) {
+            if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.showDriveConfirmModal === "function") {
+                return await window.SigapFirebaseDrive.showDriveConfirmModal({
+                    title: title || "Konfirmasi",
+                    message: message || "",
+                    confirmText: confirmText || "Ya, Lanjutkan",
+                    cancelText: "Batal",
+                    danger: !!danger
+                });
+            }
+            return false;
         }
-
-        // Token JWT dari login Node (fallback jika cookie tidak terkirim)
-        let nodeAuthToken = sessionStorage.getItem("rekon_node_token") || "";
+        async function appPrompt(title, message, defaultValue, placeholder) {
+            if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.showDrivePromptModal === "function") {
+                return await window.SigapFirebaseDrive.showDrivePromptModal({
+                    title: title || "Input Data",
+                    message: message || "",
+                    defaultValue: defaultValue || "",
+                    placeholder: placeholder || "",
+                    confirmText: "Simpan",
+                    cancelText: "Batal"
+                });
+            }
+            return null;
+        }
+        function isPrimaryAdmin() {
+            if (!currentUser) return false;
+            if (currentUser.role === "Admin Dinas") return true;
+            return !!(window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.isBootstrappedAdminUser === "function" && window.SigapFirebaseDrive.isBootstrappedAdminUser());
+        }
 
         const months = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agus", "Sep", "Okt", "Nov", "Des"];
         const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-        
+
         let periodType = "bulan"; // "bulan", "triwulan", "semester", "tahun"
         let currentMonth = "Jan";
         let currentTriwulan = "TW1"; // TW1 (Jan-Mar), TW2 (Apr-Jun), TW3 (Jul-Sep), TW4 (Okt-Des)
         let currentSemester = "S1"; // S1 (Jan-Jun), S2 (Jul-Des)
 
-        let defaultBaseSchools = [
-            { no: 1, npsn: "69762652", name: "SDN 1 RATAHAN", alamat: "Ratahan", status: "NEGERI", kecamatan: "RATAHAN", jenjang: "SD" },
-            { no: 2, npsn: "40102206", name: "SDN 2 RATAHAN", alamat: "Ratahan", status: "NEGERI", kecamatan: "RATAHAN", jenjang: "SD" },
-            { no: 3, npsn: "40101881", name: "SDN 1 LIWUTUNG", alamat: "Liwutung", status: "NEGERI", kecamatan: "PASAN", jenjang: "SD" },
-            { no: 4, npsn: "40102145", name: "SDN 2 LIWUTUNG", alamat: "Liwutung", status: "NEGERI", kecamatan: "PASAN", jenjang: "SD" },
-            { no: 5, npsn: "40102202", name: "SDN 3 LIWUTUNG", alamat: "Liwutung", status: "NEGERI", kecamatan: "PASAN", jenjang: "SD" },
-            { no: 6, npsn: "40102150", name: "SDN WIOI", alamat: "Wioi", status: "NEGERI", kecamatan: "RATAHAN TIMUR", jenjang: "SD" },
-            { no: 7, npsn: "40102155", name: "SDN PONIKI", alamat: "Poniki", status: "NEGERI", kecamatan: "PASAN", jenjang: "SD" },
-            { no: 8, npsn: "40102160", name: "SD INPRES TOSURAYA", alamat: "Tosuraya", status: "NEGERI", kecamatan: "RATAHAN", jenjang: "SD" },
-            { no: 9, npsn: "40102165", name: "SD INPRES LOWU", alamat: "Lowu", status: "NEGERI", kecamatan: "RATAHAN TIMUR", jenjang: "SD" },
-            { no: 10, npsn: "40102170", name: "SD INPRES LIWUTUNG 2", alamat: "Liwutung", status: "NEGERI", kecamatan: "PASAN", jenjang: "SD" },
-            { no: 11, npsn: "40102175", name: "SD INPRES LIWUTUNG 1", alamat: "Liwutung", status: "NEGERI", kecamatan: "PASAN", jenjang: "SD" },
-            { no: 12, npsn: "40102180", name: "SD INPRES RASI", alamat: "Rasi", status: "NEGERI", kecamatan: "RATAHAN", jenjang: "SD" },
-            { no: 13, npsn: "40102185", name: "SD INPRES PANGU", alamat: "Pangu", status: "NEGERI", kecamatan: "RATAHAN TIMUR", jenjang: "SD" },
-            { no: 14, npsn: "40102190", name: "SD INPRES WIOI", alamat: "Wioi", status: "NEGERI", kecamatan: "RATAHAN TIMUR", jenjang: "SD" },
-            { no: 15, npsn: "40102210", name: "SMPN 1 RATAHAN", alamat: "Ratahan", status: "NEGERI", kecamatan: "RATAHAN", jenjang: "SMP" },
-            { no: 16, npsn: "40102215", name: "SMPN 2 RATAHAN", alamat: "Ratahan", status: "NEGERI", kecamatan: "RATAHAN", jenjang: "SMP" },
-            { no: 17, npsn: "40102220", name: "SMPN 1 PASAN", alamat: "Pasan", status: "NEGERI", kecamatan: "PASAN", jenjang: "SMP" },
-            { no: 18, npsn: "40102225", name: "SMPN 1 TOMBATU", alamat: "Tombatu", status: "NEGERI", kecamatan: "TOMBATU", jenjang: "SMP" }
-        ];
-
-        let defaultUsersDB = [
-            { name: "Administrator Dinas", username: "admin", password: "admin2024", role: "Admin Dinas", schoolNo: null, npsn: "", status: "Aktif" },
-            { name: "Operator SDN 1 Ratahan", username: "operator", password: "operator2024", role: "Operator Sekolah", schoolNo: 1, npsn: "69762652", status: "Aktif" }
-        ];
-
         let activeYear = parseInt(localStorage.getItem("bosp_activeYear") || "2026", 10) || 2026;
+        window.activeYear = activeYear;
         const AVAILABLE_YEARS = [2024, 2025, 2026, 2027, 2028];
         if (!AVAILABLE_YEARS.includes(activeYear)) activeYear = 2026;
 
@@ -102,43 +82,46 @@
             } catch (e) {}
         }
 
-        function yearKey(base) { return "bosp_y" + activeYear + "_" + base; }
-
-        let baseSchools = JSON.parse(localStorage.getItem("bosp_baseSchools")) || defaultBaseSchools;
-        // Migrasi sekali: data lama tanpa tahun -> tahun 2024
-        if (!localStorage.getItem("bosp_y2024_monthlyData") && localStorage.getItem("bosp_monthlyData")) {
+        // Bersihkan sisa kunci database primer lama dari localStorage
+        (function purgeLegacyPrimaryDbLocalStorage() {
             try {
-                localStorage.setItem("bosp_y2024_monthlyData", localStorage.getItem("bosp_monthlyData"));
-                if (localStorage.getItem("bosp_sp2bKab") && !localStorage.getItem("bosp_y2024_sp2bKab")) {
-                    localStorage.setItem("bosp_y2024_sp2bKab", localStorage.getItem("bosp_sp2bKab"));
+                ["bosp_baseSchools", "bosp_usersDB", "bosp_currentUser", "bosp_monthlyData", "bosp_sp2bKab"].forEach(k => localStorage.removeItem(k));
+                for (let i = localStorage.length - 1; i >= 0; i--) {
+                    const k = localStorage.key(i);
+                    if (k && /^bosp_y\d+_(monthlyData|sp2bKab)$/.test(k)) localStorage.removeItem(k);
                 }
             } catch (e) {}
-        }
-        let monthlyData = JSON.parse(localStorage.getItem(yearKey("monthlyData"))) || {};
-        let usersDB = JSON.parse(localStorage.getItem("bosp_usersDB")) || defaultUsersDB;
-        let currentUser = JSON.parse(localStorage.getItem("bosp_currentUser")) || null;
+        })();
 
-        if (Object.keys(monthlyData).length === 0) {
+        let baseSchools = [];
+        let monthlyData = {};
+        let usersDB = [];
+        let currentUser = null;
+        let sp2bKabCache = { last: {}, records: {} };
+
+        function ensureEmptyMonthlySkeleton() {
             baseSchools.forEach(s => {
-                monthlyData[s.no] = {};
+                if (!monthlyData[s.no]) monthlyData[s.no] = {};
                 months.forEach(m => {
-                    monthlyData[s.no][m] = {
-                        saldoAwalCustom: m === "Jan" ? 0 : null,
-                        saldoReguler: m === "Jan" ? 0 : null,
-                        saldoKinerja: m === "Jan" ? 0 : null,
-                        saldoNonBOS: m === "Jan" ? 0 : null,
-                        pendapatan: { reguler: 0, kinerja: 0, jagirMasuk: 0, setoranTunai: 0, lebihTransferMasuk: 0 },
-                        belanja: { pegawai: 0, barjasReg: 0, barjasKin: 0, pm: 0, pmKin: 0, atl: 0, atlKin: 0, jagirKeluar: 0, lebihTransferKeluar: 0 },
-                        documents: {
-                            rekeningKoran: { url: "", checked: false },
-                            bku: { url: "", checked: false },
-                            rekapanBelanja: { url: "", checked: false },
-                            lra: { url: "", checked: false },
-                            bukuPajak: { url: "", checked: false },
-                            sptjm: { url: "", checked: false }
-                        },
-                        verifStatus: "Draft"
-                    };
+                    if (!monthlyData[s.no][m]) {
+                        monthlyData[s.no][m] = {
+                            saldoAwalCustom: m === "Jan" ? 0 : null,
+                            saldoReguler: m === "Jan" ? 0 : null,
+                            saldoKinerja: m === "Jan" ? 0 : null,
+                            saldoNonBOS: m === "Jan" ? 0 : null,
+                            pendapatan: { reguler: 0, kinerja: 0, jagirMasuk: 0, setoranTunai: 0, lebihTransferMasuk: 0 },
+                            belanja: { pegawai: 0, barjasReg: 0, barjasKin: 0, pm: 0, pmKin: 0, atl: 0, atlKin: 0, jagirKeluar: 0, lebihTransferKeluar: 0 },
+                            documents: {
+                                rekeningKoran: { url: "", checked: false },
+                                bku: { url: "", checked: false },
+                                rekapanBelanja: { url: "", checked: false },
+                                lra: { url: "", checked: false },
+                                bukuPajak: { url: "", checked: false },
+                                sptjm: { url: "", checked: false }
+                            },
+                            verifStatus: "Draft"
+                        };
+                    }
                 });
             });
         }
@@ -196,12 +179,9 @@
             baseSchools = baseSchools.map(normalizeSchool);
             usersDB = usersDB.map(normalizeUser);
             if (currentUser) {
-                const fresh = usersDB.find(x => String(x.username).toLowerCase() === String(currentUser.username).toLowerCase());
+                const fresh = usersDB.find(x => (x.uid && currentUser.uid && x.uid === currentUser.uid) || String(x.email || x.username || "").toLowerCase() === String(currentUser.email || currentUser.username || "").toLowerCase());
                 currentUser = normalizeUser({ ...currentUser, ...(fresh || {}) });
             }
-            localStorage.setItem("bosp_baseSchools", JSON.stringify(baseSchools));
-            localStorage.setItem("bosp_usersDB", JSON.stringify(usersDB));
-            localStorage.setItem("bosp_currentUser", JSON.stringify(currentUser));
         }
 
         function mapSheetUser(raw) {
@@ -224,351 +204,170 @@
             const loader = document.getElementById("syncLoadingOverlay");
             if (loader) loader.classList.remove("hidden");
             try {
-                // ===== MODE FIREBASE FIRESTORE + NODE: Baca langsung dari Firebase Firestore =====
-                if (isNodeBackend()) {
-                    const headers = {};
-                    if (nodeAuthToken) headers["Authorization"] = "Bearer " + nodeAuthToken;
-                    try {
-                        const response = await fetch(NODE_API_BASE + "/api/data?year=" + encodeURIComponent(activeYear), {
-                            method: "GET",
-                            credentials: "include",
-                            headers: headers,
-                            cache: "no-store"
-                        });
-                        if (response.ok) {
-                            const result = await response.json();
-                            if (result.status === "success") {
-                                if (result.schools && result.schools.length > 0) baseSchools = result.schools.map(normalizeSchool);
-                                if (result.monthlyData && Object.keys(result.monthlyData).length > 0) {
-                                    monthlyData = result.monthlyData;
-                                }
-                                if (Array.isArray(result.users) && result.users.length > 0) {
-                                    usersDB = result.users.map(u => normalizeUser({ ...u, password: u.password || "" }));
-                                }
-                            }
-                        }
-                    } catch (nodeErr) {
-                        console.warn("Fallback server Node:", nodeErr);
-                    }
-
-                    // Baca langsung dari Cloud Firestore sebagai Sumber Utama (Source of Truth)
-                    if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.loadAllDataFromFirestore === "function") {
-                        try {
-                            const fbBundle = await window.SigapFirebaseDrive.loadAllDataFromFirestore(activeYear);
-                            if (fbBundle) {
-                                if (Array.isArray(fbBundle.schools) && fbBundle.schools.length > 0) {
-                                    baseSchools = fbBundle.schools.map(normalizeSchool);
-                                }
-                                if (Array.isArray(fbBundle.users) && fbBundle.users.length > 0) {
-                                    const localMap = new Map(usersDB.map(u => [String(u.username).toLowerCase(), u]));
-                                    fbBundle.users.forEach(fu => {
-                                        if (!fu || !fu.username) return;
-                                        const key = String(fu.username).toLowerCase();
-                                        const prev = localMap.get(key) || {};
-                                        localMap.set(key, normalizeUser({ ...prev, ...fu, password: prev.password || "" }));
-                                    });
-                                    usersDB = Array.from(localMap.values());
-                                }
-                                if (fbBundle.monthlyData && typeof fbBundle.monthlyData === "object") {
-                                    Object.keys(fbBundle.monthlyData).forEach(no => {
-                                        if (!monthlyData[no]) monthlyData[no] = {};
-                                        Object.keys(fbBundle.monthlyData[no] || {}).forEach(m => {
-                                            monthlyData[no][m] = Object.assign({}, monthlyData[no][m] || {}, fbBundle.monthlyData[no][m]);
-                                        });
-                                    });
-                                }
-                                if (fbBundle.sp2bKab && (Object.keys(fbBundle.sp2bKab.records || {}).length > 0 || Object.keys(fbBundle.sp2bKab.last || {}).length > 0)) {
-                                    try { localStorage.setItem(yearKey("sp2bKab"), JSON.stringify(fbBundle.sp2bKab)); } catch (_) {}
-                                }
-                            }
-                        } catch (fbErr) {
-                            console.warn("Gagal sinkron baca dari Firestore:", fbErr);
-                        }
-                    }
-
-                    localStorage.setItem("bosp_baseSchools", JSON.stringify(baseSchools));
-                    localStorage.setItem(yearKey("monthlyData"), JSON.stringify(monthlyData));
-                    localStorage.setItem("bosp_usersDB", JSON.stringify(usersDB));
-                    localStorage.setItem("bosp_activeYear", String(activeYear));
-                    console.log("Data dimuat langsung dari Firebase Firestore, tahun:", activeYear);
+                if (!window.SigapFirebaseDrive || typeof window.SigapFirebaseDrive.loadAllDataFromFirestore !== "function") {
+                    console.warn("SigapFirebaseDrive belum siap.");
                     return;
                 }
-
-                if (!isGasConfigured()) {
-                    console.warn("GAS belum dikonfigurasi. Menggunakan data lokal.");
-                    return;
+                await window.SigapFirebaseDrive.whenReady();
+                const fbBundle = await window.SigapFirebaseDrive.loadAllDataFromFirestore(activeYear);
+                if (fbBundle) {
+                    baseSchools = Array.isArray(fbBundle.schools) ? fbBundle.schools.map(normalizeSchool) : [];
+                    usersDB = Array.isArray(fbBundle.users) ? fbBundle.users.map(normalizeUser) : [];
+                    monthlyData = (fbBundle.monthlyData && typeof fbBundle.monthlyData === "object") ? fbBundle.monthlyData : {};
+                    sp2bKabCache = (fbBundle.sp2bKab && typeof fbBundle.sp2bKab === "object")
+                        ? { last: fbBundle.sp2bKab.last || {}, records: fbBundle.sp2bKab.records || {} }
+                        : { last: {}, records: {} };
                 }
-                const response = await fetch(GAS_WEB_APP_URL + "?action=getData", {
-                    method: "GET",
-                    redirect: "follow"
-                });
-                const result = await response.json();
-                if (result.status === "success") {
-                    if (result.schools && result.schools.length > 0) baseSchools = result.schools;
-                    if (result.monthlyData && Object.keys(result.monthlyData).length > 0) {
-                        monthlyData = result.monthlyData;
-                    }
-                    if (Array.isArray(result.users) && result.users.length > 0) {
-                        const localUsers = JSON.parse(localStorage.getItem("bosp_usersDB") || "[]");
-                        const localMap = new Map();
-                        localUsers.forEach(u => { if (u && u.username) localMap.set(String(u.username).toLowerCase(), u); });
-                        const mergedUsers = new Map();
-                        result.users.map(mapSheetUser).filter(u => u.username).forEach(u => {
-                            const loc = localMap.get(u.username.toLowerCase()) || {};
-                            const merged = { ...u };
-                            ["npsn", "schoolNo", "role", "name", "whatsapp"].forEach(k => { if (isEmptyVal(merged[k]) && !isEmptyVal(loc[k])) merged[k] = loc[k]; });
-                            mergedUsers.set(u.username.toLowerCase(), merged);
-                        });
-                        usersDB = Array.from(mergedUsers.values());
-                    }
-                    baseSchools = baseSchools.map(normalizeSchool);
-                    usersDB = usersDB.map(normalizeUser);
-                    localStorage.setItem("bosp_baseSchools", JSON.stringify(baseSchools));
-                    localStorage.setItem(yearKey("monthlyData"), JSON.stringify(monthlyData));
-                    localStorage.setItem("bosp_usersDB", JSON.stringify(usersDB));
-                    localStorage.setItem("bosp_activeYear", String(activeYear));
-                } else {
-                    console.warn("Respons GAS tidak sukses:", result.message || result);
-                }
+                ensureEmptyMonthlySkeleton();
+                try { localStorage.setItem("bosp_activeYear", String(activeYear)); } catch (_) {}
             } catch (err) {
-                console.warn("Gagal terhubung ke server, menggunakan data lokal.", err);
+                console.warn("Gagal membaca data dari Firebase Firestore:", err);
+                appToast("Gagal memuat data dari Firebase Firestore: " + err.message, "err");
             } finally {
                 if (loader) loader.classList.add("hidden");
             }
         }
 
         async function saveToLocalStorage(onlySchoolNo) {
-            localStorage.setItem("bosp_baseSchools", JSON.stringify(baseSchools));
-            localStorage.setItem(yearKey("monthlyData"), JSON.stringify(monthlyData));
-            localStorage.setItem("bosp_usersDB", JSON.stringify(usersDB));
-            localStorage.setItem("bosp_currentUser", JSON.stringify(currentUser));
-            localStorage.setItem("bosp_activeYear", String(activeYear));
-
-            // Sinkron ke server Node ATAU Google Apps Script
-            if (isNodeBackend() || isGasConfigured()) {
-                try {
-                    let payload;
-                    if (Array.isArray(onlySchoolNo)) {
-                        const part = {};
-                        onlySchoolNo.forEach(n => { part[n] = monthlyData[n] || {}; });
-                        payload = { action: "saveAll", year: activeYear, partial: true, monthlyData: part };
-                    } else if (typeof onlySchoolNo === "number" || typeof onlySchoolNo === "string") {
-                        payload = {
-                            action: "saveAll",
-                            year: activeYear,
-                            partial: true,
-                            monthlyData: { [onlySchoolNo]: monthlyData[onlySchoolNo] || {} }
-                        };
-                    } else if (currentUser && currentUser.role === "Operator Sekolah") {
-                        const sch = findSchoolForUser(currentUser);
-                        payload = sch ? {
-                            action: "saveAll",
-                            year: activeYear,
-                            partial: true,
-                            monthlyData: { [sch.no]: monthlyData[sch.no] || {} }
-                        } : null;
-                    } else {
-                        payload = {
-                            action: "saveAll",
-                            year: activeYear,
-                            schools: baseSchools,
-                            monthlyData: monthlyData,
-                            users: isNodeBackend() ? undefined : usersDB
-                        };
-                    }
-                    if (payload) {
-                        await gasPost(payload);
-                        if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.syncSavePayloadToFirestore === "function") {
-                            try {
-                                await window.SigapFirebaseDrive.syncSavePayloadToFirestore(payload, currentUser);
-                                await window.SigapFirebaseDrive.logAuditToFirestore("save_data", { year: activeYear, partial: !!payload.partial }, currentUser);
-                            } catch (fbErr) {
-                                console.warn("Sinkronisasi ke Firebase Firestore tertunda:", fbErr);
-                            }
-                        }
-                        console.log("Data tersimpan ke server & Firebase Firestore, tahun:", activeYear);
-                    }
-                } catch (err) {
-                    console.error("Gagal menyinkronkan data ke server:", err);
-                    // Jangan alert di sini agar tidak mengganggu UX; cek di Network tab jika perlu
-                }
+            try { localStorage.setItem("bosp_activeYear", String(activeYear)); } catch (_) {}
+            if (!window.SigapFirebaseDrive || typeof window.SigapFirebaseDrive.syncSavePayloadToFirestore !== "function") {
+                return;
             }
-        }
-
-        let gasReady = false;
-        async function ensureServerReady() {
-            if (isNodeBackend()) {
-                try {
-                    const r = await fetch(NODE_API_BASE + "/api/health", { cache: "no-store", credentials: "include" });
-                    const j = await r.json();
-                    gasReady = !!(j && j.status === "ok");
-                    return gasReady;
-                } catch (e) {
-                    console.warn("Node backend health gagal:", e);
-                    gasReady = false;
-                    return false;
-                }
-            }
-            if (gasReady) return true;
-            if (!isGasConfigured()) return false;
             try {
-                const r = await fetch(GAS_WEB_APP_URL + "?action=ping&_=" + Date.now(), {
-                    method: "GET",
-                    redirect: "follow",
-                    cache: "no-store"
-                });
-                const j = await r.json();
-                gasReady = !!(j && (j.version || j.status === "success"));
-            } catch (e) {
-                console.warn("ensureServerReady gagal:", e);
-                gasReady = false;
+                let payload = null;
+                if (Array.isArray(onlySchoolNo)) {
+                    const part = {};
+                    onlySchoolNo.forEach(n => { part[n] = monthlyData[n] || {}; });
+                    payload = { action: "saveAll", year: activeYear, partial: true, monthlyData: part };
+                } else if (typeof onlySchoolNo === "number" || typeof onlySchoolNo === "string") {
+                    payload = {
+                        action: "saveAll",
+                        year: activeYear,
+                        partial: true,
+                        monthlyData: { [onlySchoolNo]: monthlyData[onlySchoolNo] || {} }
+                    };
+                } else if (currentUser && currentUser.role === "Operator Sekolah") {
+                    const sch = findSchoolForUser(currentUser);
+                    payload = sch ? {
+                        action: "saveAll",
+                        year: activeYear,
+                        partial: true,
+                        monthlyData: { [sch.no]: monthlyData[sch.no] || {} }
+                    } : null;
+                } else {
+                    payload = {
+                        action: "saveAll",
+                        year: activeYear,
+                        schools: baseSchools,
+                        monthlyData: monthlyData
+                    };
+                }
+                if (payload) {
+                    await window.SigapFirebaseDrive.syncSavePayloadToFirestore(payload, currentUser);
+                    await window.SigapFirebaseDrive.logAuditToFirestore("save_data", { year: activeYear, partial: !!payload.partial }, currentUser);
+                }
+            } catch (fbErr) {
+                console.error("Gagal menyimpan data ke Firebase Firestore:", fbErr);
+                appToast("Gagal menyimpan data ke Firebase Firestore: " + fbErr.message, "err");
+                throw fbErr;
             }
-            return gasReady;
         }
 
-        function nodeHeaders(extra) {
-            const h = Object.assign({ "Content-Type": "application/json" }, extra || {});
-            if (nodeAuthToken) h["Authorization"] = "Bearer " + nodeAuthToken;
-            return h;
-        }
-
-        // POST: Langsung ke Firebase Firestore & Google Drive (dengan sinkronisasi session Node)
-        async function gasPost(payload) {
-            // ===== MODE FIREBASE FIRESTORE + GOOGLE DRIVE =====
-            if (isNodeBackend()) {
-                const action = payload && payload.action;
-                let url = NODE_API_BASE + "/api/save";
-                if (action === "uploadFile") {
-                    url = NODE_API_BASE + "/api/upload";
-                    if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.uploadPdfToGoogleDrive === "function") {
-                        const gdriveResult = await window.SigapFirebaseDrive.uploadPdfToGoogleDrive(
-                            payload.fileObj || payload.fileData,
-                            {
-                                schoolNo: payload.schoolNo,
-                                schoolName: payload.schoolName,
-                                npsn: payload.npsn,
-                                month: payload.month,
-                                periodKey: payload.month,
-                                year: payload.year,
-                                docType: payload.docType,
-                                fileName: payload.fileName,
-                                existingDriveFileId: payload.existingDriveFileId || ""
-                            }
-                        );
-                        if (gdriveResult && gdriveResult.fileUrl) {
-                            // Catat juga audit ke server tanpa mengirim ulang biner PDF besar
-                            try {
-                                await fetch(url, {
-                                    method: "POST",
-                                    headers: nodeHeaders(),
-                                    body: JSON.stringify({
-                                        schoolNo: payload.schoolNo,
-                                        driveUrl: gdriveResult.fileUrl,
-                                        driveFileId: gdriveResult.driveFileId,
-                                        fileName: gdriveResult.fileName
-                                    }),
-                                    credentials: "include",
-                                    cache: "no-store"
-                                });
-                            } catch (_) {}
-                            return gdriveResult;
-                        }
-                    }
-                } else if (action === "saveAll") {
-                    url = NODE_API_BASE + "/api/save";
-                }
-
-                const resp = await fetch(url, {
-                    method: "POST",
-                    headers: nodeHeaders(),
-                    body: JSON.stringify(payload),
-                    credentials: "include",
-                    cache: "no-store"
-                });
-                const text = await resp.text();
-                let json;
-                try { json = JSON.parse(text); } catch (e) {
-                    throw new Error("Respons Node bukan JSON. Status " + resp.status + ". " + String(text).slice(0, 180));
-                }
-                if (resp.status === 401) {
-                    throw new Error(json.message || "Belum login ke server Node. Silakan login ulang.");
-                }
-                if (!resp.ok && json.status !== "success") {
-                    throw new Error(json.message || ("HTTP " + resp.status));
-                }
-                return json;
+        async function applyAuthenticatedSession(sessionUser, selectedYear) {
+            if (!sessionUser || sessionUser.status !== "Aktif") return;
+            if (selectedYear && AVAILABLE_YEARS.includes(Number(selectedYear))) {
+                activeYear = Number(selectedYear);
+                window.activeYear = activeYear;
+                try { localStorage.setItem("bosp_activeYear", String(activeYear)); } catch (_) {}
+                restorePeriodState();
+            }
+            currentUser = normalizeUser(sessionUser);
+            await loadFromGoogleSheets();
+            repairUserData();
+            if (cleanSimulatedLinks()) {
+                try { await saveToLocalStorage(); } catch (_) {}
             }
 
-            // ===== MODE GOOGLE APPS SCRIPT (lama) =====
-            if (!isGasConfigured()) throw new Error("URL Google Apps Script belum dikonfigurasi.");
-            if (payload && typeof payload === "object" && !payload.auth && currentUser) {
-                payload.auth = { username: currentUser.username, password: currentUser.password };
-            }
-            const resp = await fetch(GAS_WEB_APP_URL, {
-                method: "POST",
-                headers: { "Content-Type": "text/plain;charset=utf-8" },
-                body: JSON.stringify(payload),
-                redirect: "follow",
-                cache: "no-store"
-            });
-            const text = await resp.text();
-            let json;
-            try { json = JSON.parse(text); } catch (e) {
-                throw new Error("Respons server bukan JSON. Status HTTP " + resp.status + ". Cuplikan: " + String(text).slice(0, 180));
-            }
-            return json;
-        }
-
-        function fileToBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = error => reject(error);
-            });
+            try { closeAuthModal(); } catch (_) {}
+            const lp = document.getElementById("landingPage");
+            const appBox = document.getElementById("mainAppContainer");
+            if (lp) lp.classList.add("hidden");
+            if (appBox) appBox.classList.remove("hidden");
+            if (typeof initSidebarState === "function") initSidebarState();
+            if (typeof renderSidebarMenu === "function") renderSidebarMenu();
+            initAppDashboard();
+            startIdleWatch();
         }
 
         document.addEventListener("DOMContentLoaded", async () => {
             if (PAGE === "beranda") { try { initPublicRankControls(); } catch (e) {} }
-            // Halaman selain Beranda wajib punya sesi; tanpa sesi kembali ke Beranda (halaman login)
-            if (PAGE !== "beranda" && !currentUser) { window.location.replace("/"); return; }
-            await loadFromGoogleSheets();
-            if (PAGE === "beranda") { try { renderPublicRank(); } catch (e) {} }
-            repairUserData();
-            if (cleanSimulatedLinks()) saveToLocalStorage();
+            const loader = document.getElementById("syncLoadingOverlay");
+            if (loader) loader.classList.remove("hidden");
+
+            try {
+                if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.whenReady === "function") {
+                    await window.SigapFirebaseDrive.whenReady();
+                }
+            } catch (e) {
+                console.warn("Firebase init:", e);
+            }
+
+            let sessionUser = null;
+            try {
+                if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.resolveCurrentUserSession === "function") {
+                    sessionUser = await window.SigapFirebaseDrive.resolveCurrentUserSession();
+                }
+            } catch (e) {
+                console.warn("Resolve session:", e);
+            }
+
+            if (loader) loader.classList.add("hidden");
 
             // Pesan keluar otomatis (idle) dari halaman lain
             try {
                 const m = sessionStorage.getItem("rekon_logout_msg");
-                if (m) { sessionStorage.removeItem("rekon_logout_msg"); setTimeout(() => alert(m), 300); }
+                if (m) { sessionStorage.removeItem("rekon_logout_msg"); setTimeout(() => appToast(m, "info"), 300); }
             } catch (e) {}
 
-            const lp = document.getElementById("landingPage");
-            const appBox = document.getElementById("mainAppContainer");
-            if (currentUser) {
-                if (lp) lp.classList.add("hidden");
-                appBox.classList.remove("hidden");
-                if (typeof initSidebarState === "function") initSidebarState();
-                if (typeof renderSidebarMenu === "function") renderSidebarMenu();
-                initAppDashboard();
-                startIdleWatch();
-            } else {
+            if (sessionUser && sessionUser.status === "Aktif") {
+                await applyAuthenticatedSession(sessionUser, activeYear);
+            } else if (sessionUser && sessionUser.status === "Pending") {
+                if (PAGE !== "beranda") { window.location.replace("/"); return; }
+                const lp = document.getElementById("landingPage");
+                const appBox = document.getElementById("mainAppContainer");
                 if (lp) lp.classList.remove("hidden");
-                appBox.classList.add("hidden");
+                if (appBox) appBox.classList.add("hidden");
+                await loadPublicDirectory();
+                try { renderPublicRank(); } catch (e) {}
+                openAuthModal();
+                openPendingProfileBox(sessionUser);
+            } else {
+                if (PAGE !== "beranda") { window.location.replace("/"); return; }
+                const lp = document.getElementById("landingPage");
+                const appBox = document.getElementById("mainAppContainer");
+                if (lp) lp.classList.remove("hidden");
+                if (appBox) appBox.classList.add("hidden");
+                await loadPublicDirectory();
+                try { renderPublicRank(); } catch (e) {}
             }
         });
 
-        function togglePasswordVisibility(inputId, iconId) {
-            const input = document.getElementById(inputId);
-            const icon = document.getElementById(iconId);
-            if (input.type === "password") {
-                input.type = "text";
-                icon.className = "fa-solid fa-eye-slash";
-            } else {
-                input.type = "password";
-                icon.className = "fa-solid fa-eye";
+        window.addEventListener("sigap-app-authenticated", async (e) => {
+            const detail = (e && e.detail) || {};
+            if (detail.user && detail.user.status === "Aktif") {
+                await applyAuthenticatedSession(detail.user, detail.selectedYear);
+                appToast("Selamat datang, " + (detail.user.name || detail.user.email) + "! (TA " + activeYear + ")", "ok");
             }
-        }
+        });
+
+        window.addEventListener("sigap-pending-profile", async (e) => {
+            const detail = (e && e.detail) || {};
+            if (PAGE === "beranda") {
+                await loadPublicDirectory();
+                openAuthModal();
+                openPendingProfileBox(detail.user || null);
+            }
+        });
 
         function checkAuthSession() {
             if (!currentUser) return;
@@ -595,49 +394,51 @@
             if (currentUser.role === "Admin Dinas") {
                 adminContainer.classList.remove("hidden");
                 operatorContainer.classList.add("hidden");
-                if(adminVerificationControls) adminVerificationControls.classList.remove("hidden");
-                if(detailCetakSP2BBtn) detailCetakSP2BBtn.classList.remove("hidden");
-                if(cardTotalSekolahWrapper) cardTotalSekolahWrapper.classList.remove("hidden");
-                if(kpiCardsContainer) kpiCardsContainer.className = "kpi-grid";
-                if(filterSectionContainer) filterSectionContainer.classList.remove("hidden");
-                if(chartsSectionContainer) chartsSectionContainer.classList.remove("hidden");
-                if(navDashboardBtn) navDashboardBtn.classList.remove("hidden");
-                if(tableTitleText) tableTitleText.textContent = "Daftar Rekonsiliasi Satuan Pendidikan";
-                
-                if(currentUser.username === "admin") {
-                    if(changePassBtn) changePassBtn.classList.remove("hidden");
-                } else {
-                    if(changePassBtn) changePassBtn.classList.add("hidden");
-                }
+                if (adminVerificationControls) adminVerificationControls.classList.remove("hidden");
+                if (detailCetakSP2BBtn) detailCetakSP2BBtn.classList.remove("hidden");
+                if (cardTotalSekolahWrapper) cardTotalSekolahWrapper.classList.remove("hidden");
+                if (kpiCardsContainer) kpiCardsContainer.className = "kpi-grid";
+                if (filterSectionContainer) filterSectionContainer.classList.remove("hidden");
+                if (chartsSectionContainer) chartsSectionContainer.classList.remove("hidden");
+                if (navDashboardBtn) navDashboardBtn.classList.remove("hidden");
+                if (tableTitleText) tableTitleText.textContent = "Daftar Rekonsiliasi Satuan Pendidikan";
+                if (changePassBtn) changePassBtn.classList.add("hidden");
             } else {
                 adminContainer.classList.add("hidden");
                 operatorContainer.classList.remove("hidden");
-                if(adminVerificationControls) adminVerificationControls.classList.add("hidden");
-                if(detailCetakSP2BBtn) detailCetakSP2BBtn.classList.add("hidden");
-                if(changePassBtn) changePassBtn.classList.add("hidden");
-                
-                if(cardTotalSekolahWrapper) cardTotalSekolahWrapper.classList.add("hidden");
-                if(kpiCardsContainer) kpiCardsContainer.className = "kpi-grid";
-                if(filterSectionContainer) filterSectionContainer.classList.add("hidden");
-                if(chartsSectionContainer) chartsSectionContainer.classList.add("hidden");
-                if(navDashboardBtn) navDashboardBtn.classList.add("hidden");
-                if(tableTitleText) tableTitleText.textContent = "Data Realisasi Rekonsiliasi Sekolah Anda";
+                if (adminVerificationControls) adminVerificationControls.classList.add("hidden");
+                if (detailCetakSP2BBtn) detailCetakSP2BBtn.classList.add("hidden");
+                if (changePassBtn) changePassBtn.classList.add("hidden");
+
+                if (cardTotalSekolahWrapper) cardTotalSekolahWrapper.classList.add("hidden");
+                if (kpiCardsContainer) kpiCardsContainer.className = "kpi-grid";
+                if (filterSectionContainer) filterSectionContainer.classList.add("hidden");
+                if (chartsSectionContainer) chartsSectionContainer.classList.add("hidden");
+                if (navDashboardBtn) navDashboardBtn.classList.add("hidden");
+                if (tableTitleText) tableTitleText.textContent = "Data Realisasi Rekonsiliasi Sekolah Anda";
             }
         }
 
-        function openAuthModal(forceTab) {
-            if (forceTab === "register") switchAuthTab("register");
-            else switchAuthTab("login");
-            document.getElementById("regNpsnInput").value = "";
-            document.getElementById("npsnResultInfo").innerHTML = "Masukkan NPSN yang terdaftar di Data Master Sekolah.";
-            document.getElementById("npsnResultInfo").className = "mt-1 text-[11px] text-slate-500 italic";
+        function openAuthModal() {
+            const googleBox = document.getElementById("googleAuthBox");
+            const pendingBox = document.getElementById("pendingProfileBox");
+            const title = document.getElementById("authTitle");
+            if (googleBox) googleBox.classList.remove("hidden");
+            if (pendingBox) pendingBox.classList.add("hidden");
+            if (title) title.textContent = "Masuk / Daftar SIGAP-BOSP";
             const ySel = document.getElementById("loginYearSelect");
             if (ySel) ySel.value = String(activeYear);
-            document.getElementById("authModal").classList.remove("hidden");
+            if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.clearGoogleAuthFeedback === "function") {
+                window.SigapFirebaseDrive.clearGoogleAuthFeedback();
+            }
+            const authModal = document.getElementById("authModal");
+            if (authModal) authModal.classList.remove("hidden");
+            loadPublicDirectory();
         }
 
         function closeAuthModal() {
-            document.getElementById("authModal").classList.add("hidden");
+            const authModal = document.getElementById("authModal");
+            if (authModal) authModal.classList.add("hidden");
         }
 
         async function handleLogout(options) {
@@ -645,45 +446,28 @@
             const silent = !!opts.silent;
             const reason = opts.reason || "";
 
-            // Simpan state lokal terakhir (tanpa memicu async network race setelah sign-out)
             try { waFlush(); } catch (e) { console.warn(e); }
-            try {
-                localStorage.setItem("bosp_baseSchools", JSON.stringify(baseSchools));
-                localStorage.setItem(yearKey("monthlyData"), JSON.stringify(monthlyData));
-                localStorage.setItem("bosp_usersDB", JSON.stringify(usersDB));
-                localStorage.setItem("bosp_activeYear", String(activeYear));
-            } catch (e) { console.warn(e); }
+            try { localStorage.setItem("bosp_activeYear", String(activeYear)); } catch (e) {}
 
-            // Hapus sesi di server Node & Firebase Auth
-            const prevToken = nodeAuthToken;
             stopIdleWatch();
             currentUser = null;
-            nodeAuthToken = "";
-            try {
-                localStorage.removeItem("bosp_currentUser");
-                sessionStorage.removeItem("rekon_node_token");
-            } catch (e) {}
+            baseSchools = [];
+            monthlyData = {};
+            usersDB = [];
+            sp2bKabCache = { last: {}, records: {} };
+            try { sessionStorage.removeItem("rekon_node_token"); } catch (e) {}
 
-            if (isNodeBackend()) {
-                try {
-                    const hdrs = { "Content-Type": "application/json" };
-                    if (prevToken) hdrs["Authorization"] = "Bearer " + prevToken;
-                    await fetch(NODE_API_BASE + "/api/logout", {
-                        method: "POST",
-                        credentials: "include",
-                        headers: hdrs
-                    });
-                } catch (e) {}
-            }
+            try {
+                await fetch("/api/logout", { method: "POST", credentials: "include" });
+            } catch (e) {}
 
             if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.signOutFirebase === "function") {
                 try { await window.SigapFirebaseDrive.signOutFirebase(); } catch (e) {}
             }
 
             document.body.classList.remove("kb-printing");
-            // Tutup semua modal / pratinjau yang mungkin masih terbuka
             ["authModal", "inputModal", "detailModal", "sp2bModal", "masterModal", "userListModal",
-             "waLogModal", "changePasswordModal", "kecamatanModal", "sp2bAnnualModal", "schoolDashboardModal", "sp2bKabModal",
+             "waLogModal", "kecamatanModal", "sp2bAnnualModal", "schoolDashboardModal", "sp2bKabModal",
              "profileModal", "rekapSekolahModal", "rankModal", "bulkVerifModal", "nilaiModal", "auditLogModal"
             ].forEach(id => {
                 const el = document.getElementById(id);
@@ -702,21 +486,20 @@
             const lpOut = document.getElementById("landingPage");
             if (lpOut) {
                 lpOut.classList.remove("hidden");
-                // Pastikan semua elemen animasi landing page terlihat penuh
                 document.querySelectorAll("#landingPage .rv").forEach(el => el.classList.add("in"));
+                await loadPublicDirectory();
                 try { if (typeof renderPublicRank === "function") renderPublicRank(); } catch (e) {}
                 window.scrollTo({ top: 0, behavior: "smooth" });
             } else {
-                // Halaman Realisasi Belanja: kembali ke Beranda (halaman login)
                 try { if (silent && reason) sessionStorage.setItem("rekon_logout_msg", reason); } catch (e) {}
                 window.location.replace("/");
                 return;
             }
 
             if (silent && reason) {
-                alert(reason);
+                appToast(reason, "info");
             } else {
-                alert("Anda telah berhasil keluar dari sesi.");
+                appToast("Anda telah berhasil keluar dari sesi.", "info");
             }
         }
 
@@ -881,7 +664,6 @@
         const OPEN_ACTIONS = {
             master: () => openMasterModal(),
             users: () => openUserListModal(),
-            password: () => openChangePasswordModal(),
             wa: () => openWaLogModal(),
             audit: () => openAuditLogModal(),
             backup: () => downloadBackup(),
@@ -921,97 +703,28 @@
             window.print();
         }
 
-        async function resetUserPassword(username) {
-            if (!currentUser || currentUser.role !== "Admin Dinas") {
-                alert("Akses ditolak.");
-                return;
-            }
-            const custom = prompt(
-                'Reset password untuk akun "' + username + '".\\n\\n' +
-                "Kosongkan untuk memakai password default:\\n" +
-                "• admin → admin2024\\n• user lain → password123\\n\\n" +
-                "Atau ketik password baru (min. 6 karakter):",
-                ""
-            );
-            if (custom === null) return;
-            const body = custom.trim() ? { password: custom.trim() } : {};
-            try {
-                const resp = await fetch(NODE_API_BASE + "/api/users/" + encodeURIComponent(username) + "/reset-password", {
-                    method: "POST",
-                    credentials: "include",
-                    headers: typeof nodeHeaders === "function" ? nodeHeaders() : { "Content-Type": "application/json" },
-                    body: JSON.stringify(body)
-                });
-                const j = await resp.json();
-                if (!resp.ok || j.status !== "success") {
-                    alert(j.message || "Gagal reset password");
-                    return;
-                }
-                alert("✅ " + j.message + "\\n\\nPassword sementara: " + j.temporaryPassword + "\\n\\nMinta user segera mengganti password setelah login.");
-                if (typeof openUserListModal === "function") openUserListModal();
-            } catch (e) {
-                alert("Gagal menghubungi server: " + e.message);
-            }
-        }
-
-
         window.addEventListener("click", function(e) {
             if (!e.target.closest("button") && !e.target.closest("#adminDropdown")) {
                 closeAdminMenu();
             }
         });
 
-        function switchAuthTab(tab) {
-            const loginBtn = document.getElementById("tabLoginBtn");
-            const regBtn = document.getElementById("tabRegisterBtn");
-            const formLogin = document.getElementById("formLogin");
-            const formRegister = document.getElementById("formRegister");
-            const title = document.getElementById("authTitle");
-            if (tab === "register") {
-                if (loginBtn) loginBtn.classList.remove("on");
-                if (regBtn) regBtn.classList.add("on");
-                if (formLogin) formLogin.classList.add("hidden");
-                if (formRegister) formRegister.classList.remove("hidden");
-                if (title) title.textContent = "Daftar Akun SIGAP-BOSP";
-                // Muat master sekolah dari server agar cek NPSN akurat di laptop lain
-                loadPublicSchoolsForRegister();
-            } else {
-                if (regBtn) regBtn.classList.remove("on");
-                if (loginBtn) loginBtn.classList.add("on");
-                if (formRegister) formRegister.classList.add("hidden");
-                if (formLogin) formLogin.classList.remove("hidden");
-                if (title) title.textContent = "Masuk SIGAP-BOSP";
-            }
-        }
-
-        async function loadPublicSchoolsForRegister() {
-            if (!(typeof isNodeBackend === "function" && isNodeBackend())) return;
+        async function loadPublicDirectory() {
+            if (!window.SigapFirebaseDrive || typeof window.SigapFirebaseDrive.loadPublicDirectoryFromFirestore !== "function") return;
             try {
-                const r = await fetch(NODE_API_BASE + "/api/public/schools", { cache: "no-store" });
-                const j = await r.json();
-                if (r.ok && j.status === "success" && Array.isArray(j.schools) && j.schools.length) {
-                    baseSchools = j.schools.map(function (s) {
-                        return typeof normalizeSchool === "function" ? normalizeSchool(s) : s;
-                    });
-                    try { localStorage.setItem("bosp_baseSchools", JSON.stringify(baseSchools)); } catch (e) {}
+                const pubSchools = await window.SigapFirebaseDrive.loadPublicDirectoryFromFirestore();
+                if (Array.isArray(pubSchools) && pubSchools.length > 0) {
+                    baseSchools = pubSchools.map(normalizeSchool);
                 }
             } catch (e) {
-                console.warn("Gagal muat schools publik:", e);
-            }
-        }
-
-        function toggleRegRoleForm(role) {
-            const npsnWrapper = document.getElementById("regNpsnWrapper");
-            if (role === "Operator Sekolah") {
-                npsnWrapper.classList.remove("hidden");
-            } else {
-                npsnWrapper.classList.add("hidden");
+                console.warn("Gagal muat direktori sekolah publik dari Firestore:", e);
             }
         }
 
         function checkNpsnMaster(npsnVal) {
-            const infoEl = document.getElementById("npsnResultInfo");
-            const cleanNpsn = npsnVal.trim();
+            const infoEl = document.getElementById("pendingNpsnInfo") || document.getElementById("npsnResultInfo");
+            const cleanNpsn = String(npsnVal || "").trim();
+            if (!infoEl) return null;
 
             if (!cleanNpsn) {
                 infoEl.innerHTML = "Masukkan NPSN yang terdaftar di Data Master Sekolah.";
@@ -1021,324 +734,137 @@
 
             const foundSchool = baseSchools.find(s => String(s.npsn).trim() === cleanNpsn);
             if (foundSchool) {
-                infoEl.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> <b class="text-emerald-800">Sekolah Ditemukan:</b> ${foundSchool.name} (Kec. ${foundSchool.kecamatan})`;
+                infoEl.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> <b class="text-emerald-800">Sekolah Ditemukan:</b> ${escHtml(foundSchool.name)} (Kec. ${escHtml(foundSchool.kecamatan)})`;
                 infoEl.className = "mt-1 text-[11px] text-emerald-700 font-semibold bg-emerald-50 p-2 rounded border border-emerald-200";
                 return foundSchool;
             } else {
-                infoEl.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600 mr-1"></i> <b class="text-rose-800">Peringatan:</b> Nomor NPSN "${cleanNpsn}" tidak ditemukan dalam Data Master Sekolah Dinas Pendidikan!`;
+                infoEl.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600 mr-1"></i> <b class="text-rose-800">Peringatan:</b> Nomor NPSN "${escHtml(cleanNpsn)}" tidak ditemukan dalam Data Master Sekolah Dinas Pendidikan!`;
                 infoEl.className = "mt-1 text-[11px] text-rose-700 font-semibold bg-rose-50 p-2 rounded border border-rose-200";
                 return null;
             }
         }
 
-        async function handleLogin() {
-            const u = document.getElementById("loginUsername").value.trim();
-            const p = document.getElementById("loginPassword").value.trim();
+        function openPendingProfileBox(pendingUser) {
+            const googleBox = document.getElementById("googleAuthBox");
+            const pendingBox = document.getElementById("pendingProfileBox");
+            const title = document.getElementById("authTitle");
+            if (googleBox) googleBox.classList.add("hidden");
+            if (pendingBox) pendingBox.classList.remove("hidden");
+            if (title) title.textContent = "Lengkapi Data Akun Operator";
+            const npsnInput = document.getElementById("pendingNpsnInput");
+            const waInput = document.getElementById("pendingWhatsappInput");
+            const emailText = document.getElementById("pendingGoogleEmail");
+            if (emailText && pendingUser) emailText.textContent = pendingUser.email || pendingUser.name || "";
+            if (npsnInput) npsnInput.value = (pendingUser && pendingUser.npsn) || "";
+            if (waInput) waInput.value = (pendingUser && pendingUser.whatsapp) ? waDisplay(pendingUser.whatsapp) : "";
+            checkNpsnMaster(npsnInput ? npsnInput.value : "");
+        }
+
+        async function handleGoogleModalAuth() {
+            const btn = document.getElementById("btnGoogleAuthModal");
+            if (!window.SigapFirebaseDrive || typeof window.SigapFirebaseDrive.signInWithGoogle !== "function") {
+                appToast("Modul Firebase & Google Drive belum siap. Muat ulang halaman.", "err");
+                return;
+            }
             const yearSel = document.getElementById("loginYearSelect");
             const selectedYear = yearSel ? parseInt(yearSel.value, 10) : activeYear;
-
-            let found = null;
-
-            // --- Login ke server Node (wajib agar upload ke uploads/ berhasil) ---
-            if (isNodeBackend()) {
-                try {
-                    const resp = await fetch(NODE_API_BASE + "/api/login", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        credentials: "include",
-                        body: JSON.stringify({ username: u, password: p })
-                    });
-                    const data = await resp.json();
-                    if (!resp.ok || data.status !== "success") {
-                        alert(data.message || "Username atau kata sandi salah!");
-                        return;
-                    }
-                    found = data.user;
-                    // Simpan token untuk Authorization header
-                    if (data.token) {
-                        nodeAuthToken = data.token;
-                        sessionStorage.setItem("rekon_node_token", data.token);
-                    }
-                    // Sinkronkan ke usersDB lokal (tanpa password hash)
-                    const idx = usersDB.findIndex(x => x.username === found.username);
-                    if (idx >= 0) usersDB[idx] = Object.assign({}, usersDB[idx], found, { password: p });
-                    else usersDB.push(Object.assign({}, found, { password: p }));
-                } catch (e) {
-                    console.error(e);
-                    alert("Gagal terhubung ke server Node: " + e.message + "\nPastikan npm start sudah berjalan.");
-                    return;
-                }
-            } else {
-                found = usersDB.find(x => x.username === u && x.password === p);
-            }
-
-            if (found) {
-                if (found.status !== "Aktif") {
-                    alert("Akun Anda masih berstatus 'Pending' dan menunggu verifikasi persetujuan dari Admin Dinas.");
-                    return;
-                }
-                if (activeYear !== selectedYear) {
-                    try { localStorage.setItem(yearKey("monthlyData"), JSON.stringify(monthlyData)); } catch (e) {}
-                }
+            if (AVAILABLE_YEARS.includes(selectedYear)) {
                 activeYear = selectedYear;
-                localStorage.setItem("bosp_activeYear", String(activeYear));
-
-                currentUser = found;
-                if (!currentUser.password) currentUser.password = p;
-
-                // Muat data dari SERVER Node dulu (agar laptop admin melihat inputan sekolah)
-                // Baru fallback ke localStorage jika server kosong/gagal
-                monthlyData = JSON.parse(localStorage.getItem(yearKey("monthlyData"))) || {};
-                if (isNodeBackend()) {
-                    try {
-                        await loadFromGoogleSheets(); // fungsi ini sudah diarahkan ke /api/data saat mode Node
-                    } catch (e) {
-                        console.warn("Gagal muat data server setelah login:", e);
-                    }
+                window.activeYear = activeYear;
+                try { localStorage.setItem("bosp_activeYear", String(activeYear)); } catch (_) {}
+            }
+            if (btn) { btn.disabled = true; }
+            try {
+                const res = await window.SigapFirebaseDrive.signInWithGoogle({ loginToApp: true, promptSelectAccount: true });
+                if (res && res.status === "pending") {
+                    await loadPublicDirectory();
+                    openPendingProfileBox(res.user || null);
+                    appToast("Akun Google berhasil terdaftar dengan status Pending. Lengkapi NPSN & WhatsApp lalu tunggu persetujuan Admin Dinas.", "info");
                 }
-                if (Object.keys(monthlyData).length === 0) {
-                    baseSchools.forEach(s => {
-                        monthlyData[s.no] = {};
-                        months.forEach(m => {
-                            monthlyData[s.no][m] = {
-                                saldoAwalCustom: m === "Jan" ? 0 : null,
-                                saldoReguler: m === "Jan" ? 0 : null,
-                                saldoKinerja: m === "Jan" ? 0 : null,
-                                saldoNonBOS: m === "Jan" ? 0 : null,
-                                saldoTunai: m === "Jan" ? 0 : null,
-                                pendapatan: { reguler: 0, kinerja: 0, jagirMasuk: 0, setoranTunai: 0, lebihTransferMasuk: 0 },
-                                belanja: { pegawai: 0, barjasReg: 0, barjasKin: 0, pm: 0, pmKin: 0, atl: 0, atlKin: 0, jagirKeluar: 0, lebihTransferKeluar: 0 },
-                                rekon: { setoranSaldoTunai: 0, pengembalianBank: 0, setoranPajak2023: 0, saldoRCBank: 0 },
-                                documents: {},
-                                verifStatus: "Draft"
-                            };
-                        });
-                    });
-                }
-
-                // Jangan panggil saveToLocalStorage penuh di sini (bisa menimpa data server dengan data lokal kosong)
-                try {
-                    localStorage.setItem("bosp_currentUser", JSON.stringify(currentUser));
-                    localStorage.setItem("bosp_usersDB", JSON.stringify(usersDB));
-                    localStorage.setItem("bosp_activeYear", String(activeYear));
-                    localStorage.setItem(yearKey("monthlyData"), JSON.stringify(monthlyData));
-                } catch (e) {}
-
-                closeAuthModal();
-                const lpIn = document.getElementById("landingPage");
-                if (lpIn) lpIn.classList.add("hidden");
-                document.getElementById("mainAppContainer").classList.remove("hidden");
-                if (typeof initSidebarState === "function") initSidebarState();
-                if (typeof renderSidebarMenu === "function") renderSidebarMenu();
-                initAppDashboard();
-                startIdleWatch();
-                alert("Selamat datang kembali, " + found.name + "!\nTahun Anggaran aktif: " + activeYear + (isNodeBackend() ? "\n(Data dimuat dari server bersama)" : ""));
-            } else {
-                alert("Username atau kata sandi salah, atau akun belum terdaftar!");
+            } catch (e) {
+                appToast((e && e.message) || "Gagal masuk dengan Google.", "err");
+            } finally {
+                if (btn) { btn.disabled = false; }
             }
         }
 
-        async function handleRegister() {
-            const role = document.getElementById("regRole").value;
-            const u = document.getElementById("regUsername").value.trim();
-            const p = document.getElementById("regPassword").value.trim();
-            const waVal = waNormalize(document.getElementById("regWhatsapp").value);
-
-            if (!u || !p) {
-                alert("Mohon lengkapi Username dan Password!");
+        async function savePendingOperatorProfile() {
+            const npsnInput = document.getElementById("pendingNpsnInput");
+            const waInput = document.getElementById("pendingWhatsappInput");
+            const npsnVal = String(npsnInput ? npsnInput.value : "").trim();
+            const waVal = waNormalize(waInput ? waInput.value : "");
+            if (!npsnVal) {
+                appToast("Nomor NPSN sekolah wajib diisi.", "err");
                 return;
             }
-            if (p.length < 6) {
-                alert("Password minimal 6 karakter.");
+            const matchedSchool = checkNpsnMaster(npsnVal);
+            if (!matchedSchool) {
+                appToast("NPSN tidak ditemukan di Data Master Sekolah.", "err");
                 return;
             }
             if (!waVal) {
-                alert("Nomor WhatsApp wajib diisi dengan benar (nomor HP Indonesia), misalnya 081234567890.");
+                appToast("Nomor WhatsApp tidak valid. Contoh: 081234567890.", "err");
                 return;
             }
-
-            let npsnVal = "";
-            if (role === "Operator Sekolah") {
-                npsnVal = document.getElementById("regNpsnInput").value.trim();
-                if (!npsnVal) {
-                    alert("NPSN wajib diisi.");
-                    return;
-                }
-            }
-
-            // Mode Node: daftar ke server (terlihat admin di laptop lain)
-            if (typeof isNodeBackend === "function" && isNodeBackend()) {
-                try {
-                    const resp = await fetch(NODE_API_BASE + "/api/register", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            username: u,
-                            password: p,
-                            role: role,
-                            whatsapp: waVal,
-                            npsn: npsnVal
-                        })
-                    });
-                    const data = await resp.json().catch(() => ({}));
-                    if (!resp.ok || data.status !== "success") {
-                        alert(data.message || "Pendaftaran gagal.");
-                        return;
-                    }
-                    // sinkron ke memori lokal (tanpa password plain di server response)
-                    if (data.user) {
-                        const exists = usersDB.findIndex(x => x.username === data.user.username);
-                        const localU = Object.assign({}, data.user, { password: p });
-                        if (exists >= 0) usersDB[exists] = localU;
-                        else usersDB.push(localU);
-                        try { localStorage.setItem("bosp_usersDB", JSON.stringify(usersDB)); } catch (e) {}
-                    }
-                    closeAuthModal();
-                    switchAuthTab("login");
-                    alert("Pendaftaran berhasil dikirim ke server!\nStatus: Pending — tunggu persetujuan Admin Dinas sebelum bisa login.");
-                } catch (e) {
-                    alert("Gagal terhubung ke server: " + e.message + "\nPastikan npm start berjalan dan Anda membuka IP server yang sama.");
-                }
-                return;
-            }
-
-            // Mode offline / GAS: simpan lokal
-            if (usersDB.some(x => x.username === u)) {
-                alert("Username sudah digunakan akun lain. Silakan buat username yang berbeda.");
-                return;
-            }
-            let name = "";
-            let schoolNo = null;
-            if (role === "Operator Sekolah") {
-                const matchedSchool = checkNpsnMaster(npsnVal);
-                if (!matchedSchool) {
-                    alert("Pendaftaran Gagal! NPSN sekolah tidak valid atau tidak ditemukan di Data Master Sekolah.");
-                    return;
-                }
-                const existingSchoolAccount = usersDB.find(x => x.role === "Operator Sekolah" && String(x.npsn) === String(npsnVal));
-                if (existingSchoolAccount) {
-                    alert("Satuan pendidikan dengan NPSN ini sudah memiliki akun operator terdaftar!");
-                    return;
-                }
-                name = `Operator ${matchedSchool.name}`;
-                schoolNo = matchedSchool.no;
-            } else {
-                name = `Admin Dinas (${u})`;
-            }
-            usersDB.push({
-                name, username: u, password: p, role, schoolNo, npsn: npsnVal, whatsapp: waVal, status: "Pending"
-            });
-            saveToLocalStorage();
-            closeAuthModal();
-            alert("Pendaftaran akun berhasil dikirim! Status Pending — menunggu Admin Dinas.");
-        }
-
-        function openChangePasswordModal() {
-            if (!currentUser || currentUser.role !== "Admin Dinas") {
-                alert("Hanya akun Admin Dinas yang dapat mengubah password ini.");
-                return;
-            }
-            document.getElementById("oldPasswordInput").value = "";
-            document.getElementById("newPasswordInput").value = "";
-            document.getElementById("confirmPasswordInput").value = "";
-            document.getElementById("changePasswordModal").classList.remove("hidden");
-        }
-
-        function closeChangePasswordModal() {
-            document.getElementById("changePasswordModal").classList.add("hidden");
-        }
-
-        async function saveNewAdminPassword() {
-            const oldPass = document.getElementById("oldPasswordInput").value;
-            const newPass = document.getElementById("newPasswordInput").value;
-            const confirmPass = document.getElementById("confirmPasswordInput").value;
-
-            if (!oldPass || !newPass || !confirmPass) {
-                alert("Mohon lengkapi semua kolom password!");
-                return;
-            }
-            if (newPass.length < 6) {
-                alert("Password baru minimal 6 karakter!");
-                return;
-            }
-            if (newPass !== confirmPass) {
-                alert("Konfirmasi password baru tidak cocok!");
-                return;
-            }
-            // Password disimpan ter-hash di server, jadi verifikasi password lama dilakukan di server
+            const btn = document.getElementById("btnSavePendingProfile");
+            if (btn) btn.disabled = true;
             try {
-                const resp = await fetch(NODE_API_BASE + "/api/change-password", {
-                    method: "POST",
-                    credentials: "include",
-                    headers: nodeHeaders(),
-                    body: JSON.stringify({ oldPassword: oldPass, newPassword: newPass })
+                await window.SigapFirebaseDrive.completePendingUserProfile({
+                    name: `Operator ${matchedSchool.name}`,
+                    npsn: matchedSchool.npsn,
+                    schoolNo: matchedSchool.no,
+                    whatsapp: waVal
                 });
-                const j = await resp.json();
-                if (!resp.ok || j.status !== "success") {
-                    alert(j.message || "Gagal mengubah password.");
-                    return;
-                }
-                closeChangePasswordModal();
-                alert("Password berhasil diubah!");
+                appToast("Profil sekolah berhasil disimpan! Status akun: Pending — menunggu persetujuan Admin Dinas.", "ok");
+                closeAuthModal();
             } catch (e) {
-                alert("Gagal menghubungi server: " + e.message);
+                appToast("Gagal menyimpan profil: " + ((e && e.message) || e), "err");
+            } finally {
+                if (btn) btn.disabled = false;
             }
         }
 
         async function openUserListModal() {
             if (!currentUser || currentUser.role !== "Admin Dinas") {
-                alert("Akses ditolak! Fitur daftar user khusus untuk Administrator Dinas.");
+                appToast("Akses ditolak! Fitur daftar user khusus untuk Administrator Dinas.", "err");
                 return;
             }
             document.getElementById("searchUserBox").value = "";
-            // 1. Muat daftar user dari server & langsung dari Firebase Firestore
-            if (typeof isNodeBackend === "function" && isNodeBackend()) {
-                try {
-                    const resp = await fetch(NODE_API_BASE + "/api/users", {
-                        credentials: "include",
-                        headers: typeof nodeHeaders === "function" ? nodeHeaders() : { "Content-Type": "application/json" },
-                        cache: "no-store"
-                    });
-                    const data = await resp.json();
-                    if (resp.ok && data.status === "success" && Array.isArray(data.users)) {
-                        const localMap = new Map(usersDB.map(u => [String(u.username).toLowerCase(), u]));
-                        usersDB = data.users.map(u => {
-                            const loc = localMap.get(String(u.username).toLowerCase()) || {};
-                            return Object.assign({}, u, { password: loc.password || u.password || "" });
-                        });
-                    }
-                } catch (e) {
-                    console.warn("Gagal muat users dari server:", e);
-                }
-            }
             if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.loadUsersFromFirestore === "function") {
                 try {
                     const fbUsers = await window.SigapFirebaseDrive.loadUsersFromFirestore();
-                    if (Array.isArray(fbUsers) && fbUsers.length > 0) {
-                        const localMap = new Map(usersDB.map(u => [String(u.username).toLowerCase(), u]));
-                        fbUsers.forEach(fu => {
-                            if (!fu || !fu.username) return;
-                            const k = String(fu.username).toLowerCase();
-                            const loc = localMap.get(k) || {};
-                            localMap.set(k, Object.assign({}, loc, fu, { password: loc.password || "" }));
-                        });
-                        usersDB = Array.from(localMap.values());
+                    if (Array.isArray(fbUsers)) {
+                        usersDB = fbUsers.map(normalizeUser);
                     }
                 } catch (fbErr) {
                     console.warn("Gagal muat users dari Firestore:", fbErr);
+                    appToast("Gagal memuat daftar user dari Firestore.", "err");
                 }
             }
-            try { localStorage.setItem("bosp_usersDB", JSON.stringify(usersDB)); } catch (e) {}
             renderUserTable();
             document.getElementById("userListModal").classList.remove("hidden");
             const pending = usersDB.filter(u => u.status === "Pending").length;
             if (pending > 0) {
-                try { if (typeof rkToast === "function") rkToast(pending + " akun menunggu persetujuan", "info"); } catch (e) {}
+                appToast(pending + " akun menunggu persetujuan", "info");
             }
         }
 
         function closeUserListModal() {
             document.getElementById("userListModal").classList.add("hidden");
+        }
+
+        function findUserRecord(uidOrUsername) {
+            const key = String(uidOrUsername || "").trim();
+            if (!key) return null;
+            return usersDB.find(u => String(u.uid || "") === key || String(u.username || "") === key || String(u.email || "").toLowerCase() === key.toLowerCase()) || null;
+        }
+
+        function isProtectedAdminAccount(u) {
+            if (!u) return false;
+            const em = String(u.email || "").trim().toLowerCase();
+            if (em === "artygigiron98@gmail.com") return true;
+            if (currentUser && u.uid && currentUser.uid && u.uid === currentUser.uid) return true;
+            return false;
         }
 
         function renderUserTable() {
@@ -1356,7 +882,7 @@
                     instansiText = "administrator dinas pendidikan kabupaten";
                 }
 
-                const searchTarget = `${u.username} ${u.role} ${instansiText} ${u.whatsapp || ''}`.toLowerCase();
+                const searchTarget = `${u.name || ''} ${u.email || ''} ${u.username || ''} ${u.role || ''} ${instansiText} ${u.whatsapp || ''}`.toLowerCase();
                 return searchTarget.includes(keyword);
             });
 
@@ -1372,122 +898,94 @@
                 if (u.role === "Operator Sekolah") {
                     const foundSch = findSchoolForUser(u);
                     if (foundSch) {
-                        instansiColumn = `<b>${foundSch.name}</b><br><span class="text-slate-500 font-mono">NPSN: ${foundSch.npsn} | Kec. ${foundSch.kecamatan}</span>`;
+                        instansiColumn = `<b>${escHtml(foundSch.name)}</b><br><span class="text-slate-500 font-mono">NPSN: ${escHtml(foundSch.npsn)} | Kec. ${escHtml(foundSch.kecamatan)}</span>`;
                     } else {
-                        instansiColumn = `<span class="text-rose-600">NPSN: ${u.npsn || '-'} (Master Tidak Ditemukan)</span>`;
+                        instansiColumn = `<span class="text-rose-600">NPSN: ${escHtml(u.npsn || '-')} (Master Tidak Ditemukan)</span>`;
                     }
                 } else {
                     instansiColumn = `<span class="font-semibold text-amber-800">Admin Dinas Pendidikan</span>`;
                 }
 
                 let statusBadge = `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">Aktif</span>`;
-                let actionButtons = '';
-
                 if (u.status === "Pending") {
                     statusBadge = `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800">Pending</span>`;
-                    if (currentUser.username === "admin") {
-                        actionButtons += `<button onclick="verifyUserAccount('${u.username}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2 py-1 rounded text-[10px] mr-1" title="Setujui Akun"><i class="fa-solid fa-check"></i> Setujui</button>`;
-                    }
+                } else if (u.status === "Ditolak") {
+                    statusBadge = `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-100 text-rose-800">Ditolak</span>`;
                 }
 
-                // Reset password tersedia untuk semua user termasuk admin
-                actionButtons += ` <button onclick="resetUserPassword('${u.username}')" class="bg-amber-600 hover:bg-amber-700 text-white px-2 py-1 rounded text-[10px]" title="Reset Password"><i class="fa-solid fa-key"></i> Reset</button>`;
-                if (u.username !== 'admin') {
-                    actionButtons += ` <button onclick="deleteUser('${u.username}')" class="bg-rose-600 hover:bg-rose-700 text-white px-2 py-1 rounded text-[10px]" title="Hapus User"><i class="fa-solid fa-trash"></i></button>`;
+                const userKey = escHtml(u.uid || u.username || u.email || "");
+                let actionButtons = '';
+
+                if (u.status === "Pending" && isPrimaryAdmin()) {
+                    actionButtons += `<button onclick="verifyUserAccount('${userKey}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2 py-1 rounded text-[10px] mr-1" title="Setujui Akun"><i class="fa-solid fa-check"></i> Setujui</button>`;
                 }
+                if (isPrimaryAdmin() && !isProtectedAdminAccount(u)) {
+                    actionButtons += ` <button onclick="deleteUser('${userKey}')" class="bg-rose-600 hover:bg-rose-700 text-white px-2 py-1 rounded text-[10px]" title="Hapus User"><i class="fa-solid fa-trash"></i></button>`;
+                }
+
+                const displayIdentity = u.email ? `${escHtml(u.name || u.username)}<br><span class="text-[10px] text-slate-500 font-normal">${escHtml(u.email)}</span>` : escHtml(u.username || u.name || "-");
 
                 const tr = document.createElement("tr");
                 tr.innerHTML = `
                     <td class="py-2.5 px-3">${idx + 1}</td>
-                    <td class="py-2.5 px-3 font-mono font-bold">${u.username}</td>
-                    <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${u.role === 'Admin Dinas' ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'}">${u.role}</span></td>
+                    <td class="py-2.5 px-3 font-mono font-bold">${displayIdentity}</td>
+                    <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${u.role === 'Admin Dinas' ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'}">${escHtml(u.role)}</span></td>
                     <td class="py-2.5 px-3">${instansiColumn}</td>
                     <td class="py-2.5 px-3 whitespace-nowrap">${waCellHtml(u)}</td>
                     <td class="py-2.5 px-3 text-center">${statusBadge}</td>
-                    <td class="py-2.5 px-3 text-center">${actionButtons}</td>
+                    <td class="py-2.5 px-3 text-center">${actionButtons || '<span class="text-slate-400 text-[10px]">—</span>'}</td>
                 `;
                 tbody.appendChild(tr);
             });
         }
 
-        async function verifyUserAccount(username) {
-            if (currentUser.username !== "admin") {
-                alert("Hanya Admin Utama yang dapat menyetujui akun baru.");
+        async function verifyUserAccount(uidOrUsername) {
+            if (!isPrimaryAdmin()) {
+                appToast("Hanya Admin Dinas yang dapat menyetujui akun baru.", "err");
                 return;
             }
-            const targetUser = usersDB.find(u => u.username === username);
+            const targetUser = findUserRecord(uidOrUsername);
             if (!targetUser) return;
-            targetUser.status = "Aktif";
-            if (typeof isNodeBackend === "function" && isNodeBackend()) {
-                try {
-                    const resp = await fetch(NODE_API_BASE + "/api/users", {
-                        method: "POST",
-                        credentials: "include",
-                        headers: typeof nodeHeaders === "function" ? nodeHeaders() : { "Content-Type": "application/json" },
-                        body: JSON.stringify({ users: [targetUser] })
-                    });
-                    const data = await resp.json().catch(() => ({}));
-                    if (!resp.ok || data.status !== "success") {
-                        targetUser.status = "Pending";
-                        alert(data.message || "Gagal menyimpan persetujuan ke server.");
-                        return;
-                    }
-                } catch (e) {
-                    targetUser.status = "Pending";
-                    alert("Gagal hubungi server: " + e.message);
-                    return;
-                }
+            try {
+                await window.SigapFirebaseDrive.approveUserInFirestore(targetUser);
+                targetUser.status = "Aktif";
+                await window.SigapFirebaseDrive.logAuditToFirestore("approve_user", { targetUid: targetUser.uid || "", email: targetUser.email || "", username: targetUser.username || "" }, currentUser);
+                renderUserTable();
+                try { waNotifyAccountApproved(targetUser); } catch (e) {}
+                appToast("Akun (" + (targetUser.email || targetUser.username || targetUser.name) + ") berhasil disetujui & diaktifkan di Firebase!", "ok");
+            } catch (e) {
+                appToast("Gagal menyetujui akun: " + ((e && e.message) || e), "err");
             }
-            if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.saveUserToFirestore === "function") {
-                try { await window.SigapFirebaseDrive.saveUserToFirestore(targetUser); } catch (fbErr) { console.warn("Sync user Firestore:", fbErr); }
-            }
-            try { localStorage.setItem("bosp_usersDB", JSON.stringify(usersDB)); } catch (e) {}
-            saveToLocalStorage();
-            renderUserTable();
-            try { waNotifyAccountApproved(targetUser); } catch (e) {}
-            alert("Akun (" + targetUser.username + ") berhasil disetujui & diaktifkan di Firebase!");
         }
 
-        async function deleteUser(username) {
-            if (String(username).toLowerCase() === "admin") {
-                alert("Akun admin utama tidak boleh dihapus.");
+        async function deleteUser(uidOrUsername) {
+            if (!isPrimaryAdmin()) {
+                appToast("Akses ditolak!", "err");
                 return;
             }
-            if (!confirm("Hapus akun \"" + username + "\" dari sistem?\nData akun akan dihapus permanen dari database Firebase.")) return;
-            if (typeof isNodeBackend === "function" && isNodeBackend()) {
-                try {
-                    const resp = await fetch(NODE_API_BASE + "/api/users/" + encodeURIComponent(username), {
-                        method: "DELETE",
-                        credentials: "include",
-                        headers: typeof nodeHeaders === "function" ? nodeHeaders() : { "Content-Type": "application/json" }
-                    });
-                    const data = await resp.json().catch(() => ({}));
-                    if (!resp.ok || data.status !== "success") {
-                        alert(data.message || "Gagal menghapus user di database server.");
-                        return;
-                    }
-                    if (Array.isArray(data.users)) {
-                        const localMap = new Map(usersDB.map(u => [String(u.username).toLowerCase(), u]));
-                        usersDB = data.users.map(u => {
-                            const loc = localMap.get(String(u.username).toLowerCase()) || {};
-                            return Object.assign({}, u, { password: loc.password || "" });
-                        });
-                    } else {
-                        usersDB = usersDB.filter(u => u.username !== username);
-                    }
-                } catch (e) {
-                    alert("Gagal hubungi server: " + e.message);
-                    return;
-                }
-            } else {
-                usersDB = usersDB.filter(u => u.username !== username);
+            const targetUser = findUserRecord(uidOrUsername);
+            if (!targetUser) return;
+            if (isProtectedAdminAccount(targetUser)) {
+                appToast("Akun admin utama / akun yang sedang digunakan tidak boleh dihapus.", "err");
+                return;
             }
-            if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.deleteUserFromFirestore === "function") {
-                try { await window.SigapFirebaseDrive.deleteUserFromFirestore(username); } catch (fbErr) { console.warn("Delete user Firestore:", fbErr); }
+            const label = targetUser.email || targetUser.username || targetUser.name || "user";
+            const ok = await appConfirm(
+                "Hapus Akun Pengguna",
+                `Hapus akun "${label}" dari sistem?\nData akun akan dihapus permanen dari Firebase Firestore.`,
+                true,
+                "Hapus Permanen"
+            );
+            if (!ok) return;
+            try {
+                await window.SigapFirebaseDrive.deleteUserFromFirestore(targetUser);
+                await window.SigapFirebaseDrive.logAuditToFirestore("delete_user", { targetUid: targetUser.uid || "", email: targetUser.email || "", username: targetUser.username || "" }, currentUser);
+                usersDB = usersDB.filter(u => u !== targetUser);
+                renderUserTable();
+                appToast("Akun \"" + label + "\" berhasil dihapus dari database Firebase.", "ok");
+            } catch (e) {
+                appToast("Gagal menghapus akun dari Firestore: " + ((e && e.message) || e), "err");
             }
-            try { localStorage.setItem("bosp_usersDB", JSON.stringify(usersDB)); } catch (e) {}
-            renderUserTable();
-            alert("Akun \"" + username + "\" berhasil dihapus dari database Firebase.");
         }
 
         // =====================================================================
@@ -1520,28 +1018,41 @@
             const num = n
                 ? `<span class="font-mono">${escHtml(waDisplay(n))}</span>`
                 : `<span class="text-rose-600 italic">Belum diisi</span>`;
-            return num + ` <button onclick="editUserWhatsapp('${escHtml(u.username)}')" class="text-blue-600 hover:text-blue-800 ml-1" title="Ubah nomor WhatsApp"><i class="fa-solid fa-pen"></i></button>`;
+            const key = escHtml(u.uid || u.username || u.email || "");
+            return num + ` <button onclick="editUserWhatsapp('${key}')" class="text-blue-600 hover:text-blue-800 ml-1" title="Ubah nomor WhatsApp"><i class="fa-solid fa-pen"></i></button>`;
         }
 
-        function editUserWhatsapp(username) {
-            if (!currentUser || currentUser.role !== "Admin Dinas") { alert("Akses ditolak! Hanya Admin Dinas yang dapat mengubah nomor WhatsApp user."); return; }
-            const u = usersDB.find(x => x.username === username);
+        async function editUserWhatsapp(uidOrUsername) {
+            if (!currentUser || currentUser.role !== "Admin Dinas") {
+                appToast("Akses ditolak! Hanya Admin Dinas yang dapat mengubah nomor WhatsApp user.", "err");
+                return;
+            }
+            const u = findUserRecord(uidOrUsername);
             if (!u) return;
-            const input = prompt(`Nomor WhatsApp untuk akun "${u.username}":\n(contoh: 081234567890)`, u.whatsapp ? waDisplay(u.whatsapp) : "");
+            const input = await appPrompt(
+                "Ubah Nomor WhatsApp",
+                `Nomor WhatsApp untuk akun "${u.email || u.username || u.name}" (contoh: 081234567890):`,
+                u.whatsapp ? waDisplay(u.whatsapp) : "",
+                "081234567890"
+            );
             if (input === null) return;
             const n = waNormalize(input);
-            if (!n) { alert("Nomor tidak valid. Gunakan nomor HP Indonesia, misalnya 081234567890."); return; }
-            u.whatsapp = n;
-            if (currentUser.username === u.username) currentUser.whatsapp = n;
-            if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.saveUserToFirestore === "function") {
-                window.SigapFirebaseDrive.saveUserToFirestore(u).catch(e => console.warn("Sync WA Firestore:", e));
+            if (!n) {
+                appToast("Nomor tidak valid. Gunakan nomor HP Indonesia, misalnya 081234567890.", "err");
+                return;
             }
-            saveToLocalStorage();
-            renderUserTable();
-        }
-
-        function waAuthNow() {
-            return currentUser ? { username: currentUser.username, password: currentUser.password } : null;
+            try {
+                await window.SigapFirebaseDrive.updateUserWhatsappInFirestore(u, n);
+                u.whatsapp = n;
+                if (currentUser && ((u.uid && currentUser.uid === u.uid) || currentUser.username === u.username)) {
+                    currentUser.whatsapp = n;
+                }
+                await window.SigapFirebaseDrive.logAuditToFirestore("update_whatsapp", { targetUid: u.uid || "", whatsapp: n }, currentUser);
+                renderUserTable();
+                appToast("Nomor WhatsApp berhasil diperbarui di Firebase Firestore.", "ok");
+            } catch (e) {
+                appToast("Gagal memperbarui nomor WhatsApp: " + ((e && e.message) || e), "err");
+            }
         }
 
         function waSaveOutbox() {
@@ -1598,41 +1109,31 @@
         }
 
         // Kirim lewat server (action "sendWA" di Code.gs). Jika belum tersedia, pesan tetap "Menunggu" untuk dikirim manual.
-        async function waDeliver(entry, auth) {
-            if (waAutoSend && isGasConfigured()) {
-                entry.status = "Mengirim";
-                waSaveOutbox(); waRenderLog();
-                try {
-                    const payload = { action: "sendWA", target: entry.phone, message: entry.message };
-                    if (auth) payload.auth = auth;
-                    const r = await gasPost(payload);
-                    if (r && r.status === "success") { entry.status = "Terkirim"; entry.error = ""; }
-                    else { entry.status = "Menunggu"; entry.error = (r && r.message) || "Server belum mendukung pengiriman WhatsApp."; }
-                } catch (err) {
-                    entry.status = "Menunggu";
-                    entry.error = String((err && err.message) || err);
-                }
-            } else {
-                entry.status = "Menunggu";
-                entry.error = "";
-            }
+        async function waDeliver(entry) {
+            entry.status = "Menunggu";
+            entry.error = "";
             waSaveOutbox(); waRenderLog();
             const who = `<b>${escHtml(entry.school || entry.to)}</b>`;
-            if (entry.status === "Terkirim") waToast(`Notifikasi WhatsApp terkirim ke ${who}.`);
-            else waToast(`Notifikasi WhatsApp untuk ${who} siap dikirim.`, "Kirim", () => waOpenManual(entry.id));
+            waToast(`Notifikasi WhatsApp untuk ${who} siap dikirim.`, "Buka WA", () => waOpenManual(entry.id));
         }
 
         function waOpenManual(id) {
             const e = waOutbox.find(x => x.id === id);
             if (!e || !e.phone) return;
-            window.open("https://wa.me/" + e.phone + "?text=" + encodeURIComponent(e.message), "_blank", "noopener");
+            const link = document.createElement("a");
+            link.href = "https://wa.me/" + e.phone + "?text=" + encodeURIComponent(e.message);
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
             if (e.status !== "Terkirim") e.status = "Dibuka manual";
             waSaveOutbox(); waRenderLog();
         }
 
         function waResend(id) {
             const e = waOutbox.find(x => x.id === id);
-            if (e) waDeliver(e, waAuthNow());
+            if (e) waOpenManual(e.id);
         }
 
         // ---------- Antrean progres per sekolah ----------
@@ -1640,7 +1141,7 @@
             if (!currentUser || currentUser.role !== "Admin Dinas") return;
             const period = periodLabel();
             const gk = schoolNo + "|" + activeYear + "|" + period;
-            const g = waQueue[gk] || (waQueue[gk] = { schoolNo: schoolNo, year: activeYear, period: period, items: {}, auth: waAuthNow() });
+            const g = waQueue[gk] || (waQueue[gk] = { schoolNo: schoolNo, year: activeYear, period: period, items: {} });
             g.items[itemKey] = build;
             clearTimeout(waTimer);
             waTimer = setTimeout(() => waFlush(), WA_QUEUE_DELAY);
@@ -1690,7 +1191,7 @@
                 }
                 recips.forEach(u => {
                     const entry = waCreateEntry(u, schoolName, waBuildMessage(schoolName, g, lines));
-                    if (!deferOnly) waDeliver(entry, g.auth);
+                    if (!deferOnly) waDeliver(entry);
                 });
             });
         }
@@ -1699,25 +1200,28 @@
         function waNotifyAccountApproved(user) {
             const phone = waNormalize(user.whatsapp);
             if (!phone) {
-                waToast(`Akun <b>${escHtml(user.username)}</b> disetujui, tetapi belum ada nomor WhatsApp. Isi lewat ikon pensil di Daftar User.`);
+                waToast(`Akun <b>${escHtml(user.email || user.username || user.name)}</b> disetujui, tetapi belum ada nomor WhatsApp. Isi lewat ikon pensil di Daftar User.`);
                 return;
             }
             const message = [
                 "*SIGAP-BOSP Kab. Minahasa Tenggara*",
                 "",
-                `Yth. ${user.name || user.username},`,
-                `Akun Anda (username: ${user.username}) telah *disetujui* oleh Admin Dinas Pendidikan dan sudah dapat digunakan untuk masuk ke sistem.`,
+                `Yth. ${user.name || user.username || user.email},`,
+                `Akun Anda (${user.email || user.username}) telah *disetujui* oleh Admin Dinas Pendidikan dan sudah dapat digunakan untuk masuk ke sistem.`,
                 "",
                 "_Pesan otomatis dari Admin Dinas Pendidikan._"
             ].join("\n");
             const sch = findSchoolForUser(user);
-            const entry = waCreateEntry(user, sch ? sch.name : (user.name || user.username), message);
-            waDeliver(entry, waAuthNow());
+            const entry = waCreateEntry(user, sch ? sch.name : (user.name || user.username || user.email), message);
+            waDeliver(entry);
         }
 
         // ---------- Modal riwayat ----------
         function openWaLogModal() {
-            if (!currentUser || currentUser.role !== "Admin Dinas") { alert("Akses ditolak! Fitur ini khusus untuk Administrator Dinas."); return; }
+            if (!currentUser || currentUser.role !== "Admin Dinas") {
+                appToast("Akses ditolak! Fitur ini khusus untuk Administrator Dinas.", "err");
+                return;
+            }
             document.getElementById("waAutoToggle").checked = waAutoSend;
             waRenderLog();
             document.getElementById("waLogModal").classList.remove("hidden");
@@ -1730,7 +1234,7 @@
         /** Audit Log viewer (Admin) */
         async function openAuditLogModal() {
             if (!currentUser || currentUser.role !== "Admin Dinas") {
-                alert("Akses ditolak! Fitur ini khusus untuk Administrator Dinas.");
+                appToast("Akses ditolak! Fitur ini khusus untuk Administrator Dinas.", "err");
                 return;
             }
             let modal = document.getElementById("auditLogModal");
@@ -1786,43 +1290,29 @@
 
                 if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.loadAuditLogsFromFirestore === "function") {
                     const fbLogs = await window.SigapFirebaseDrive.loadAuditLogsFromFirestore(150, filter);
-                    if (fbLogs && Array.isArray(fbLogs.items) && fbLogs.items.length > 0) {
+                    if (fbLogs && Array.isArray(fbLogs.items)) {
                         items = fbLogs.items;
-                        total = fbLogs.total;
-                    }
-                }
-
-                if (!items.length) {
-                    const q = new URLSearchParams({ limit: "150" });
-                    if (filter) q.set("action", filter);
-                    const resp = await fetch(NODE_API_BASE + "/api/audit?" + q.toString(), {
-                        credentials: "include",
-                        headers: typeof nodeHeaders === "function" ? nodeHeaders() : {}
-                    });
-                    const j = await resp.json();
-                    if (resp.ok && j.status === "success") {
-                        items = j.items || [];
-                        total = j.total || items.length;
+                        total = fbLogs.total || items.length;
                     }
                 }
 
                 if (totalEl) totalEl.textContent = "Menampilkan " + items.length + " dari ~" + total + " entri";
                 if (!items.length) {
-                    tb.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-slate-400">Tidak ada data.</td></tr>`;
+                    tb.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-slate-400">Tidak ada data log di Firestore.</td></tr>`;
                     return;
                 }
                 tb.innerHTML = items.map((e) => {
                     const t = e.time ? new Date(e.time).toLocaleString("id-ID", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit" }) : "-";
                     const detail = e.detail
-                        ? String(e.detail)
-                        : Object.keys(e).filter(k => !["time","action","username","role","ip","id"].includes(k))
+                        ? (typeof e.detail === "string" ? e.detail : JSON.stringify(e.detail))
+                        : Object.keys(e).filter(k => !["time","action","username","role","ip","id","uid","email"].includes(k))
                             .map(k => k + "=" + JSON.stringify(e[k])).join(", ");
                     return `<tr class="hover:bg-slate-50">
                       <td class="px-3 py-1.5 whitespace-nowrap text-slate-600 text-xs">${escHtml(t)}</td>
                       <td class="px-3 py-1.5 font-mono text-xs font-semibold text-indigo-700">${escHtml(e.action || "")}</td>
-                      <td class="px-3 py-1.5">${escHtml(e.username || "-")}</td>
+                      <td class="px-3 py-1.5">${escHtml(e.email || e.username || "-")}</td>
                       <td class="px-3 py-1.5 text-xs text-slate-500">${escHtml(e.role || "-")}</td>
-                      <td class="px-3 py-1.5 font-mono text-xs text-slate-500">${escHtml(e.ip || "-")}</td>
+                      <td class="px-3 py-1.5 font-mono text-xs text-slate-500">${escHtml(e.ip || "cloud")}</td>
                       <td class="px-3 py-1.5 text-xs text-slate-600 max-w-xs truncate" title="${escHtml(detail)}">${escHtml(detail || "—")}</td>
                     </tr>`;
                 }).join("");
@@ -1831,35 +1321,24 @@
             }
         }
 
-        /** Download backup data (Admin) */
+        /** Download backup data dari Firebase Firestore (Admin) */
         async function downloadBackup() {
             if (!currentUser || currentUser.role !== "Admin Dinas") {
-                alert("Akses ditolak! Fitur ini khusus untuk Administrator Dinas.");
+                appToast("Akses ditolak! Fitur ini khusus untuk Administrator Dinas.", "err");
                 return;
             }
-            if (!confirm("Unduh backup seluruh data JSON (schools, users, monthly, anggaran, audit)?\n\nSimpan file di tempat aman.")) return;
+            const ok = await appConfirm(
+                "Unduh Backup Firestore",
+                `Unduh backup seluruh data Firebase Firestore tahun anggaran ${activeYear} (schools, users, monthly, anggaran, sp2b_kab, audit)?\n\nSimpan file di tempat aman.`,
+                false,
+                "Unduh Backup"
+            );
+            if (!ok) return;
             try {
-                const resp = await fetch(NODE_API_BASE + "/api/backup", {
-                    credentials: "include",
-                    headers: typeof nodeHeaders === "function" ? nodeHeaders() : {}
-                });
-                if (!resp.ok) {
-                    const j = await resp.json().catch(() => ({}));
-                    alert(j.message || "Gagal mengunduh backup");
-                    return;
-                }
-                const blob = await resp.blob();
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement("a");
-                a.href = url;
-                a.download = "rekon-bosp-backup-" + new Date().toISOString().slice(0, 10) + ".json";
-                document.body.appendChild(a);
-                a.click();
-                a.remove();
-                URL.revokeObjectURL(url);
-                alert("✅ Backup berhasil diunduh. Simpan file ini di lokasi aman.");
+                await window.SigapFirebaseDrive.downloadFirestoreBackupJson(activeYear);
+                appToast("Backup Firebase Firestore berhasil diunduh.", "ok");
             } catch (err) {
-                alert("Gagal menghubungi server: " + err.message);
+                appToast("Gagal mengunduh backup dari Firestore: " + ((err && err.message) || err), "err");
             }
         }
 
@@ -1868,11 +1347,13 @@
             try { localStorage.setItem("bosp_waAuto", on ? "1" : "0"); } catch (e) {}
         }
 
-        function waClearLog() {
-            if (!confirm("Hapus seluruh riwayat notifikasi WhatsApp di perangkat ini?")) return;
+        async function waClearLog() {
+            const ok = await appConfirm("Hapus Riwayat Notifikasi", "Hapus seluruh riwayat notifikasi WhatsApp di perangkat ini?", true, "Hapus Riwayat");
+            if (!ok) return;
             waOutbox = [];
             waSaveOutbox();
             waRenderLog();
+            appToast("Riwayat notifikasi WhatsApp dihapus.", "ok");
         }
 
         function waRenderLog() {
@@ -1890,7 +1371,6 @@
             };
             tb.innerHTML = waOutbox.map(e => {
                 const t = new Date(e.at).toLocaleString("id-ID", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
-                const canResend = e.status !== "Terkirim" && e.status !== "Mengirim" && waAutoSend && isGasConfigured();
                 return `<tr>
                     <td class="py-2 px-3 whitespace-nowrap text-slate-600">${escHtml(t)}</td>
                     <td class="py-2 px-3"><b>${escHtml(e.school || e.to)}</b><br><span class="font-mono text-slate-500">${escHtml(waDisplay(e.phone))}</span></td>
@@ -1898,7 +1378,6 @@
                     <td class="py-2 px-3 text-center"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${badge[e.status] || "bg-slate-100 text-slate-700"}" title="${escHtml(e.error || "")}">${escHtml(e.status)}</span></td>
                     <td class="py-2 px-3 text-center whitespace-nowrap">
                         <button onclick="waOpenManual('${e.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2 py-1 rounded text-[10px]" title="Buka WhatsApp dengan pesan terisi"><i class="fa-brands fa-whatsapp"></i> Buka WA</button>
-                        ${canResend ? `<button onclick="waResend('${e.id}')" class="bg-slate-600 hover:bg-slate-700 text-white px-2 py-1 rounded text-[10px] ml-1" title="Kirim ulang lewat server">Kirim ulang</button>` : ""}
                     </td>
                 </tr>`;
             }).join("");
@@ -1909,7 +1388,7 @@
 
         function openMasterModal() {
             if (!currentUser || currentUser.role !== "Admin Dinas") {
-                alert("Akses ditolak! Fitur ini khusus untuk Administrator Dinas Pendidikan.");
+                appToast("Akses ditolak! Fitur ini khusus untuk Administrator Dinas Pendidikan.", "err");
                 return;
             }
             renderMasterSchoolTable();
@@ -1945,7 +1424,7 @@
             });
         }
 
-        function addNewSchool() {
+        async function addNewSchool() {
             const npsn = document.getElementById("newSchoolNpsn").value.trim();
             const name = document.getElementById("newSchoolName").value.trim();
             const alamat = document.getElementById("newSchoolAlamat").value.trim();
@@ -1953,11 +1432,11 @@
             const kecamatan = document.getElementById("newSchoolKec").value.trim().toUpperCase();
 
             if (!name || !kecamatan) {
-                alert("Nama Sekolah dan Kecamatan wajib diisi!");
+                appToast("Nama Sekolah dan Kecamatan wajib diisi!", "err");
                 return;
             }
 
-            const newNo = baseSchools.length > 0 ? Math.max(...baseSchools.map(s => s.no)) + 1 : 1;
+            const newNo = baseSchools.length > 0 ? Math.max(...baseSchools.map(s => Number(s.no) || 0)) + 1 : 1;
             const jenjang = name.includes("SMP") ? "SMP" : "SD";
             const newSchoolObj = { no: newNo, npsn: npsn || ("69" + Math.floor(100000 + Math.random() * 900000)), name: name.toUpperCase(), alamat: alamat || kecamatan, status, kecamatan, jenjang };
             baseSchools.push(newSchoolObj);
@@ -1983,35 +1462,35 @@
                 };
             });
 
-            if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.syncSchoolToFirestore === "function") {
-                window.SigapFirebaseDrive.syncSchoolToFirestore(newSchoolObj).catch(e => console.warn("Sync new school Firestore:", e));
+            try {
+                await window.SigapFirebaseDrive.syncSchoolToFirestore(newSchoolObj);
+                await window.SigapFirebaseDrive.syncPublicDirectoryToFirestore(baseSchools);
+                await saveToLocalStorage(newNo);
+                await window.SigapFirebaseDrive.logAuditToFirestore("add_school", { schoolNo: newNo, npsn: newSchoolObj.npsn, name: newSchoolObj.name }, currentUser);
+                document.getElementById("newSchoolNpsn").value = '';
+                document.getElementById("newSchoolName").value = '';
+                document.getElementById("newSchoolAlamat").value = '';
+                document.getElementById("newSchoolKec").value = '';
+                renderMasterSchoolTable();
+                appToast("Satuan pendidikan baru berhasil ditambahkan & disimpan ke Firebase Firestore!", "ok");
+            } catch (e) {
+                appToast("Gagal menambahkan sekolah ke Firestore: " + ((e && e.message) || e), "err");
             }
-            saveToLocalStorage();
-            document.getElementById("newSchoolNpsn").value = '';
-            document.getElementById("newSchoolName").value = '';
-            document.getElementById("newSchoolAlamat").value = '';
-            document.getElementById("newSchoolKec").value = '';
-            renderMasterSchoolTable();
-            alert("Satuan pendidikan baru berhasil ditambahkan & disimpan ke Firebase Firestore!");
         }
 
-        function deleteSchool(no) {
-            if (confirm("Apakah Anda yakin ingin menghapus satuan pendidikan ini dari database Firebase?")) {
-                baseSchools = baseSchools.filter(s => s.no !== no);
+        async function deleteSchool(no) {
+            const ok = await appConfirm("Hapus Satuan Pendidikan", "Apakah Anda yakin ingin menghapus satuan pendidikan ini dari database Firebase?", true, "Hapus");
+            if (!ok) return;
+            try {
+                await window.SigapFirebaseDrive.deleteSchoolFromFirestore(no);
+                baseSchools = baseSchools.filter(s => Number(s.no) !== Number(no));
                 delete monthlyData[no];
-                if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.deleteSchoolFromFirestore === "function") {
-                    window.SigapFirebaseDrive.deleteSchoolFromFirestore(no).catch(e => console.warn("Delete school Firestore:", e));
-                }
-                if (typeof isNodeBackend === "function" && isNodeBackend()) {
-                    fetch(NODE_API_BASE + "/api/schools/" + encodeURIComponent(no), {
-                        method: "DELETE",
-                        credentials: "include",
-                        headers: typeof nodeHeaders === "function" ? nodeHeaders() : {}
-                    }).catch(() => {});
-                }
-                saveToLocalStorage();
+                await window.SigapFirebaseDrive.syncPublicDirectoryToFirestore(baseSchools);
+                await window.SigapFirebaseDrive.logAuditToFirestore("delete_school", { schoolNo: no }, currentUser);
                 renderMasterSchoolTable();
-                alert("Satuan pendidikan berhasil dihapus dari Firebase Firestore.");
+                appToast("Satuan pendidikan berhasil dihapus dari Firebase Firestore.", "ok");
+            } catch (e) {
+                appToast("Gagal menghapus satuan pendidikan dari Firestore: " + ((e && e.message) || e), "err");
             }
         }
 
@@ -2038,7 +1517,7 @@
             if (!file) return;
 
             const reader = new FileReader();
-            reader.onload = function(evt) {
+            reader.onload = async function(evt) {
                 try {
                     const data = new Uint8Array(evt.target.result);
                     const workbook = XLSX.read(data, { type: 'array' });
@@ -2047,7 +1526,7 @@
                     const json = XLSX.utils.sheet_to_json(worksheet);
 
                     if (json.length === 0) {
-                        alert("File kosong atau format tidak sesuai!");
+                        appToast("File kosong atau format tidak sesuai!", "err");
                         return;
                     }
 
@@ -2075,38 +1554,18 @@
 
                     baseSchools = newBaseSchools;
                     monthlyData = {};
-                    baseSchools.forEach(s => {
-                        monthlyData[s.no] = {};
-                        months.forEach(m => {
-                            monthlyData[s.no][m] = {
-                                saldoAwalCustom: m === "Jan" ? 0 : null,
-                                saldoReguler: m === "Jan" ? 0 : null,
-                                saldoKinerja: m === "Jan" ? 0 : null,
-                                saldoNonBOS: m === "Jan" ? 0 : null,
-                                pendapatan: { reguler: 0, kinerja: 0, jagirMasuk: 0, setoranTunai: 0, lebihTransferMasuk: 0 },
-                                belanja: { pegawai: 0, barjasReg: 0, barjasKin: 0, pm: 0, pmKin: 0, atl: 0, atlKin: 0, jagirKeluar: 0, lebihTransferKeluar: 0 },
-                                documents: {
-                                    rekeningKoran: { url: "", checked: false },
-                                    bku: { url: "", checked: false },
-                                    rekapanBelanja: { url: "", checked: false },
-                                    lra: { url: "", checked: false },
-                                    bukuPajak: { url: "", checked: false },
-                                    sptjm: { url: "", checked: false }
-                                },
-                                verifStatus: "Draft"
-                            };
-                        });
-                    });
+                    ensureEmptyMonthlySkeleton();
 
-                    saveToLocalStorage();
+                    await saveToLocalStorage();
+                    await window.SigapFirebaseDrive.syncPublicDirectoryToFirestore(baseSchools);
                     renderMasterSchoolTable();
                     populateKecamatanFilter();
                     populateInputModalOptions();
                     updateActiveMonthData();
-                    alert(`Berhasil mengimpor ${baseSchools.length} satuan pendidikan & disinkronkan!`);
+                    appToast(`Berhasil mengimpor ${baseSchools.length} satuan pendidikan ke Firebase Firestore!`, "ok");
                 } catch (err) {
                     console.error(err);
-                    alert("Gagal membaca file Excel/CSV. Pastikan format kolom sesuai.");
+                    appToast("Gagal membaca file Excel/CSV. Pastikan format kolom sesuai.", "err");
                 }
             };
             reader.readAsArrayBuffer(file);
@@ -2773,11 +2232,12 @@
             // Penjaga terakhir (setelah data terbaru dimuat): bulan terverifikasi tidak boleh diinput lagi
             if (isMonthLocked(schoolNo, month)) {
                 if (currentUser && currentUser.role === "Operator Sekolah") {
-                    alert(`Bulan ${monthNames[months.indexOf(month)]} sudah diverifikasi Dinas dan terkunci. Anda tidak dapat lagi menginput atau mengunggah berkas untuk bulan ini.`);
+                    appToast(`Bulan ${monthNames[months.indexOf(month)]} sudah diverifikasi Dinas dan terkunci. Anda tidak dapat lagi menginput atau mengunggah berkas untuk bulan ini.`, "err");
                     loadSchoolMonthIntoForm();
                     return;
                 }
-                if (!confirm(`Bulan ${monthNames[months.indexOf(month)]} sudah berstatus "${monthlyData[schoolNo][month].verifStatus}". Tetap simpan perubahan sebagai Admin Dinas?`)) return;
+                const okAdminEdit = await appConfirm(`Bulan ${monthNames[months.indexOf(month)]} sudah berstatus "${monthlyData[schoolNo][month].verifStatus}". Tetap simpan perubahan sebagai Admin Dinas?`);
+                if (!okAdminEdit) return;
             }
             const initialVerif = currentUser && currentUser.role === "Operator Sekolah" ? "Diajukan Sekolah" : (monthlyData[schoolNo]?.[month]?.verifStatus || "Draft");
 
@@ -2808,7 +2268,6 @@
                 { key: 'sptjm', elId: 'fileSPTJM' }
             ];
 
-            // Normalisasi: pastikan SEMUA kunci dokumen ada (data dari Sheets bisa kosong/parsial)
             let existingDocs = monthlyData[schoolNo][month].documents;
             if (typeof existingDocs === "string") {
                 try { existingDocs = JSON.parse(existingDocs); } catch (e) { existingDocs = {}; }
@@ -2821,32 +2280,30 @@
             });
 
             const loader = document.getElementById("syncLoadingOverlay");
-            
+            const schoolObj = baseSchools.find(x => Number(x.no) === Number(schoolNo)) || {};
+
             for (let doc of docFields) {
                 const fileInput = document.getElementById(doc.elId);
                 if (fileInput && fileInput.files && fileInput.files[0]) {
-                    if(loader) loader.classList.remove("hidden");
+                    if (loader) loader.classList.remove("hidden");
                     const file = fileInput.files[0];
                     try {
-                        // Coba cek server, tapi jangan blokir upload jika gagal (bisa karena cache/CDN)
-                        try { await ensureServerReady(); } catch (e) {}
-                        const base64Data = await fileToBase64(file);
-                        const schoolObj = baseSchools.find(x => Number(x.no) === Number(schoolNo)) || {};
-                        const uploadResult = await gasPost({
-                            action: "uploadFile",
+                        if (!window.SigapFirebaseDrive || typeof window.SigapFirebaseDrive.uploadPdfToGoogleDrive !== "function") {
+                            throw new Error("Layanan unggah Google Drive belum siap.");
+                        }
+                        const uploadResult = await window.SigapFirebaseDrive.uploadPdfToGoogleDrive(file, {
                             schoolNo: schoolNo,
                             schoolName: schoolObj.name || "",
                             npsn: schoolObj.npsn || "",
                             month: month,
+                            periodKey: month,
                             year: activeYear,
                             docType: doc.key,
                             fileName: file.name,
-                            fileObj: file,
-                            fileData: base64Data,
                             existingDriveFileId: existingDocs[doc.key].driveFileId || ""
                         });
-                        if (uploadResult.status !== "success" || !uploadResult.fileUrl) {
-                            throw new Error(uploadResult.message || "Respon server tidak valid");
+                        if (!uploadResult || uploadResult.status !== "success" || !uploadResult.fileUrl) {
+                            throw new Error((uploadResult && uploadResult.message) || "Respon Google Drive tidak valid");
                         }
                         existingDocs[doc.key].url = uploadResult.fileUrl;
                         if (uploadResult.driveFileId) existingDocs[doc.key].driveFileId = uploadResult.driveFileId;
@@ -2854,9 +2311,9 @@
                         if (existingDocs[doc.key].needsFix) existingDocs[doc.key].reuploaded = true;
                     } catch (e) {
                         console.error("Gagal mengunggah file ke Google Drive:", e);
-                        alert(`Gagal mengunggah "${file.name}" ke Google Drive: ${e.message}. Data lain tetap disimpan.`);
+                        appToast(`Gagal mengunggah "${file.name}" ke Google Drive: ${e.message}. Data lain tetap disimpan.`, "err");
                     }
-                    if(loader) loader.classList.add("hidden");
+                    if (loader) loader.classList.add("hidden");
                 }
             }
 
@@ -2877,7 +2334,6 @@
                     pmKin: parseFloat(document.getElementById("outPMKin").value) || 0,
                     atl: parseFloat(document.getElementById("outATL").value) || 0,
                     atlKin: parseFloat(document.getElementById("outATLKin").value) || 0,
-                    // SWASTA: SETOR JAGIR input manual; NEGERI: otomatis = JASA GIRO
                     jagirKeluar: isSwastaSchool(schoolNo)
                         ? (parseFloat(document.getElementById("outJagirKeluar").value) || 0)
                         : (parseFloat(document.getElementById("inJagirMasuk").value) || 0),
@@ -2893,10 +2349,10 @@
                 verifStatus: initialVerif
             };
 
-            saveToLocalStorage();
+            await saveToLocalStorage(schoolNo);
             closeInputModal();
             updateActiveMonthData();
-            alert("Realisasi & Dokumen PDF berhasil disimpan persisten & disinkronkan!");
+            appToast("Realisasi & Dokumen PDF berhasil disimpan ke Firebase Firestore & Google Drive!", "ok");
         }
 
         function isReconDone(no, m) {
@@ -2904,8 +2360,12 @@
             return !!(d && d.reconDone);
         }
 
-        function toggleReconDone(no, done) {
-            if (!currentUser || currentUser.role !== "Admin Dinas") { alert("Akses ditolak! Hanya Admin Dinas yang dapat menandai selesai."); return; }
+        async function toggleReconDone(no, done) {
+            if (!currentUser || currentUser.role !== "Admin Dinas") {
+                appToast("Akses ditolak! Hanya Admin Dinas yang dapat menandai selesai.", "err");
+                renderTable();
+                return;
+            }
             if (!monthlyData[no]) monthlyData[no] = {};
             const rm = refMonth();
             if (!monthlyData[no][rm]) {
@@ -2918,7 +2378,10 @@
             const md = monthlyData[no][rm];
             if (done) {
                 const n = countDocsNeedFix(md.documents);
-                if (n > 0 && !confirm(`Masih ada ${n} dokumen "Perlu perbaikan". Tetap tandai sekolah ini selesai rekonsiliasi?`)) { renderTable(); return; }
+                if (n > 0) {
+                    const okRecon = await appConfirm(`Masih ada ${n} dokumen "Perlu perbaikan". Tetap tandai sekolah ini selesai rekonsiliasi?`);
+                    if (!okRecon) { renderTable(); return; }
+                }
                 md.reconDone = true;
                 md.reconDoneAt = new Date().toISOString();
             } else {
@@ -2926,7 +2389,10 @@
                 delete md.reconDoneAt;
             }
             waEnqueue(no, "recon", () => done ? "Rekonsiliasi dinyatakan *SELESAI* oleh Dinas" : "Penandaan selesai rekonsiliasi dibatalkan oleh Dinas");
-            saveToLocalStorage(no);
+            await saveToLocalStorage(no);
+            if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.syncPublicRankToFirestore === "function") {
+                window.SigapFirebaseDrive.syncPublicRankToFirestore(activeYear, rm, monthlyData, baseSchools).catch(e => console.warn("Sync public rank:", e));
+            }
             const pg = currentPage;
             updateActiveMonthData();
             currentPage = pg;
@@ -3102,8 +2568,8 @@
         }
 
         function exportRekonDetailExcel() {
-            if (!currentUser || currentUser.role !== "Admin Dinas") { alert("Akses ditolak! Ekspor khusus Admin Dinas."); return; }
-            if (!filteredData.length) { alert("Tidak ada data untuk diekspor."); return; }
+            if (!currentUser || currentUser.role !== "Admin Dinas") { appToast("Akses ditolak! Ekspor khusus Admin Dinas.", "err"); return; }
+            if (!filteredData.length) { appToast("Tidak ada data untuk diekspor.", "err"); return; }
             const left = ["No", "NPSN", "Nama Sekolah", "Kecamatan", "Jenjang"], right = ["Status Verifikasi", "Selesai Rekonsiliasi", "Waktu Selesai"];
             const nCols = left.length + DETAIL_COLS.length + right.length;
             const g1 = new Array(nCols).fill(""), g2 = left.concat(DETAIL_COLS.map(c => c.l), right);
@@ -3127,8 +2593,8 @@
         }
 
         function exportRekonDetailCSV() {
-            if (!currentUser || currentUser.role !== "Admin Dinas") { alert("Akses ditolak! Ekspor khusus Admin Dinas."); return; }
-            if (!filteredData.length) { alert("Tidak ada data untuk diekspor."); return; }
+            if (!currentUser || currentUser.role !== "Admin Dinas") { appToast("Akses ditolak! Ekspor khusus Admin Dinas.", "err"); return; }
+            if (!filteredData.length) { appToast("Tidak ada data untuk diekspor.", "err"); return; }
             const hdr = ["No", "NPSN", "Nama Sekolah", "Kecamatan", "Jenjang"]
                 .concat(DETAIL_GROUPS.reduce((a, g) => a.concat(g.cols.map(c => g.label.replace(/^\d+\.\s*/, "") + " - " + c.l)), []),
                         ["Status Verifikasi", "Selesai Rekonsiliasi", "Waktu Selesai"]);
@@ -3160,7 +2626,7 @@
         })();
 
         function openNilaiModal() {
-            if (!currentUser || currentUser.role !== "Admin Dinas") { alert("Akses ditolak! Fitur ini khusus Admin Dinas."); return; }
+            if (!currentUser || currentUser.role !== "Admin Dinas") { appToast("Akses ditolak! Fitur ini khusus Admin Dinas.", "err"); return; }
             const sel = document.getElementById("nilaiMonth");
             sel.innerHTML = "";
             months.forEach((m, i) => { const o = document.createElement("option"); o.value = m; o.textContent = monthNames[i] + " " + activeYear; sel.appendChild(o); });
@@ -3245,9 +2711,9 @@
                     const wb = XLSX.read(new Uint8Array(evt.target.result), { type: "array" });
                     const sheetName = wb.SheetNames.indexOf("Input Nilai") > -1 ? "Input Nilai" : wb.SheetNames[0];
                     const json = XLSX.utils.sheet_to_json(wb.Sheets[sheetName], { defval: "", raw: true });
-                    if (!json.length) { alert("File kosong atau format tidak sesuai!"); return; }
+                    if (!json.length) { appToast("File kosong atau format tidak sesuai!", "err"); return; }
 
-                    // Muat data terbaru dulu agar status kunci/verifikasi & isian sekolah tidak basi
+                    // Muat data terbaru dulu dari Firebase Firestore agar status kunci/verifikasi tidak basi
                     if (loader) loader.classList.remove("hidden");
                     await loadFromGoogleSheets();
                     if (loader) loader.classList.add("hidden");
@@ -3258,7 +2724,7 @@
                     const plan = [], locked = [], notFound = [], wrongMonth = [], badCells = [];
                     let untouched = 0;
 
-                    json.forEach((row, i) => {
+                    json.forEach((row) => {
                         const keys = Object.keys(row);
                         const colOf = n => keys.filter(k => normHdr(k) === n)[0];
                         const npsn = String(row[colOf("NPSN")] === undefined ? "" : row[colOf("NPSN")]).trim();
@@ -3288,41 +2754,34 @@
                     resEl.innerHTML = `<div class="space-y-2">${li("Terkunci / sudah diverifikasi", locked, "bg-slate-50 border-slate-200 text-slate-700")}${li("Tidak ditemukan", notFound, "bg-rose-50 border-rose-200 text-rose-800")}${li("Bulan tidak sesuai", wrongMonth, "bg-amber-50 border-amber-200 text-amber-800")}${li("Sel tidak valid", badCells, "bg-rose-50 border-rose-200 text-rose-800")}</div>`;
                     resEl.classList.remove("hidden");
 
-                    if (!plan.length) { alert("Tidak ada nilai yang dapat diimpor.\n\n" + summary.split("\n\n")[0]); return; }
-                    if (!confirm(summary)) return;
+                    if (!plan.length) { appToast("Tidak ada nilai yang dapat diimpor. " + summary.split("\n\n")[0], "err"); return; }
+                    const okImport = await appConfirm(summary);
+                    if (!okImport) return;
 
                     const rolled0 = computeRolledData();
                     plan.forEach(it => applyNilai(it.s, month, it.vals, rolled0));
 
-                    try { localStorage.setItem(yearKey("monthlyData"), JSON.stringify(monthlyData)); } catch (er) {}
-                    let syncMsg = "";
-                    // Sinkron ke Node server ATAU Google Apps Script
-                    if (isNodeBackend() || isGasConfigured()) {
-                        if (loader) loader.classList.remove("hidden");
-                        try {
-                            const subset = {};
-                            plan.forEach(it => { subset[it.s.no] = monthlyData[it.s.no]; });
-                            const resp = await gasPost({ action: "saveAll", year: activeYear, partial: true, monthlyData: subset });
-                            if (!resp || resp.status !== "success") {
-                                syncMsg = "\nPeringatan: gagal sinkron ke server (" + ((resp && resp.message) || "tidak diketahui") + "). Data tersimpan lokal.";
-                            } else {
-                                syncMsg = "\nData juga tersimpan ke server (monthly_" + activeYear + ".json).";
+                    if (loader) loader.classList.remove("hidden");
+                    try {
+                        const subset = {};
+                        plan.forEach(it => { subset[it.s.no] = monthlyData[it.s.no]; });
+                        if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.syncSavePayloadToFirestore === "function") {
+                            await window.SigapFirebaseDrive.syncSavePayloadToFirestore({ action: "saveAll", year: activeYear, partial: true, monthlyData: subset }, currentUser);
+                            if (typeof window.SigapFirebaseDrive.logAuditToFirestore === "function") {
+                                window.SigapFirebaseDrive.logAuditToFirestore("IMPORT_NILAI", `Impor nilai ${plan.length} sekolah bulan ${monthName} ${activeYear}`, { year: activeYear, month: month, count: plan.length }).catch(() => {});
                             }
-                        } catch (er) {
-                            syncMsg = "\nPeringatan: gagal sinkron ke server (" + er.message + "). Data tersimpan lokal. Pastikan sudah login.";
                         }
+                    } finally {
                         if (loader) loader.classList.add("hidden");
-                    } else {
-                        syncMsg = "\nCatatan: mode offline — data hanya di browser ini.";
                     }
                     const pg = currentPage;
                     updateActiveMonthData();
                     currentPage = pg; renderTable();
-                    alert(`Berhasil mengimpor nilai ${plan.length} sekolah untuk bulan ${monthName}.` + syncMsg);
+                    appToast(`Berhasil mengimpor nilai ${plan.length} sekolah untuk bulan ${monthName} & tersimpan ke Firebase Firestore!`, "ok");
                 } catch (err) {
                     console.error(err);
                     if (loader) loader.classList.add("hidden");
-                    alert("Gagal membaca file Excel/CSV. Gunakan template yang diunduh dari aplikasi ini.");
+                    appToast("Gagal mengimpor file Excel/CSV: " + (err && err.message ? err.message : "Gunakan template yang diunduh dari aplikasi ini."), "err");
                 } finally {
                     e.target.value = "";
                 }
@@ -3402,29 +2861,26 @@
             body.innerHTML = '<tr><td colspan="5" style="padding:24px;text-align:center;color:#94a3b8">Memuat…</td></tr>';
 
             try {
-                const base = (typeof isNodeBackend === "function" && isNodeBackend() && typeof NODE_API_BASE !== "undefined")
-                    ? NODE_API_BASE : (window.location.origin || "");
-                const r = await fetch(base + "/api/public/rank?year=" + year + "&month=" + encodeURIComponent(month), { cache: "no-store" });
-                if (r.ok) {
-                    const j = await r.json();
-                    if (j.status === "success" && Array.isArray(j.rows)) {
-                        if (!j.rows.length) {
+                if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.loadPublicRankFromFirestore === "function") {
+                    const rows = await window.SigapFirebaseDrive.loadPublicRankFromFirestore(year, month);
+                    if (Array.isArray(rows)) {
+                        if (!rows.length) {
                             body.innerHTML = '<tr><td colspan="5" style="padding:28px;text-align:center;color:#94a3b8">Belum ada sekolah yang ditandai selesai.</td></tr>';
                         } else {
-                            body.innerHTML = j.rows.map((row, i) => {
+                            body.innerHTML = rows.map((row, i) => {
                                 const medal = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : (i + 1);
                                 return "<tr style=\"border-top:1px solid #f1f5f9\"><td style=\"padding:10px 12px;font-weight:700\">" + medal +
-                                    "</td><td style=\"padding:10px 12px;font-weight:600\">" + String(row.name||"").replace(/</g,"") +
-                                    "</td><td style=\"padding:10px 12px\">" + String(row.kecamatan||"").replace(/</g,"") +
+                                    "</td><td style=\"padding:10px 12px;font-weight:600\">" + String(row.name || "").replace(/</g, "") +
+                                    "</td><td style=\"padding:10px 12px\">" + String(row.kecamatan || "").replace(/</g, "") +
                                     "</td><td style=\"padding:10px 12px;font-size:12px\">" + fmtPublicTime(row.doneAt) +
                                     "</td><td style=\"padding:10px 12px\">" + (row.durasi || "—") + "</td></tr>";
                             }).join("");
                         }
-                        if (note) note.textContent = "Sumber server · " + (j.rows.length) + " sekolah selesai";
+                        if (note) note.textContent = "Sumber Firebase Firestore · " + rows.length + " sekolah selesai";
                         return;
                     }
                 }
-            } catch (e) { console.warn(e); }
+            } catch (e) { console.warn("Load public rank Firestore:", e); }
 
             const eom = new Date(year, months.indexOf(month) + 1, 0, 23, 59, 59, 999).getTime();
             const done = [];
@@ -3432,9 +2888,9 @@
                 const d = monthlyData[s.no] && monthlyData[s.no][month];
                 if (d && d.reconDone) done.push({ s, t: d.reconDoneAt ? new Date(d.reconDoneAt).getTime() : NaN, iso: d.reconDoneAt });
             });
-            done.sort((a,b) => (isFinite(a.t)?a.t:1e15) - (isFinite(b.t)?b.t:1e15));
+            done.sort((a, b) => (isFinite(a.t) ? a.t : 1e15) - (isFinite(b.t) ? b.t : 1e15));
             if (!done.length) {
-                body.innerHTML = '<tr><td colspan="5" style="padding:28px;text-align:center;color:#94a3b8">Belum ada data peringkat. Muncul setelah Dinas menandai selesai, atau saat terhubung ke server.</td></tr>';
+                body.innerHTML = '<tr><td colspan="5" style="padding:28px;text-align:center;color:#94a3b8">Belum ada data peringkat. Muncul setelah Dinas menandai selesai.</td></tr>';
                 if (note) note.textContent = "Menunggu data rekonsiliasi.";
                 return;
             }
@@ -3447,17 +2903,17 @@
                     dur = days + " hari";
                 }
                 return "<tr style=\"border-top:1px solid #f1f5f9\"><td style=\"padding:10px 12px;font-weight:700\">" + medal +
-                    "</td><td style=\"padding:10px 12px;font-weight:600\">" + String(r.s.name||"").replace(/</g,"") +
-                    "</td><td style=\"padding:10px 12px\">" + String(r.s.kecamatan||"").replace(/</g,"") +
+                    "</td><td style=\"padding:10px 12px;font-weight:600\">" + String(r.s.name || "").replace(/</g, "") +
+                    "</td><td style=\"padding:10px 12px\">" + String(r.s.kecamatan || "").replace(/</g, "") +
                     "</td><td style=\"padding:10px 12px;font-size:12px\">" + fmtPublicTime(r.iso) +
                     "</td><td style=\"padding:10px 12px\">" + dur + "</td></tr>";
             }).join("");
-            if (note) note.textContent = "Sumber data lokal · " + done.length + " sekolah selesai";
+            if (note) note.textContent = "Sumber Firebase · " + done.length + " sekolah selesai";
         }
 
         function openRankModal() {
             if (!currentUser || currentUser.role !== "Admin Dinas") {
-                alert("Akses ditolak! Fitur ini khusus untuk Admin Dinas.");
+                appToast("Akses ditolak! Fitur ini khusus untuk Admin Dinas.", "err");
                 return;
             }
             const mSel = document.getElementById("rankMonth");
@@ -3993,9 +3449,9 @@
             saveToLocalStorage(schoolNo);
         }
 
-        function updateVerificationStatus(newStatus) {
+        async function updateVerificationStatus(newStatus) {
             if (!currentUser || currentUser.role !== "Admin Dinas") {
-                alert("Akses ditolak! Hanya Administrator Dinas yang dapat mengubah status verifikasi.");
+                appToast("Akses ditolak! Hanya Administrator Dinas yang dapat mengubah status verifikasi.", "err");
                 return;
             }
             if (!activeModalSchool) return;
@@ -4005,11 +3461,17 @@
             if (willLock) {
                 const curDocs = monthlyData[no]?.[refMonth()]?.documents || {};
                 const n = countDocsNeedFix(curDocs);
-                if (n > 0 && !confirm(`Masih ada ${n} dokumen yang ditandai "Perlu perbaikan". Tetap ubah status menjadi "${newStatus}"?`)) return;
+                if (n > 0) {
+                    const okFix = await appConfirm(`Masih ada ${n} dokumen yang ditandai "Perlu perbaikan". Tetap ubah status menjadi "${newStatus}"?`);
+                    if (!okFix) return;
+                }
                 const txt = pMonths.length > 1 ? `${pMonths.length} bulan pada periode ${periodLabel()}` : `bulan ${monthNames[months.indexOf(pMonths[0])]}`;
-                if (!confirm(`Setelah "${newStatus}", sekolah TIDAK DAPAT lagi menginput/mengunggah data untuk ${txt}. Lanjutkan?`)) return;
+                const okLock = await appConfirm(`Setelah "${newStatus}", sekolah TIDAK DAPAT lagi menginput/mengunggah data untuk ${txt}. Lanjutkan?`);
+                if (!okLock) return;
             }
             if (!monthlyData[no]) monthlyData[no] = {};
+            const nowIso = new Date().toISOString();
+            const by = (currentUser && (currentUser.email || currentUser.name || currentUser.username)) || "";
             pMonths.forEach(m => {
                 if (!monthlyData[no][m]) {
                     monthlyData[no][m] = {
@@ -4019,14 +3481,24 @@
                     };
                 }
                 monthlyData[no][m].verifStatus = newStatus;
-                if (willLock) { monthlyData[no][m].verifiedAt = new Date().toISOString(); monthlyData[no][m].verifiedBy = (currentUser && currentUser.username) || ""; }
-                else { delete monthlyData[no][m].verifiedAt; delete monthlyData[no][m].verifiedBy; }
+                if (willLock) {
+                    monthlyData[no][m].verifiedAt = nowIso;
+                    monthlyData[no][m].verifiedBy = by;
+                    monthlyData[no][m].verifiedBulk = false;
+                } else {
+                    monthlyData[no][m].verifiedAt = "";
+                    monthlyData[no][m].verifiedBy = "";
+                    monthlyData[no][m].verifiedBulk = false;
+                    monthlyData[no][m].unverifiedAt = nowIso;
+                    monthlyData[no][m].unverifiedBy = by;
+                    monthlyData[no][m].unverifyReason = "Dibuka kembali oleh Admin";
+                }
             });
-            saveToLocalStorage(no);
+            await saveToLocalStorage(no);
             updateActiveMonthData();
             waEnqueue(no, "status", () => `Status verifikasi: *${newStatus}*` + (willLock ? " (input data sekolah untuk periode ini dikunci)" : ""));
             openModal(no);
-            alert(`Status verifikasi berhasil diubah menjadi: ${newStatus} & disinkronkan!` + (willLock ? "\nInput sekolah untuk periode ini sekarang terkunci." : "\nKunci input sekolah untuk periode ini dibuka."));
+            appToast(`Status verifikasi berhasil diubah menjadi: ${newStatus} & tersimpan ke Firebase!` + (willLock ? " Input sekolah untuk periode ini terkunci." : " Kunci input sekolah dibuka."), "ok");
         }
 
         // =====================================================================
@@ -4074,9 +3546,9 @@
         }
 
         function openBulkVerifModal(mode) {
-            if (!currentUser || currentUser.role !== "Admin Dinas") { alert("Akses ditolak! Hanya Administrator Dinas."); return; }
+            if (!currentUser || currentUser.role !== "Admin Dinas") { appToast("Akses ditolak! Hanya Administrator Dinas.", "err"); return; }
             const cfg = BULK_CFG[mode]; if (!cfg) return;
-            if (!filteredData.length) { alert("Tidak ada sekolah pada tampilan saat ini."); return; }
+            if (!filteredData.length) { appToast("Tidak ada sekolah pada tampilan saat ini.", "err"); return; }
             const res = bulkEvaluate(mode);
             bulkState = { mode: mode, eligible: res.eligible, excluded: res.excluded };
 
@@ -4163,7 +3635,7 @@
         }
 
         async function applyBulkVerif() {
-            if (!currentUser || currentUser.role !== "Admin Dinas") { alert("Akses ditolak! Hanya Administrator Dinas."); return; }
+            if (!currentUser || currentUser.role !== "Admin Dinas") { appToast("Akses ditolak! Hanya Administrator Dinas.", "err"); return; }
             const mode = bulkState.mode, cfg = BULK_CFG[mode]; if (!cfg) return;
             const picked = bulkSelectedNos();
             if (!picked.length) return;
@@ -4173,7 +3645,7 @@
             const okSet = new Set(fresh.eligible.map(x => x.no));
             const list = picked.filter(no => okSet.has(no));
             const dropped = picked.length - list.length;
-            if (!list.length) { alert("Tidak ada sekolah yang memenuhi syarat saat ini (data berubah). Silakan buka ulang."); closeBulkVerifModal(); return; }
+            if (!list.length) { appToast("Tidak ada sekolah yang memenuhi syarat saat ini (data berubah). Silakan buka ulang.", "err"); closeBulkVerifModal(); return; }
 
             const pMonths = getPeriodMonths();
             const nFixTotal = fresh.eligible.filter(x => list.indexOf(x.no) !== -1 && x.nFix > 0).length;
@@ -4186,9 +3658,11 @@
                     (nFixTotal ? `\n⚠ ${nFixTotal} sekolah masih punya dokumen "Perlu perbaikan".` : "") +
                     `\nInput sekolah pada periode ini akan TERKUNCI.\n\nLanjutkan?`;
             }
-            if (!confirm(msg)) return;
+            const okBulk = await appConfirm(msg);
+            if (!okBulk) return;
 
-            const nowIso = new Date().toISOString(), by = (currentUser && currentUser.username) || "";
+            const nowIso = new Date().toISOString();
+            const by = (currentUser && (currentUser.email || currentUser.name || currentUser.username)) || "";
             const notify = document.getElementById("bulkNotifyWA").checked;
             list.forEach(no => {
                 if (!monthlyData[no]) monthlyData[no] = {};
@@ -4202,12 +3676,12 @@
                     }
                     monthlyData[no][m].verifStatus = cfg.status;
                     if (mode === "draft") {
-                        // Buka kunci: hapus jejak verifikasi sebelumnya
-                        monthlyData[no][m].verifiedAt = null;
-                        monthlyData[no][m].verifiedBy = null;
+                        monthlyData[no][m].verifiedAt = "";
+                        monthlyData[no][m].verifiedBy = "";
                         monthlyData[no][m].verifiedBulk = false;
-                        monthlyData[no][m].reopenedAt = nowIso;
-                        monthlyData[no][m].reopenedBy = by;
+                        monthlyData[no][m].unverifiedAt = nowIso;
+                        monthlyData[no][m].unverifiedBy = by;
+                        monthlyData[no][m].unverifyReason = "Dibuka kembali oleh Admin";
                     } else {
                         monthlyData[no][m].verifiedAt = nowIso;
                         monthlyData[no][m].verifiedBy = by;
@@ -4233,11 +3707,9 @@
             renderTable();
             closeBulkVerifModal();
             if (mode === "draft") {
-                alert(`${cfg.title} selesai.\n- ${list.length} sekolah berhasil dikembalikan ke "Draft" (kunci dibuka)` +
-                    `\n- ${fresh.excluded.length + dropped} sekolah dilewati (sudah Draft / status tidak sesuai)`);
+                appToast(`${cfg.title} selesai. ${list.length} sekolah dikembalikan ke "Draft" (kunci dibuka), ${fresh.excluded.length + dropped} dilewati.`, "ok");
             } else {
-                alert(`${cfg.title} selesai.\n- ${list.length} sekolah berhasil menjadi "${cfg.status}"` +
-                    `\n- ${fresh.excluded.length + dropped} sekolah dilewati (ada selisih / status tidak sesuai)`);
+                appToast(`${cfg.title} selesai. ${list.length} sekolah menjadi "${cfg.status}", ${fresh.excluded.length + dropped} dilewati.`, "ok");
             }
         }
 
@@ -4254,7 +3726,7 @@
 
         function openSP2BModalDirect(schoolNo) {
             if (!currentUser || currentUser.role !== "Admin Dinas") {
-                alert("Akses ditolak! Cetak SP2B khusus untuk Admin Dinas.");
+                appToast("Akses ditolak! Cetak SP2B khusus untuk Admin Dinas.", "err");
                 return;
             }
             const s = baseSchools.find(item => item.no === schoolNo);
@@ -4383,7 +3855,7 @@
 
         function openKecamatanModal() {
             if (!currentUser || currentUser.role !== "Admin Dinas") {
-                alert("Akses ditolak! Fitur rekapitulasi kecamatan khusus untuk Admin Dinas.");
+                appToast("Akses ditolak! Fitur rekapitulasi kecamatan khusus untuk Admin Dinas.", "err");
                 return;
             }
             renderKecamatanTable();
@@ -4442,7 +3914,7 @@
 
         function openAnnualSP2BModal() {
             if (!currentUser || currentUser.role !== "Admin Dinas") {
-                alert("Akses ditolak! Rekapitulasi SP2B 1 Tahun penuh khusus untuk Admin Dinas.");
+                appToast("Akses ditolak! Rekapitulasi SP2B 1 Tahun penuh khusus untuk Admin Dinas.", "err");
                 return;
             }
             ["annualYearTitle", "annualYearBody", "annualYearNote", "annualNomorYear"].forEach(id => {
@@ -4514,24 +3986,22 @@
         const KB_TEXT_FIELDS = { kbNomor: "nomor", kbTanggal: "tanggal", kbTempat: "tempat", kbDpa: "dpa", kbUrusan: "urusan", kbOrg: "organisasi", kbJabatan: "jabatan", kbNama: "nama", kbNip: "nip", kbNamaSatuan: "namaSatuan" };
 
         function sp2bKabStore() {
-            try {
-                const st = JSON.parse(localStorage.getItem(yearKey("sp2bKab")));
-                if (st && st.records) return st;
-            } catch (e) {}
-            return { last: {}, records: {} };
-        }
-        function sp2bKabPersist(st) {
-            try { localStorage.setItem(yearKey("sp2bKab"), JSON.stringify(st)); } catch (e) { console.error(e); }
-            if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.syncSp2bKabToFirestore === "function") {
-                window.SigapFirebaseDrive.syncSp2bKabToFirestore(activeYear, st.records || {}, st.last || {}).catch(e => console.warn("Sync sp2bKab Firestore:", e));
+            if (!sp2bKabCache || typeof sp2bKabCache !== "object") {
+                sp2bKabCache = { last: {}, records: {} };
             }
-            if (typeof isNodeBackend === "function" && isNodeBackend()) {
-                fetch(NODE_API_BASE + "/api/sp2b-kab", {
-                    method: "POST",
-                    credentials: "include",
-                    headers: typeof nodeHeaders === "function" ? nodeHeaders() : { "Content-Type": "application/json" },
-                    body: JSON.stringify({ year: activeYear, records: st.records || {}, last: st.last || {} })
-                }).catch(() => {});
+            if (!sp2bKabCache.records || typeof sp2bKabCache.records !== "object") sp2bKabCache.records = {};
+            if (!sp2bKabCache.last || typeof sp2bKabCache.last !== "object") sp2bKabCache.last = {};
+            return sp2bKabCache;
+        }
+        async function sp2bKabPersist(st) {
+            sp2bKabCache = st && typeof st === "object" ? st : { last: {}, records: {} };
+            if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.syncSp2bKabToFirestore === "function") {
+                try {
+                    await window.SigapFirebaseDrive.syncSp2bKabToFirestore(activeYear, sp2bKabCache.records || {}, sp2bKabCache.last || {});
+                } catch (e) {
+                    console.warn("Sync sp2bKab Firestore:", e);
+                    appToast("Gagal menyinkronkan isian SP2B Kabupaten ke Firebase: " + e.message, "err");
+                }
             }
         }
         function kbEl(id) { return document.getElementById(id); }
@@ -4592,10 +4062,16 @@
             return `${per} ${th} · ${jen === "ALL" ? "SD+SMP" : jen} · ${sttLabel}${st && st.nomor ? " · No. " + st.nomor : ""}`;
         }
 
-        function openSP2BKabModal() {
+        async function openSP2BKabModal() {
             if (!currentUser || currentUser.role !== "Admin Dinas") {
-                alert("Akses ditolak! Cetak SP2B Kabupaten khusus untuk Admin Dinas.");
+                appToast("Akses ditolak! Cetak SP2B Kabupaten khusus untuk Admin Dinas.", "err");
                 return;
+            }
+            if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.loadSp2bKabFromFirestore === "function") {
+                try {
+                    const kb = await window.SigapFirebaseDrive.loadSp2bKabFromFirestore(activeYear);
+                    if (kb && typeof kb === "object") sp2bKabCache = { last: kb.last || {}, records: kb.records || {} };
+                } catch (e) { console.warn("Load SP2B Kab Firestore:", e); }
             }
             const st = sp2bKabStore();
             // Inisialisasi dari periode yang sedang aktif di dashboard + tahun aktif
@@ -4634,14 +4110,14 @@
             return rec;
         }
 
-        function sp2bKabSave() {
+        async function sp2bKabSave() {
             const st = sp2bKabStore();
             const rec = sp2bKabCollect();
             st.records[sp2bKabKey()] = rec;
             st.last = { tempat: rec.tempat, dpa: rec.dpa, urusan: rec.urusan, organisasi: rec.organisasi, jabatan: rec.jabatan, nama: rec.nama, nip: rec.nip };
-            sp2bKabPersist(st);
+            await sp2bKabPersist(st);
             sp2bKabRefreshArsip();
-            alert("Isian SP2B untuk periode ini berhasil disimpan.");
+            appToast("Isian SP2B untuk periode ini berhasil disimpan ke Firebase Firestore.", "ok");
         }
 
         function sp2bKabLoadArsip() {
@@ -4658,20 +4134,23 @@
             sp2bKabRender();
         }
 
-        function sp2bKabDeleteArsip() {
+        async function sp2bKabDeleteArsip() {
             const k = kbEl("kbArsip").value;
-            if (!k || !confirm("Hapus arsip isian SP2B terpilih?")) return;
+            if (!k) return;
+            const okDel = await appConfirm("Hapus arsip isian SP2B terpilih?");
+            if (!okDel) return;
             const st = sp2bKabStore();
             delete st.records[k];
-            sp2bKabPersist(st);
+            await sp2bKabPersist(st);
             sp2bKabRefreshArsip();
+            appToast("Arsip isian SP2B berhasil dihapus.", "ok");
         }
 
         function sp2bKabPrint() {
             sp2bKabRender();
             const area = document.getElementById("sp2bKabPrintArea");
             if (!area || !area.innerHTML.trim()) {
-                alert("Pratinjau SP2B masih kosong. Pastikan periode & data sudah terisi, lalu coba lagi.");
+                appToast("Pratinjau SP2B masih kosong. Pastikan periode & data sudah terisi, lalu coba lagi.", "err");
                 return;
             }
             document.body.classList.add("kb-printing");
@@ -4878,7 +4357,7 @@
 
         function exportCSV() {
             if (!currentUser || currentUser.role !== "Admin Dinas") {
-                alert("Akses ditolak! Ekspor data kabupaten khusus untuk Admin Dinas.");
+                appToast("Akses ditolak! Ekspor data kabupaten khusus untuk Admin Dinas.", "err");
                 return;
             }
             let pLabel = periodType === 'bulan' ? currentMonth : (periodType === 'triwulan' ? currentTriwulan : (periodType === 'semester' ? (currentSemester === 'S2' ? 'Semester2' : 'Semester1') : 'Tahunan'));
@@ -4929,34 +4408,13 @@
             el.innerHTML = '<p class="text-xs text-slate-500"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Memuat rekap penganggaran RKAS dari Firebase Firestore…</p>';
             try {
                 let merged = {};
-                try {
-                    const resp = await fetch(NODE_API_BASE + "/api/anggaran?year=" + encodeURIComponent(activeYear), {
-                        credentials: "include", cache: "no-store", headers: nodeHeaders()
-                    });
-                    const j = await resp.json();
-                    if (resp.ok && j.status === "success" && j.data) {
-                        merged = j.data;
-                    }
-                } catch (_) {}
-
                 if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.loadAnggaranFromFirestore === "function") {
-                    try {
-                        const filterNo = currentUser.role === "Operator Sekolah" ? currentUser.schoolNo : null;
-                        const fbArkas = await window.SigapFirebaseDrive.loadAnggaranFromFirestore(activeYear, filterNo);
-                        if (fbArkas && typeof fbArkas === "object") {
-                            Object.keys(fbArkas).forEach(no => {
-                                if (!merged[no]) merged[no] = {};
-                                Object.keys(fbArkas[no] || {}).forEach(t => {
-                                    if (!merged[no][t]) merged[no][t] = {};
-                                    Object.assign(merged[no][t], fbArkas[no][t]);
-                                });
-                            });
-                        }
-                    } catch (fbErr) {
-                        console.warn("Load Arkas Beranda dari Firestore:", fbErr);
+                    const filterNo = currentUser.role === "Operator Sekolah" ? currentUser.schoolNo : null;
+                    const fbArkas = await window.SigapFirebaseDrive.loadAnggaranFromFirestore(activeYear, filterNo);
+                    if (fbArkas && typeof fbArkas === "object") {
+                        merged = fbArkas;
                     }
                 }
-
                 arkasData = merged;
                 drawBerandaArkas();
             } catch (e) {
@@ -5097,7 +4555,6 @@
                 while (box.children.length > 4) box.removeChild(box.firstChild);
                 setTimeout(close, Math.min(9000, 3800 + text.length * 45));
             };
-            window.alert = function (msg) { window.rkToast(msg); };
 
             /* ---------- Filter ringkas di ponsel ---------- */
             window.toggleFilters = function () {
@@ -5221,17 +4678,12 @@
                     document.body.classList.remove("kb-printing");
                     ["authModal", "sp2bModal", "sp2bKabModal", "sp2bAnnualModal", "schoolDashboardModal",
                      "kecamatanModal", "rekapSekolahModal", "detailModal", "profileModal", "inputModal",
-                     "masterModal", "userListModal", "waLogModal", "changePasswordModal", "rankModal",
+                     "masterModal", "userListModal", "waLogModal", "rankModal",
                      "bulkVerifModal", "nilaiModal", "auditLogModal"
                     ].forEach(function (id) {
                         var m = document.getElementById(id);
                         if (m && !m.classList.contains("hidden")) m.classList.add("hidden");
                     });
-                });
-                // Enter pada kolom login = Masuk
-                ["loginUsername", "loginPassword"].forEach(function (id) {
-                    var el = document.getElementById(id);
-                    if (el) el.addEventListener("keydown", function (e) { if (e.key === "Enter" && typeof handleLogin === "function") handleLogin(); });
                 });
             });
         })();

@@ -7,10 +7,10 @@
  *   - Cetak Rekap Realisasi        : dokumen cetak dengan kolom tanda tangan pejabat
  *   - Dashboard Rekap              : identitas + tanda tangan pejabat untuk akun sekolah
  *
- * Data tersimpan di data/schools.json (kepalaSekolah, bendahara) lewat GET/PUT /api/school-profile.
+ * Data tersimpan langsung di Firebase Firestore (/schools/{no}).
  * Bergantung pada variabel/fungsi global app.js: currentUser, baseSchools, filteredData, monthlyData,
- * findSchoolForUser, formatRupiah, periodLabel, refMonth, computeRolledData, activeYear, nodeHeaders,
- * NODE_API_BASE, DOC_LABELS, LOCKED_STATUSES, isReconDone, openInputModal, openModal.
+ * findSchoolForUser, formatRupiah, periodLabel, refMonth, computeRolledData, activeYear,
+ * DOC_LABELS, LOCKED_STATUSES, isReconDone, openInputModal, openModal.
  */
 (function (w) {
   "use strict";
@@ -45,19 +45,9 @@
   function tanggalIni() {
     return new Date().toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
   }
-  function toast(msg, type) { if (typeof w.rkToast === "function") w.rkToast(msg, type); else alert(msg); }
-  function api(path, opt) {
-    opt = opt || {};
-    return fetch(NODE_API_BASE + path, {
-      method: opt.method || "GET", credentials: "include", cache: "no-store",
-      headers: typeof nodeHeaders === "function" ? nodeHeaders() : { "Content-Type": "application/json" },
-      body: opt.body ? JSON.stringify(opt.body) : undefined
-    }).then(function (r) {
-      return r.json().catch(function () { return {}; }).then(function (j) {
-        if (!r.ok || j.status === "error") throw new Error(j.message || ("HTTP " + r.status));
-        return j;
-      });
-    });
+  function toast(msg, type) {
+    if (typeof w.rkToast === "function") w.rkToast(msg, type);
+    else if (w.SigapFirebaseDrive && typeof w.SigapFirebaseDrive.showDriveToast === "function") w.SigapFirebaseDrive.showDriveToast(msg, type);
   }
 
   /* --------------------------------------------- blok tanda tangan (cetak) */
@@ -166,26 +156,21 @@
   function openProfileModal(no) {
     ensureModals();
     var sch = isOp() ? mySchool() : (typeof baseSchools !== "undefined" ? baseSchools.find(function (s) { return Number(s.no) === Number(no); }) : null);
-    if (!sch) { alert("Data sekolah Anda tidak ditemukan di Data Master. Hubungi Admin Dinas."); return; }
+    if (!sch) { toast("Data sekolah Anda tidak ditemukan di Data Master. Hubungi Admin Dinas.", "err"); return; }
     state.no = Number(sch.no);
-    fillForm(sch);                                   // tampil cepat dari data lokal
+    fillForm(sch);
     $("profileModal").classList.remove("hidden");
-    // Prioritaskan baca langsung dari Firebase Firestore
     if (w.SigapFirebaseDrive && typeof w.SigapFirebaseDrive.loadSchoolsFromFirestore === "function") {
-      w.SigapFirebaseDrive.loadSchoolsFromFirestore().then(function (fbSchools) {
-        if (!Array.isArray(fbSchools)) return;
-        var found = fbSchools.find(function (x) { return Number(x.no) === Number(sch.no); });
-        if (found && state.no === Number(found.no)) {
-          mergeLocal(found);
-          fillForm(Object.assign({}, sch, found));
-        }
-      }).catch(function () {});
-    } else {
-      var q = isOp() ? "" : "?no=" + encodeURIComponent(sch.no);
-      api("/api/school-profile" + q).then(function (j) {
-        if (!j.school || state.no !== Number(j.school.no)) return;
-        mergeLocal(j.school); fillForm(Object.assign({}, sch, j.school));
-      }).catch(function () { /* pakai data lokal */ });
+      w.SigapFirebaseDrive.whenReady()
+        .then(function () { return w.SigapFirebaseDrive.loadSchoolsFromFirestore(); })
+        .then(function (fbSchools) {
+          if (!Array.isArray(fbSchools)) return;
+          var found = fbSchools.find(function (x) { return Number(x.no) === Number(sch.no); });
+          if (found && state.no === Number(found.no)) {
+            mergeLocal(found);
+            fillForm(Object.assign({}, sch, found));
+          }
+        }).catch(function () {});
     }
     setTimeout(function () { var el = $("pf_kepsek_nama"); if (el) el.focus(); }, 60);
   }
@@ -206,37 +191,31 @@
     var t = baseSchools.find(function (s) { return Number(s.no) === Number(sch.no); });
     if (!t) return;
     t.kepalaSekolah = sch.kepalaSekolah; t.bendahara = sch.bendahara; t.profilDiubah = sch.profilDiubah || t.profilDiubah;
-    try { localStorage.setItem("bosp_baseSchools", JSON.stringify(baseSchools)); } catch (e) {}
   }
 
   async function save() {
-    var body = {
-      no: state.no,
-      kepalaSekolah: { nama: getVal("pf_kepsek_nama"), nip: getVal("pf_kepsek_nip"), pangkat: getVal("pf_kepsek_pangkat"), jabatan: getVal("pf_kepsek_jabatan") },
-      bendahara: { nama: getVal("pf_bend_nama"), nip: getVal("pf_bend_nip"), pangkat: getVal("pf_bend_pangkat"), jabatan: getVal("pf_bend_jabatan") }
-    };
-    if (!body.kepalaSekolah.nama) { toast("Nama Kepala Sekolah wajib diisi.", "err"); var el = $("pf_kepsek_nama"); if (el) el.focus(); return; }
+    var kepsek = norm({ nama: getVal("pf_kepsek_nama"), nip: getVal("pf_kepsek_nip"), pangkat: getVal("pf_kepsek_pangkat"), jabatan: getVal("pf_kepsek_jabatan") }, KEPSEK_DEF);
+    var bendahara = norm({ nama: getVal("pf_bend_nama"), nip: getVal("pf_bend_nip"), pangkat: getVal("pf_bend_pangkat"), jabatan: getVal("pf_bend_jabatan") }, BEND_DEF);
+    if (!kepsek.nama) { toast("Nama Kepala Sekolah wajib diisi.", "err"); var el = $("pf_kepsek_nama"); if (el) el.focus(); return; }
     var btn = $("pf_saveBtn");
     if (btn) { btn.disabled = true; btn.classList.add("opacity-60"); }
     try {
+      if (!w.SigapFirebaseDrive || typeof w.SigapFirebaseDrive.updateSchoolPejabatInFirestore !== "function") {
+        throw new Error("Koneksi Firebase Firestore belum siap.");
+      }
+      var actorName = (typeof currentUser !== "undefined" && currentUser && (currentUser.name || currentUser.email || currentUser.username)) || "Operator Sekolah";
+      var res = await w.SigapFirebaseDrive.updateSchoolPejabatInFirestore(state.no, kepsek, bendahara, actorName);
       var targetSch = (typeof baseSchools !== "undefined" ? baseSchools.find(function (s) { return Number(s.no) === Number(state.no); }) : null) || { no: state.no };
       var updatedSchool = Object.assign({}, targetSch, {
         no: Number(state.no),
-        kepalaSekolah: norm(body.kepalaSekolah, KEPSEK_DEF),
-        bendahara: norm(body.bendahara, BEND_DEF),
-        profilDiubah: {
-          waktu: new Date().toISOString(),
-          oleh: (typeof currentUser !== "undefined" && currentUser && (currentUser.name || currentUser.username)) || "Operator Sekolah"
-        }
+        kepalaSekolah: kepsek,
+        bendahara: bendahara,
+        profilDiubah: (res && res.profilDiubah) || { waktu: new Date().toISOString(), oleh: actorName }
       });
-      if (w.SigapFirebaseDrive && typeof w.SigapFirebaseDrive.syncSchoolToFirestore === "function") {
-        await w.SigapFirebaseDrive.syncSchoolToFirestore(updatedSchool);
-      }
-      try {
-        var j = await api("/api/school-profile", { method: "PUT", body: body });
-        if (j && j.school) updatedSchool = Object.assign({}, updatedSchool, j.school);
-      } catch (_) {}
       mergeLocal(updatedSchool);
+      if (typeof w.SigapFirebaseDrive.logAuditToFirestore === "function") {
+        w.SigapFirebaseDrive.logAuditToFirestore("update_school_pejabat", { schoolNo: state.no }, typeof currentUser !== "undefined" ? currentUser : null).catch(function () {});
+      }
       closeProfileModal();
       toast("Data Master Sekolah berhasil disimpan langsung ke Firebase.", "ok");
       refreshViews();
@@ -432,7 +411,7 @@
       '<p class="font-sans text-[9px] text-slate-500">Dicetak melalui SIGAP-BOSP pada ' + esc(new Date().toLocaleString("id-ID")) + ' oleh ' + esc(currentUser ? (currentUser.name || currentUser.username) : "") + '.</p>';
   }
   function openRekapSekolahModal() {
-    if (!isOp()) { alert("Fitur ini untuk akun Operator Sekolah. Admin Dinas memakai Cetak SP2B / Rekapitulasi Kecamatan."); return; }
+    if (!isOp()) { toast("Fitur ini untuk akun Operator Sekolah. Admin Dinas memakai Cetak SP2B / Rekapitulasi Kecamatan.", "err"); return; }
     ensureModals();
     buildRekap();
     $("rekapSekolahModal").classList.remove("hidden");

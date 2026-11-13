@@ -110,36 +110,43 @@
     o[p[p.length - 1]] = val;
   }
 
+  async function parseRkasRemote(fd) {
+    var r = await fetch("/api/anggaran/parse", { method: "POST", credentials: "include", headers: hdrs(false), body: fd });
+    var j;
+    try { j = await r.json(); } catch (e) { throw new Error("Respons parser tidak valid (HTTP " + r.status + ")"); }
+    if (!r.ok || j.status !== "success") {
+      throw new Error(j.message || "Gagal membaca PDF RKAS (HTTP " + r.status + ")");
+    }
+    return j;
+  }
+
   // ---------- boot ----------
   async function boot() {
     try { var y = parseInt(localStorage.getItem("bosp_activeYear"), 10); if (y > 2000) S.year = y; } catch (e) {}
     try {
-      var me = await api("/api/me"); S.user = me.user;
-      if (["Operator Sekolah", "Admin Dinas", "BUD"].indexOf(S.user.role) < 0) throw new Error("Peran Anda tidak memiliki akses ke menu Penganggaran.");
-      var sc = await api("/api/schools"); S.schools = (sc.schools || []).slice().sort(byNo);
-      if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.loadSchoolsFromFirestore === "function") {
-        try {
-          var fbSchools = await window.SigapFirebaseDrive.loadSchoolsFromFirestore();
-          if (Array.isArray(fbSchools) && fbSchools.length > 0) {
-            var mapSc = {};
-            S.schools.forEach(function (s) { mapSc[Number(s.no)] = s; });
-            fbSchools.forEach(function (fs) { mapSc[Number(fs.no)] = Object.assign({}, mapSc[Number(fs.no)] || {}, fs); });
-            S.schools = Object.keys(mapSc).map(function (k) { return mapSc[k]; }).sort(byNo);
-          }
-        } catch (fbScErr) {
-          console.warn("Firestore loadSchools:", fbScErr);
-        }
+      if (!window.SigapFirebaseDrive) throw new Error("Modul Firebase belum termuat.");
+      await window.SigapFirebaseDrive.whenReady();
+      var session = await window.SigapFirebaseDrive.resolveCurrentUserSession();
+      if (!session || session.status !== "Aktif") {
+        throw new Error(session && session.status === "Pending"
+          ? "Akun Google Anda masih menunggu persetujuan Admin Dinas."
+          : "Silakan masuk dengan akun Google terlebih dahulu di Beranda.");
       }
+      S.user = session;
+      if (["Operator Sekolah", "Admin Dinas", "BUD"].indexOf(S.user.role) < 0) {
+        throw new Error("Peran Anda tidak memiliki akses ke menu Penganggaran.");
+      }
+      var fbSchools = await window.SigapFirebaseDrive.loadSchoolsFromFirestore();
+      S.schools = Array.isArray(fbSchools) ? fbSchools.slice().sort(byNo) : [];
     } catch (e) {
       $("view").innerHTML = '<div class="card p-8 max-w-lg mx-auto text-center space-y-3"><div class="text-rose-600 text-3xl"><i class="fa-solid fa-lock"></i></div><div class="font-bold text-slate-800">' + esc(e.message) + '</div><a href="/" class="btn btn-navy">Ke halaman login</a></div>';
       return;
     }
-    $("hdUser").textContent = S.user.name || S.user.username;
+    $("hdUser").textContent = S.user.name || S.user.email || S.user.username;
     $("hdRole").textContent = S.user.role;
-    // Sidebar navigasi bersama (menu sama dengan Beranda & Realisasi Belanja)
     if (window.RekonNav) {
       RekonNav.mountShell({
-        role: S.user.role, name: S.user.name || S.user.username, page: "penganggaran",
+        role: S.user.role, name: S.user.name || S.user.email || S.user.username, page: "penganggaran",
         onLogout: function () { $("btnLogout").click(); }
       });
     }
@@ -148,7 +155,6 @@
       S.form.schoolNo = Number(S.user.schoolNo);
     }
     S.tab = canInput() ? "input" : "daftar";
-    // Tab awal dari tautan sub-menu sidebar (?tab=rekap dst.)
     try {
       var qt = new URLSearchParams(window.location.search).get("tab");
       if (qt && tabsDef().some(function (t) { return t[0] === qt; })) S.tab = qt;
@@ -165,18 +171,16 @@
     if (window.RekonNav) RekonNav.syncActive("penganggaran", S.tab);
     window.addEventListener("sigap-firebase-ready", async function () {
       try {
-        if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.loadSchoolsFromFirestore === "function") {
-          var fbSchools2 = await window.SigapFirebaseDrive.loadSchoolsFromFirestore();
-          if (Array.isArray(fbSchools2) && fbSchools2.length > 0) {
-            var mapSc2 = {};
-            S.schools.forEach(function (s) { mapSc2[Number(s.no)] = s; });
-            fbSchools2.forEach(function (fs) { mapSc2[Number(fs.no)] = Object.assign({}, mapSc2[Number(fs.no)] || {}, fs); });
-            S.schools = Object.keys(mapSc2).map(function (k) { return mapSc2[k]; }).sort(byNo);
-          }
+        var fbSchools2 = await window.SigapFirebaseDrive.loadSchoolsFromFirestore();
+        if (Array.isArray(fbSchools2) && fbSchools2.length > 0) {
+          S.schools = fbSchools2.slice().sort(byNo);
         }
         await loadData();
         renderView();
       } catch (_) {}
+    });
+    window.addEventListener("sigap-app-authenticated", function () {
+      window.location.reload();
     });
   }
   function fillYears() {
@@ -191,33 +195,17 @@
     };
   }
   async function loadData() {
-    var merged = {};
+    if (!window.SigapFirebaseDrive || typeof window.SigapFirebaseDrive.loadAnggaranFromFirestore !== "function") {
+      S.data = {};
+      return;
+    }
     try {
-      var j = await api("/api/anggaran?year=" + encodeURIComponent(S.year));
-      merged = j.data || {};
-    } catch (e) {
-      merged = {};
+      var fbData = await window.SigapFirebaseDrive.loadAnggaranFromFirestore(S.year, isOp() && S.user ? S.user.schoolNo : null);
+      S.data = fbData && typeof fbData === "object" ? fbData : {};
+    } catch (fbErr) {
+      console.warn("Firestore loadAnggaran:", fbErr);
+      S.data = {};
     }
-    if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.loadAnggaranFromFirestore === "function") {
-      try {
-        var fbData = await window.SigapFirebaseDrive.loadAnggaranFromFirestore(S.year, isOp() && S.user ? S.user.schoolNo : null);
-        if (fbData && typeof fbData === "object") {
-          Object.keys(fbData).forEach(function (no) {
-            if (!merged[no]) merged[no] = { induk: {}, perubahan: {} };
-            ["induk", "perubahan"].forEach(function (th) {
-              if (!merged[no][th]) merged[no][th] = {};
-              var srcObj = fbData[no][th] || {};
-              Object.keys(srcObj).forEach(function (sb) {
-                merged[no][th][sb] = srcObj[sb];
-              });
-            });
-          });
-        }
-      } catch (fbErr) {
-        console.warn("Firestore loadAnggaran:", fbErr);
-      }
-    }
-    S.data = merged;
   }
 
   // ---------- tab ----------
@@ -349,45 +337,80 @@
     if (f.schoolNo == null || !f.file) return;
     if (!/\.pdf$/i.test(f.file.name)) { toast("Hanya file PDF yang diizinkan.", true); return; }
     var cur = recOf(f.schoolNo, f.tahap, f.sumber);
-    if (cur && !confirm("Dokumen " + srcName(f.sumber) + " " + tahapName(f.tahap) + " untuk sekolah ini sudah ada (" + cur.status + "). Ganti dengan file baru? Koreksi manual sebelumnya akan hilang.")) return;
+    if (cur) {
+      var okReplace = await window.SigapFirebaseDrive.showDriveConfirmModal({
+        title: "Ganti Dokumen RKAS",
+        message: "Dokumen " + srcName(f.sumber) + " " + tahapName(f.tahap) + " untuk sekolah ini sudah ada (" + cur.status + ").\nGanti dengan file baru? Koreksi manual sebelumnya akan hilang.",
+        confirmText: "Ganti & Unggah Baru",
+        danger: true
+      });
+      if (!okReplace) return;
+    }
     var box = $("inputDyn"), keep = box.innerHTML;
     box.innerHTML = '<p class="text-slate-600 p-10 text-center"><i class="fa-solid fa-gears fa-spin mr-2"></i>Mengunggah ke <b>Google Drive</b> dan membaca <b>' + esc(f.file.name) + "</b>… (dokumen besar dapat memakan beberapa detik)</p>";
     try {
       var sc = schoolOf(f.schoolNo);
-      var gdriveRes = null;
-      if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.uploadPdfToGoogleDrive === "function") {
-        gdriveRes = await window.SigapFirebaseDrive.uploadPdfToGoogleDrive(f.file, {
-          schoolNo: f.schoolNo,
-          schoolName: sc.name || "",
-          npsn: sc.npsn || "",
-          periodKey: "anggaran-" + f.tahap,
-          year: S.year,
-          docType: "rkas_" + f.tahap + "_" + f.sumber,
-          fileName: f.file.name,
-          existingDriveFileId: cur && cur.driveFileId ? cur.driveFileId : ""
-        });
-      }
+      var gdriveRes = await window.SigapFirebaseDrive.uploadPdfToGoogleDrive(f.file, {
+        schoolNo: f.schoolNo,
+        schoolName: sc.name || "",
+        npsn: sc.npsn || "",
+        periodKey: "anggaran-" + f.tahap,
+        year: S.year,
+        docType: "rkas_" + f.tahap + "_" + f.sumber,
+        fileName: f.file.name,
+        existingDriveFileId: cur && cur.driveFileId ? cur.driveFileId : "",
+        skipConfirmReplace: true
+      });
       var fd = new FormData();
-      fd.append("year", S.year); fd.append("tahap", f.tahap); fd.append("sumber", f.sumber); fd.append("schoolNo", f.schoolNo);
-      if (gdriveRes && gdriveRes.fileUrl) {
-        fd.append("driveUrl", gdriveRes.fileUrl);
-        fd.append("driveFileId", gdriveRes.driveFileId || "");
-      }
+      fd.append("year", S.year);
+      fd.append("tahap", f.tahap);
+      fd.append("sumber", f.sumber);
+      fd.append("schoolNo", f.schoolNo);
+      fd.append("school", JSON.stringify(sc));
       fd.append("file", f.file);
-      var r = await api("/api/anggaran/upload", { method: "POST", headers: hdrs(false), body: fd });
-      if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.syncAnggaranRecordToFirestore === "function") {
-        try { await window.SigapFirebaseDrive.syncAnggaranRecordToFirestore(r.record); } catch (fbErr) { console.warn("Sync Anggaran Firestore:", fbErr); }
-      }
-      var bl = (r.record && r.record.blockingErrors) || [];
+      var parsed = await parseRkasRemote(fd);
+      var record = {
+        year: S.year,
+        schoolNo: Number(f.schoolNo),
+        schoolName: sc.name || "",
+        npsn: sc.npsn || "",
+        tahap: f.tahap,
+        sumber: f.sumber,
+        fileName: parsed.fileName || f.file.name,
+        fileUrl: gdriveRes.fileUrl,
+        driveFileId: gdriveRes.driveFileId || "",
+        uploadedAt: new Date().toISOString(),
+        uploadedBy: (S.user && (S.user.name || S.user.email || S.user.username)) || "user",
+        items: parsed.items || [],
+        totals: parsed.totals || emptyB(),
+        basis: parsed.basis || null,
+        meta: parsed.meta || {},
+        warnings: parsed.warnings || [],
+        blockingErrors: parsed.blockingErrors || [],
+        canSubmit: parsed.canSubmit !== false,
+        stats: parsed.stats || {},
+        status: "Draft",
+        catatan: ""
+      };
+      var saved = await window.SigapFirebaseDrive.syncAnggaranRecordToFirestore(record);
+      var finalRec = saved || record;
+      window.SigapFirebaseDrive.logAuditToFirestore("anggaran_upload", {
+        year: S.year, schoolNo: f.schoolNo, tahap: f.tahap, sumber: f.sumber, fileName: finalRec.fileName
+      }, S.user).catch(function () {});
+
+      var bl = finalRec.blockingErrors || [];
       if (bl.length) {
         toast("PDF tersimpan di Google Drive & terbaca, tetapi TIDAK DAPAT DIAJUKAN: " + bl.length + " masalah identitas/sumber dana.", true);
       } else {
-        toast("PDF tersimpan di Google Drive & Firebase: " + r.record.items.length + " baris rekening, total " + rp(r.record.totals.total));
+        toast("PDF tersimpan di Google Drive & Firebase: " + (finalRec.items || []).length + " baris rekening, total " + rp((finalRec.totals || {}).total || 0));
       }
       f.file = null;
       await loadData(); renderInputDyn();
       openDetail(f.schoolNo, f.tahap, f.sumber);
-    } catch (e) { box.innerHTML = keep; toast(e.message, true); alert("Gagal: " + e.message); }
+    } catch (e) {
+      box.innerHTML = keep;
+      toast("Gagal: " + e.message, true);
+    }
   }
 
   // =====================================================================
@@ -591,10 +614,10 @@
     document.body.appendChild(f);
     var d = f.contentWindow.document;
     d.open(); d.write("<!doctype html><html><head><meta charset=\"utf-8\"><title>" + esc(T.l1 + " " + tahapName(S.rekap.tahap) + " " + S.year) + "</title><style>" + PRINT_CSS + "</style></head><body>" + html + "</body></html>"); d.close();
-    setTimeout(function () { try { f.contentWindow.focus(); f.contentWindow.print(); } catch (e) { alert("Gagal membuka dialog cetak: " + e.message); } setTimeout(function () { f.remove(); }, 60000); }, 350);
+    setTimeout(function () { try { f.contentWindow.focus(); f.contentWindow.print(); } catch (e) { toast("Gagal membuka dialog cetak: " + e.message, true); } setTimeout(function () { f.remove(); }, 60000); }, 350);
   }
   function doXlsx() {
-    if (typeof XLSX === "undefined") { alert("Pustaka Excel belum termuat (periksa koneksi internet)."); return; }
+    if (typeof XLSX === "undefined") { toast("Pustaka Excel belum termuat (periksa koneksi internet).", true); return; }
     var m = recapModel(), mx = recapMatrix(m), T = recapTitle();
     var rows = [[T.l1], [T.l2], [T.l3], []];
     rows.push(mx.head);
@@ -646,28 +669,8 @@
     var box = $("detailBody"); $("detailModal").classList.remove("hidden");
     box.innerHTML = '<p class="p-10 text-center text-slate-500"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Memuat rincian dari Firebase…</p>';
     try {
-      var rec = null;
-      if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.loadAnggaranDetailFromFirestore === "function") {
-        try {
-          rec = await window.SigapFirebaseDrive.loadAnggaranDetailFromFirestore(S.year, no, tahap, sumber);
-        } catch (fbDetErr) {
-          console.warn("Firestore detail fallback:", fbDetErr);
-        }
-      }
-      if (!rec || !Array.isArray(rec.items) || !rec.items.length) {
-        try {
-          var j = await api("/api/anggaran/detail?year=" + S.year + "&tahap=" + tahap + "&sumber=" + sumber + "&schoolNo=" + no);
-          if (j && j.record) {
-            rec = j.record;
-            if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.syncAnggaranRecordToFirestore === "function") {
-              window.SigapFirebaseDrive.syncAnggaranRecordToFirestore(rec).catch(function () {});
-            }
-          }
-        } catch (apiErr) {
-          if (!rec) throw apiErr;
-        }
-      }
-      if (!rec) throw new Error("Data rincian anggaran tidak ditemukan.");
+      var rec = await window.SigapFirebaseDrive.loadAnggaranDetailFromFirestore(S.year, no, tahap, sumber);
+      if (!rec) throw new Error("Data rincian anggaran tidak ditemukan di Firebase Firestore.");
       S.detail = { no: Number(no), tahap: tahap, sumber: sumber, rec: rec, dirty: {}, filter: "" };
       renderDetail();
     } catch (e) { box.innerHTML = '<div class="p-6 text-rose-700">' + esc(e.message) + '</div><div class="p-3 text-right"><button class="btn btn-navy" data-act="closeDetail">Tutup</button></div>'; }
@@ -754,28 +757,15 @@
     if (!keys.length) { if (!silent) toast("Tidak ada perubahan."); return true; }
     var overrides = keys.map(function (i) { return { index: Number(i), kategori: d.dirty[i] }; });
     try {
-      var updatedRec = null;
-      if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.applyAnggaranActionInFirestore === "function") {
-        try {
-          updatedRec = await window.SigapFirebaseDrive.applyAnggaranActionInFirestore({
-            year: S.year, tahap: d.tahap, sumber: d.sumber, schoolNo: d.no, action: "reclass", overrides: overrides
-          });
-        } catch (fbErr) {
-          console.warn("Firestore reclass:", fbErr);
-        }
-      }
-      try {
-        var j = await post("/api/anggaran/action", { year: S.year, tahap: d.tahap, sumber: d.sumber, schoolNo: d.no, action: "reclass", overrides: overrides });
-        if (j && j.record) updatedRec = j.record;
-      } catch (apiErr) {
-        if (!updatedRec) throw apiErr;
-      }
+      var res = await window.SigapFirebaseDrive.applyAnggaranActionInFirestore({
+        year: S.year, tahap: d.tahap, sumber: d.sumber, schoolNo: d.no,
+        action: "reclass", overrides: overrides,
+        username: (S.user && (S.user.name || S.user.email)) || "user"
+      });
+      var updatedRec = res && res.record ? res.record : res;
       if (updatedRec) {
-        d.rec = Object.assign({}, d.rec, { items: updatedRec.items, totals: updatedRec.totals });
+        d.rec = Object.assign({}, d.rec, { items: updatedRec.items || d.rec.items, totals: updatedRec.totals || d.rec.totals, status: updatedRec.status || d.rec.status });
         d.dirty = {};
-        if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.syncAnggaranRecordToFirestore === "function") {
-          try { await window.SigapFirebaseDrive.syncAnggaranRecordToFirestore(d.rec); } catch (_) {}
-        }
       }
       if (!silent) toast("Koreksi tersimpan langsung ke Firebase.");
       return true;
@@ -784,34 +774,21 @@
   async function detAction(action, catatan) {
     var d = S.detail;
     try {
-      var updatedRec = null;
-      if (action !== "delete" && window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.applyAnggaranActionInFirestore === "function") {
-        try {
-          updatedRec = await window.SigapFirebaseDrive.applyAnggaranActionInFirestore({
-            year: S.year, tahap: d.tahap, sumber: d.sumber, schoolNo: d.no, action: action, catatan: catatan || ""
-          });
-        } catch (fbActErr) {
-          console.warn("Firestore detAction:", fbActErr);
-        }
-      }
-      var j = null;
-      try {
-        j = await post("/api/anggaran/action", { year: S.year, tahap: d.tahap, sumber: d.sumber, schoolNo: d.no, action: action, catatan: catatan || "" });
-      } catch (apiErr) {
-        if (!updatedRec && action !== "delete") throw apiErr;
-      }
-      var finalRec = (j && j.record) ? j.record : updatedRec;
-      if (finalRec && action !== "delete" && window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.syncAnggaranRecordToFirestore === "function") {
-        try { await window.SigapFirebaseDrive.syncAnggaranRecordToFirestore(finalRec); } catch (_) {}
-      }
-      return j || { status: "success", record: finalRec };
+      var res = await window.SigapFirebaseDrive.applyAnggaranActionInFirestore({
+        year: S.year, tahap: d.tahap, sumber: d.sumber, schoolNo: d.no,
+        action: action, catatan: catatan || "",
+        username: (S.user && (S.user.name || S.user.email)) || "user"
+      });
+      window.SigapFirebaseDrive.logAuditToFirestore("anggaran_" + action, {
+        year: S.year, schoolNo: d.no, tahap: d.tahap, sumber: d.sumber
+      }, S.user).catch(function () {});
+      return res || { status: "success", record: d.rec };
     } catch (e) {
-      // Jika server menolak karena identitas/sumber dana, tampilkan detail di modal
       if (e && e.blockingErrors && e.blockingErrors.length && d && d.rec) {
         d.rec.blockingErrors = e.blockingErrors;
         d.rec.canSubmit = false;
         renderDetail();
-        alert("Pengajuan ditolak:\n\n• " + e.blockingErrors.join("\n• "));
+        toast("Pengajuan ditolak: " + e.blockingErrors[0], true);
       } else {
         toast(e.message || "Gagal memproses", true);
       }
@@ -844,14 +821,26 @@
       case "detSubmit": {
         var blocks2 = Array.isArray(d.rec.blockingErrors) ? d.rec.blockingErrors : [];
         if (blocks2.length || !(d.rec.items && d.rec.items.length)) {
-          alert("Pengajuan ditolak.\n\nFile PDF tidak sesuai identitas sekolah atau jenis sumber dana, atau tidak ada baris anggaran terbaca.\n\n• Pastikan NPSN di dokumen sama dengan sekolah Anda\n• Pastikan sumber dana (Reguler/Kinerja/Prestasi/SiLPA) sama dengan yang dipilih\n• Unggah ulang PDF RKAS yang benar");
+          toast("Pengajuan ditolak: pastikan NPSN, sumber dana, dan baris anggaran pada dokumen RKAS sudah sesuai.", true);
           renderDetail();
           break;
         }
         if (!(await saveReclass(true))) break;
         var lain = liveTotals().lainnya;
-        if (lain && !confirm("Masih ada " + rp(lain) + " yang belum terklasifikasi. Tetap ajukan?")) { renderDetail(); break; }
-        if (!confirm("Ajukan dokumen ini ke Dinas? Setelah diajukan data terkunci sampai diverifikasi/ditolak.")) break;
+        if (lain) {
+          var okLain = await window.SigapFirebaseDrive.showDriveConfirmModal({
+            title: "Konfirmasi Pengajuan",
+            message: "Masih ada " + rp(lain) + " yang belum terklasifikasi. Tetap ajukan ke Dinas?",
+            confirmText: "Tetap Ajukan"
+          });
+          if (!okLain) { renderDetail(); break; }
+        }
+        var okSub = await window.SigapFirebaseDrive.showDriveConfirmModal({
+          title: "Ajukan Dokumen ke Dinas",
+          message: "Ajukan dokumen RKAS ini ke Dinas?\nSetelah diajukan data terkunci sampai diverifikasi atau ditolak.",
+          confirmText: "Ya, Ajukan"
+        });
+        if (!okSub) break;
         var jSub = await detAction("submit");
         if (jSub) {
           toast("Berhasil diajukan ke Dinas.");
@@ -863,28 +852,60 @@
       }
       case "adm": {
         var note = "";
-        if (v === "reject") { note = prompt("Alasan penolakan (wajib diisi):", ""); if (!note || !note.trim()) break; }
-        else if (v === "verify") { note = prompt("Catatan verifikasi (opsional):", "") || ""; }
-        else if (v === "reopen") { if (!confirm("Buka kunci dokumen ini? Status kembali ke Draft agar sekolah dapat memperbaiki.")) break; note = prompt("Catatan untuk sekolah (opsional):", "") || ""; }
+        if (v === "reject") {
+          note = await window.SigapFirebaseDrive.showDrivePromptModal({
+            title: "Tolak Dokumen RKAS",
+            message: "Alasan penolakan (wajib diisi):",
+            placeholder: "Tulis alasan penolakan…",
+            required: true,
+            confirmText: "Tolak Dokumen"
+          });
+          if (!note || !note.trim()) break;
+        } else if (v === "verify") {
+          note = await window.SigapFirebaseDrive.showDrivePromptModal({
+            title: "Verifikasi Dokumen RKAS",
+            message: "Catatan verifikasi (opsional):",
+            placeholder: "Kosongkan bila tidak ada catatan…",
+            confirmText: "Verifikasi"
+          });
+          if (note === null) break;
+        } else if (v === "reopen") {
+          var okReopen = await window.SigapFirebaseDrive.showDriveConfirmModal({
+            title: "Buka Kunci Dokumen",
+            message: "Buka kunci dokumen ini? Status akan kembali ke Draft agar sekolah dapat memperbaiki.",
+            confirmText: "Buka Kunci"
+          });
+          if (!okReopen) break;
+          note = await window.SigapFirebaseDrive.showDrivePromptModal({
+            title: "Catatan Pembukaan Kunci",
+            message: "Catatan untuk sekolah (opsional):",
+            placeholder: "Kosongkan bila tidak ada catatan…",
+            confirmText: "Lanjutkan"
+          });
+          if (note === null) break;
+        }
         var j = await detAction(v, note);
-        if (j) { toast("Status: " + j.record.status); d.rec = j.record; d.dirty = {}; renderDetail(); afterChange(); }
+        if (j && j.record) { toast("Status: " + j.record.status); d.rec = j.record; d.dirty = {}; renderDetail(); afterChange(); }
         break;
       }
-      case "detDelete":
-        if (!confirm("Hapus dokumen " + srcName(d.sumber) + " " + tahapName(d.tahap) + " ini beserta hasil bacanya?")) break;
-        if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.deleteAnggaranRecordFromFirestore === "function") {
-          try {
-            await window.SigapFirebaseDrive.deleteAnggaranRecordFromFirestore(S.year, d.no, d.tahap, d.sumber, d.rec && d.rec.driveFileId, d.rec && d.rec.fileName);
-          } catch (fbErr) {
-            console.warn("Delete from Drive/Firestore:", fbErr);
-          }
-        }
-        await detAction("delete");
+      case "detDelete": {
+        var okDel = await window.SigapFirebaseDrive.showDriveConfirmModal({
+          title: "Hapus Dokumen RKAS",
+          message: "Hapus dokumen " + srcName(d.sumber) + " " + tahapName(d.tahap) + " ini beserta berkas di Google Drive & Firestore?",
+          confirmText: "Hapus Permanen",
+          danger: true
+        });
+        if (!okDel) break;
+        await window.SigapFirebaseDrive.deleteAnggaranRecordFromFirestore(S.year, d.no, d.tahap, d.sumber, d.rec && d.rec.driveFileId, d.rec && d.rec.fileName, true);
+        window.SigapFirebaseDrive.logAuditToFirestore("anggaran_delete", {
+          year: S.year, schoolNo: d.no, tahap: d.tahap, sumber: d.sumber
+        }, S.user).catch(function () {});
         toast("Dokumen dihapus dari Firebase & Google Drive.");
         $("detailModal").classList.add("hidden");
         S.detail = null;
         afterChange();
         break;
+      }
     }
   });
   document.addEventListener("change", function (e) {
@@ -932,13 +953,12 @@
   });
 
   async function doLogoutPenganggaran() {
-    try { await api("/api/logout", { method: "POST" }); } catch (e) {}
+    try { await fetch("/api/logout", { method: "POST", credentials: "include" }); } catch (e) {}
     if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.signOutFirebase === "function") {
       try { await window.SigapFirebaseDrive.signOutFirebase(); } catch (e) {}
     }
     try {
       sessionStorage.removeItem("rekon_node_token");
-      localStorage.removeItem("bosp_currentUser");
     } catch (e) {}
     window.location.replace("/");
   }

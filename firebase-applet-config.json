@@ -1,12 +1,12 @@
 {
-  "projectId": "gen-lang-client-0341158920",
-  "appId": "1:595198129747:web:915c6a5be1ef2db760b8a6",
-  "apiKey": "AIzaSyAJSMrW0G7Xzzak64G2_CjAZ7nrPeDu_ws",
-  "authDomain": "gen-lang-client-0341158920.firebaseapp.com",
+  "projectId": "sigapbosp",
+  "appId": "1:294800886831:web:7fae8fefd6bc383508cada",
+  "apiKey": "AIzaSyBzh2h1QvYAd33zHoMIy8pHwUWSArEy5IM",
+  "authDomain": "sigapbosp.firebaseapp.com",
   "firestoreDatabaseId": "ai-studio-sigapbosp-295b56ae-42fb-402e-a2e5-e08e50d341ab",
-  "storageBucket": "gen-lang-client-0341158920.firebasestorage.app",
-  "messagingSenderId": "595198129747",
+  "storageBucket": "sigapbosp.firebasestorage.app",
+  "messagingSenderId": "294800886831",
   "measurementId": "",
-  "oAuthClientId": "595198129747-4e20j75o90fffakm16im23p115hnv40s.apps.googleusercontent.com",
+  "oAuthClientId": "294800886831-a46qtadefkjdanhcajdspk20dt4ben9n.apps.googleusercontent.com",
   "recaptchaSiteKey": ""
 }
