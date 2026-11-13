@@ -248,11 +248,26 @@
                         if (Array.isArray(result.users) && result.users.length > 0) {
                             usersDB = result.users.map(u => normalizeUser({ ...u, password: u.password || "" }));
                         }
+                        if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.loadMonthlyFromFirestore === "function") {
+                            try {
+                                const fbMonthly = await window.SigapFirebaseDrive.loadMonthlyFromFirestore(activeYear);
+                                if (fbMonthly && typeof fbMonthly === "object") {
+                                    Object.keys(fbMonthly).forEach(no => {
+                                        if (!monthlyData[no]) monthlyData[no] = {};
+                                        Object.keys(fbMonthly[no] || {}).forEach(m => {
+                                            monthlyData[no][m] = Object.assign({}, monthlyData[no][m] || {}, fbMonthly[no][m]);
+                                        });
+                                    });
+                                }
+                            } catch (fbErr) {
+                                console.warn("Gagal sinkron baca dari Firestore:", fbErr);
+                            }
+                        }
                         localStorage.setItem("bosp_baseSchools", JSON.stringify(baseSchools));
                         localStorage.setItem(yearKey("monthlyData"), JSON.stringify(monthlyData));
                         localStorage.setItem("bosp_usersDB", JSON.stringify(usersDB));
                         localStorage.setItem("bosp_activeYear", String(activeYear));
-                        console.log("Data dimuat dari server Node, tahun:", activeYear);
+                        console.log("Data dimuat dari server Node & Firebase Firestore, tahun:", activeYear);
                     }
                     return;
                 }
@@ -341,7 +356,15 @@
                     }
                     if (payload) {
                         await gasPost(payload);
-                        console.log("Data tersimpan ke server, tahun:", activeYear);
+                        if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.syncSavePayloadToFirestore === "function") {
+                            try {
+                                await window.SigapFirebaseDrive.syncSavePayloadToFirestore(payload, currentUser);
+                                await window.SigapFirebaseDrive.logAuditToFirestore("save_data", { year: activeYear, partial: !!payload.partial }, currentUser);
+                            } catch (fbErr) {
+                                console.warn("Sinkronisasi ke Firebase Firestore tertunda:", fbErr);
+                            }
+                        }
+                        console.log("Data tersimpan ke server & Firebase Firestore, tahun:", activeYear);
                     }
                 } catch (err) {
                     console.error("Gagal menyinkronkan data ke server:", err);
@@ -387,14 +410,40 @@
             return h;
         }
 
-        // POST: ke Node lokal ATAU Google Apps Script
+        // POST: ke Firebase / Google Drive + Node lokal ATAU Google Apps Script
         async function gasPost(payload) {
-            // ===== MODE NODE.JS (upload masuk ke folder uploads/) =====
+            // ===== MODE NODE.JS + FIREBASE + GOOGLE DRIVE =====
             if (isNodeBackend()) {
                 const action = payload && payload.action;
                 let url = NODE_API_BASE + "/api/save";
-                if (action === "uploadFile") url = NODE_API_BASE + "/api/upload";
-                else if (action === "saveAll") url = NODE_API_BASE + "/api/save";
+                if (action === "uploadFile") {
+                    url = NODE_API_BASE + "/api/upload";
+                    if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.uploadPdfToGoogleDrive === "function") {
+                        const gdriveResult = await window.SigapFirebaseDrive.uploadPdfToGoogleDrive(
+                            payload.fileObj || payload.fileData,
+                            {
+                                schoolNo: payload.schoolNo,
+                                schoolName: payload.schoolName,
+                                npsn: payload.npsn,
+                                month: payload.month,
+                                periodKey: payload.month,
+                                year: payload.year,
+                                docType: payload.docType,
+                                fileName: payload.fileName,
+                                existingDriveFileId: payload.existingDriveFileId || ""
+                            }
+                        );
+                        if (gdriveResult && gdriveResult.fileUrl) {
+                            payload = Object.assign({}, payload, {
+                                driveUrl: gdriveResult.fileUrl,
+                                driveFileId: gdriveResult.driveFileId
+                            });
+                            delete payload.fileObj;
+                        }
+                    }
+                } else if (action === "saveAll") {
+                    url = NODE_API_BASE + "/api/save";
+                }
 
                 const resp = await fetch(url, {
                     method: "POST",
@@ -568,6 +617,9 @@
             // Simpan data terakhir sebelum keluar
             try { waFlush(); } catch (e) { console.warn(e); }
             try { saveToLocalStorage(); } catch (e) { console.warn(e); }
+            if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.signOutFirebase === "function") {
+                try { window.SigapFirebaseDrive.signOutFirebase(); } catch (e) {}
+            }
             stopIdleWatch();
             currentUser = null;
             try { localStorage.setItem("bosp_currentUser", JSON.stringify(null)); } catch (e) {}
@@ -2670,12 +2722,15 @@
                             year: activeYear,
                             docType: doc.key,
                             fileName: file.name,
-                            fileData: base64Data
+                            fileObj: file,
+                            fileData: base64Data,
+                            existingDriveFileId: existingDocs[doc.key].driveFileId || ""
                         });
                         if (uploadResult.status !== "success" || !uploadResult.fileUrl) {
                             throw new Error(uploadResult.message || "Respon server tidak valid");
                         }
                         existingDocs[doc.key].url = uploadResult.fileUrl;
+                        if (uploadResult.driveFileId) existingDocs[doc.key].driveFileId = uploadResult.driveFileId;
                         existingDocs[doc.key].checked = false;
                         if (existingDocs[doc.key].needsFix) existingDocs[doc.key].reuploaded = true;
                     } catch (e) {

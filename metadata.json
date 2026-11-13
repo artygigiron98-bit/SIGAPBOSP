@@ -1,0 +1,5 @@
+{
+  "name": "SIGAP-BOSP Minahasa Tenggara",
+  "description": "Sistem Terintegrasi Pengelolaan Keuangan BOSP (Pengesahan SP2B & Rekonsiliasi Dana BOSP) Kabupaten Minahasa Tenggara dengan database Firebase dan penyimpanan dokumen Google Drive.",
+  "requestFramePermissions": []
+}

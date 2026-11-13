@@ -6,6 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
+    "build": "node --check server.js && npx eslint firestore.rules",
+    "lint": "node --check server.js && npx eslint firestore.rules",
     "init-db": "node scripts/init-db.js",
     "hash-passwords": "node scripts/hash-existing-passwords.js"
   },
@@ -13,12 +15,15 @@
     "node": ">=18"
   },
   "dependencies": {
+    "@firebase/eslint-plugin-security-rules": "^0.0.2",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
+    "eslint": "^10.14.0",
     "express": "^4.21.2",
     "express-rate-limit": "^7.5.0",
+    "firebase": "^13.3.0",
     "helmet": "^8.0.0",
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",

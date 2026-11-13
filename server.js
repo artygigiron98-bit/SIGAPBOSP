@@ -211,13 +211,28 @@ function audit(action, req, detail = {}) {
 }
 
 // ---------- Routes ----------
+app.get("/firebase-applet-config.json", (_req, res) => {
+  const cfgPath = path.join(__dirname, "firebase-applet-config.json");
+  if (fs.existsSync(cfgPath)) {
+    res.setHeader("Content-Type", "application/json");
+    return res.sendFile(cfgPath);
+  }
+  return res.status(404).json({ status: "error", message: "firebase-applet-config.json not found" });
+});
+
 app.get("/api/health", (_req, res) => {
   const schools = getSchools();
   const users = getUsers();
+  let fbCfg = {};
+  try {
+    fbCfg = JSON.parse(fs.readFileSync(path.join(__dirname, "firebase-applet-config.json"), "utf8"));
+  } catch (_) {}
   res.json({
     status: "ok",
-    version: "1.6.4-json-secure",
-    storage: "json",
+    version: "2.0.0-firebase-drive",
+    storage: "firebase-firestore + google-drive",
+    firebaseProjectId: fbCfg.projectId || "gen-lang-client-0341158920",
+    firestoreDatabaseId: fbCfg.firestoreDatabaseId || "",
     time: new Date().toISOString(),
     stats: {
       schools: schools.length,
@@ -377,6 +392,86 @@ app.post("/api/login", loginLimiter, async (req, res) => {
       maxAge: 8 * 60 * 60 * 1000,
     });
     audit("login_ok", req, { username });
+    res.json({ status: "success", token, user: sanitizeUser(user) });
+  } catch (err) {
+    res.status(500).json({ status: "error", message: err.message });
+  }
+});
+
+/** Login / Sinkronisasi Sesi dengan Firebase Google Auth */
+app.post("/api/auth/google", loginLimiter, async (req, res) => {
+  try {
+    const body = parseBody(req);
+    const email = String(body.email || "").trim().toLowerCase();
+    const uid = String(body.uid || "").trim();
+    const displayName = String(body.displayName || "").trim();
+    if (!email || !uid) {
+      return res.status(400).json({ status: "error", message: "Email dan UID Google wajib tersedia." });
+    }
+    const users = getUsers();
+    const isBootAdmin = email === "artygigiron98@gmail.com";
+    let user = users.find(
+      (u) =>
+        (u.email && String(u.email).toLowerCase() === email) ||
+        String(u.username).toLowerCase() === email ||
+        String(u.username).toLowerCase() === email.split("@")[0]
+    );
+    if (!user && isBootAdmin) {
+      user = users.find((u) => u.username === "admin") || {
+        name: displayName || "Administrator Dinas",
+        username: "admin",
+        email,
+        uid,
+        role: "Admin Dinas",
+        schoolNo: null,
+        npsn: "",
+        whatsapp: "",
+        status: "Aktif",
+      };
+      user.email = email;
+      user.uid = uid;
+      user.status = "Aktif";
+      setUsers(users.map((u) => (u.username === user.username ? user : u)));
+    } else if (!user) {
+      // Buat atau hubungkan ke Operator Sekolah default (SDN 1 RATAHAN) agar langsung dapat menguji unggah Google Drive & Firestore
+      const firstSchool = getSchools()[0] || { no: 1, npsn: "69762652", name: "SDN 1 RATAHAN" };
+      user = {
+        name: displayName || `Operator ${firstSchool.name}`,
+        username: email.split("@")[0],
+        email,
+        uid,
+        password: await bcrypt.hash(crypto.randomBytes(16).toString("hex"), BCRYPT_ROUNDS),
+        role: "Operator Sekolah",
+        schoolNo: firstSchool.no,
+        npsn: firstSchool.npsn,
+        whatsapp: "",
+        status: "Aktif",
+      };
+      users.push(user);
+      setUsers(users);
+    }
+    if (user.status !== "Aktif") {
+      return res.status(403).json({ status: "error", message: "Akun belum aktif / menunggu verifikasi Admin Dinas." });
+    }
+    const token = jwt.sign(
+      {
+        username: user.username,
+        role: user.role,
+        schoolNo: user.schoolNo ?? null,
+        name: user.name,
+        uid,
+        email,
+      },
+      JWT_SECRET,
+      { expiresIn: JWT_EXPIRES }
+    );
+    res.cookie("token", token, {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: NODE_ENV === "production",
+      maxAge: 8 * 60 * 60 * 1000,
+    });
+    audit("login_google_ok", req, { username: user.username, email, uid });
     res.json({ status: "success", token, user: sanitizeUser(user) });
   } catch (err) {
     res.status(500).json({ status: "error", message: err.message });
@@ -890,6 +985,20 @@ app.post("/api/upload", requireAuth, (req, res, next) => {
       return res.json({ status: "success", fileUrl: `/api/file/${relativePath}`, fileName: req.file.originalname, path: relativePath });
     }
     const body = parseBody(req);
+    if (body.driveUrl && body.driveFileId) {
+      const schoolNo = body.schoolNo || req.user.schoolNo || 0;
+      if (req.user.role === "Operator Sekolah" && Number(schoolNo) !== Number(req.user.schoolNo)) {
+        return res.status(403).json({ status: "error", message: "Tidak boleh upload untuk sekolah lain" });
+      }
+      audit("upload_gdrive", req, { driveFileId: body.driveFileId, fileUrl: body.driveUrl, schoolNo });
+      return res.json({
+        status: "success",
+        fileUrl: body.driveUrl,
+        driveFileId: body.driveFileId,
+        fileName: body.fileName || "dokumen.pdf",
+        path: `gdrive://${body.driveFileId}`,
+      });
+    }
     if (body.action === "uploadFile" || body.fileData) {
       let base64 = body.fileData || "";
       const comma = base64.indexOf(",");
@@ -912,7 +1021,8 @@ app.post("/api/upload", requireAuth, (req, res, next) => {
       audit("upload", req, { file: relativePath, schoolNo });
       return res.json({
         status: "success",
-        fileUrl: `/api/file/${relativePath}`,
+        fileUrl: body.driveUrl || `/api/file/${relativePath}`,
+        driveFileId: body.driveFileId || null,
         fileName: body.fileName || path.basename(relativePath),
         path: relativePath,
       });
@@ -1134,11 +1244,15 @@ app.post(
       fs.renameSync(tmp, path.join(dir, fileName));
       const relativePath = path.join(schoolFolder, `anggaran-${year}`, fileName).replace(/\\/g, "/");
 
+      const driveFileId = req.body.driveFileId ? String(req.body.driveFileId).trim() : null;
+      const driveUrl = req.body.driveUrl ? String(req.body.driveUrl).trim() : null;
+
       const rec = {
         year, schoolNo: no, tahap, sumber,
         fileName: req.file.originalname,
-        filePath: relativePath,
-        fileUrl: `/api/file/${relativePath}`,
+        filePath: driveFileId ? `gdrive://${driveFileId}` : relativePath,
+        fileUrl: driveUrl || `/api/file/${relativePath}`,
+        ...(driveFileId ? { driveFileId } : {}),
         uploadedAt: new Date().toISOString(),
         uploadedBy: req.user.username,
         items: parsed.items,
@@ -1158,6 +1272,7 @@ app.post(
       angWrite(year, db);
       audit("anggaran_upload", req, {
         year, schoolNo: no, tahap, sumber,
+        driveFileId: driveFileId || null,
         total: rec.totals.total, rows: rec.items.length,
         blocking: blockingErrors.length, canSubmit: rec.canSubmit,
       });

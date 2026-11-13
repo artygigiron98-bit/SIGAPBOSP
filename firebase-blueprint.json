@@ -1,0 +1,515 @@
+{
+  "entities": {
+    "AdminRecord": {
+      "title": "AdminRecord",
+      "description": "Trusted administrator registry entry used for RBAC verification.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Firebase Auth UID of the administrator.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Verified email address of the administrator.",
+          "minLength": 3,
+          "maxLength": 160
+        },
+        "role": {
+          "type": "string",
+          "description": "Administrative role name.",
+          "enum": ["Admin Dinas", "BUD"],
+          "maxLength": 32
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the admin record was created."
+        }
+      },
+      "required": ["uid", "email", "role", "createdAt"]
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User account profile and role binding for SIGAP-BOSP.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Firebase Auth UID of the user.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "username": {
+          "type": "string",
+          "description": "Application username.",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "name": {
+          "type": "string",
+          "description": "Display name of the user or operator.",
+          "minLength": 1,
+          "maxLength": 140
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "User email address (PII restricted to owner and admin).",
+          "maxLength": 160
+        },
+        "whatsapp": {
+          "type": "string",
+          "description": "WhatsApp phone number for notifications (PII restricted to owner and admin).",
+          "maxLength": 30
+        },
+        "role": {
+          "type": "string",
+          "description": "Assigned role in SIGAP-BOSP.",
+          "enum": ["Operator Sekolah", "Admin Dinas", "BUD"],
+          "maxLength": 32
+        },
+        "schoolNo": {
+          "type": "number",
+          "description": "Assigned school number for Operator Sekolah (0 for Dinas/BUD)."
+        },
+        "npsn": {
+          "type": "string",
+          "description": "School NPSN code for Operator Sekolah.",
+          "maxLength": 20
+        },
+        "status": {
+          "type": "string",
+          "description": "Account verification status.",
+          "enum": ["Pending", "Aktif", "Ditolak"],
+          "maxLength": 20
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the profile was created."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the profile was last updated."
+        }
+      },
+      "required": ["uid", "username", "name", "role", "status", "createdAt", "updatedAt"]
+    },
+    "School": {
+      "title": "School",
+      "description": "Master data of an educational unit (SD/SMP) in Kabupaten Minahasa Tenggara.",
+      "type": "object",
+      "properties": {
+        "no": {
+          "type": "number",
+          "description": "Sequential school number."
+        },
+        "npsn": {
+          "type": "string",
+          "description": "National School Identification Number (NPSN).",
+          "minLength": 1,
+          "maxLength": 20
+        },
+        "name": {
+          "type": "string",
+          "description": "Official school name.",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "alamat": {
+          "type": "string",
+          "description": "School address.",
+          "maxLength": 250
+        },
+        "status": {
+          "type": "string",
+          "description": "School status (NEGERI or SWASTA).",
+          "enum": ["NEGERI", "SWASTA"],
+          "maxLength": 16
+        },
+        "kecamatan": {
+          "type": "string",
+          "description": "Sub-district (Kecamatan) name.",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "jenjang": {
+          "type": "string",
+          "description": "Education level (SD or SMP).",
+          "enum": ["SD", "SMP"],
+          "maxLength": 10
+        },
+        "kepalaSekolah": {
+          "type": "object",
+          "description": "Principal identity details (nama, nip, pangkat, jabatan)."
+        },
+        "bendahara": {
+          "type": "object",
+          "description": "BOSP Treasurer identity details (nama, nip, pangkat, jabatan)."
+        },
+        "updatedByUid": {
+          "type": "string",
+          "description": "UID of the user who last updated this school.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of the last update."
+        }
+      },
+      "required": ["no", "npsn", "name", "status", "kecamatan", "jenjang", "updatedByUid", "updatedAt"]
+    },
+    "MonthlyReport": {
+      "title": "MonthlyReport",
+      "description": "Monthly BOSP realization, reconciliation, and supporting PDF document links for a school.",
+      "type": "object",
+      "properties": {
+        "year": {
+          "type": "number",
+          "description": "Fiscal year (e.g. 2024, 2025, 2026, 2027)."
+        },
+        "schoolNo": {
+          "type": "number",
+          "description": "School number from master data."
+        },
+        "month": {
+          "type": "string",
+          "description": "Short month code.",
+          "enum": ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agus", "Sep", "Okt", "Nov", "Des"],
+          "maxLength": 10
+        },
+        "ownerUid": {
+          "type": "string",
+          "description": "UID of the operator or admin who created/owns the record.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "verifStatus": {
+          "type": "string",
+          "description": "Verification workflow state.",
+          "enum": ["Draft", "Diajukan Sekolah", "Diverifikasi Dinas", "Disahkan BUD"],
+          "maxLength": 32
+        },
+        "reconDone": {
+          "type": "boolean",
+          "description": "Whether reconciliation is marked complete."
+        },
+        "reconDoneAt": {
+          "type": "string",
+          "description": "ISO timestamp when reconciliation was completed.",
+          "maxLength": 40
+        },
+        "pendapatan": {
+          "type": "object",
+          "description": "Monthly income breakdown map."
+        },
+        "belanja": {
+          "type": "object",
+          "description": "Monthly expenditure breakdown map."
+        },
+        "rekon": {
+          "type": "object",
+          "description": "Bank reconciliation fields map."
+        },
+        "documents": {
+          "type": "object",
+          "description": "Supporting PDF documents map (Google Drive URLs and check status)."
+        },
+        "saldoAwalCustom": {
+          "type": "number",
+          "description": "Opening balance for January."
+        },
+        "saldoReguler": {
+          "type": "number",
+          "description": "Opening regular balance."
+        },
+        "saldoKinerja": {
+          "type": "number",
+          "description": "Opening performance balance."
+        },
+        "saldoNonBOS": {
+          "type": "number",
+          "description": "Opening non-BOS balance."
+        },
+        "saldoTunai": {
+          "type": "number",
+          "description": "Opening cash balance."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of the last update."
+        }
+      },
+      "required": ["year", "schoolNo", "month", "ownerUid", "verifStatus", "pendapatan", "belanja", "documents", "updatedAt"]
+    },
+    "AnggaranRecord": {
+      "title": "AnggaranRecord",
+      "description": "RKAS budget document metadata and parsed totals per school, stage, and funding source.",
+      "type": "object",
+      "properties": {
+        "year": {
+          "type": "number",
+          "description": "Fiscal year."
+        },
+        "schoolNo": {
+          "type": "number",
+          "description": "School number."
+        },
+        "tahap": {
+          "type": "string",
+          "description": "Budget stage (induk or perubahan).",
+          "enum": ["induk", "perubahan"],
+          "maxLength": 16
+        },
+        "sumber": {
+          "type": "string",
+          "description": "BOSP funding source.",
+          "enum": ["reguler", "kinerja", "prestasi", "silpaKinerja"],
+          "maxLength": 24
+        },
+        "ownerUid": {
+          "type": "string",
+          "description": "UID of the user who uploaded the RKAS record.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "fileName": {
+          "type": "string",
+          "description": "Original PDF file name.",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "fileUrl": {
+          "type": "string",
+          "description": "Google Drive webViewLink or file URL.",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "driveFileId": {
+          "type": "string",
+          "description": "Google Drive file ID where the PDF is stored.",
+          "maxLength": 128
+        },
+        "status": {
+          "type": "string",
+          "description": "Verification status of the RKAS document.",
+          "enum": ["Draft", "Diajukan", "Terverifikasi", "Ditolak"],
+          "maxLength": 24
+        },
+        "catatan": {
+          "type": "string",
+          "description": "Verification or rejection note.",
+          "maxLength": 500
+        },
+        "totals": {
+          "type": "object",
+          "description": "Aggregated budget totals by expenditure category (pegawai, barjas, atl, pm, lainnya, total)."
+        },
+        "meta": {
+          "type": "object",
+          "description": "Extracted RKAS header metadata (npsn, namaSekolah, tahun, tahap)."
+        },
+        "itemCount": {
+          "type": "number",
+          "description": "Number of parsed budget line items."
+        },
+        "canSubmit": {
+          "type": "boolean",
+          "description": "Whether the document passed identity validation and can be submitted."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of the last update."
+        }
+      },
+      "required": ["year", "schoolNo", "tahap", "sumber", "ownerUid", "fileName", "fileUrl", "status", "totals", "canSubmit", "updatedAt"]
+    },
+    "DriveFileRecord": {
+      "title": "DriveFileRecord",
+      "description": "Registry of PDF documents uploaded to Google Drive.",
+      "type": "object",
+      "properties": {
+        "driveFileId": {
+          "type": "string",
+          "description": "Google Drive file ID.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "fileName": {
+          "type": "string",
+          "description": "Uploaded PDF file name.",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "webViewLink": {
+          "type": "string",
+          "description": "Google Drive view URL.",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "docType": {
+          "type": "string",
+          "description": "Document category (e.g. rekeningKoran, bku, lra, sptjm, rkas_induk_reguler).",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "schoolNo": {
+          "type": "number",
+          "description": "School number associated with the document."
+        },
+        "year": {
+          "type": "number",
+          "description": "Fiscal year."
+        },
+        "periodKey": {
+          "type": "string",
+          "description": "Month or budget stage key.",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "uploadedByUid": {
+          "type": "string",
+          "description": "Firebase Auth UID of the uploader.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "uploadedBy": {
+          "type": "string",
+          "description": "Username or email of the uploader.",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the file metadata was recorded."
+        }
+      },
+      "required": ["driveFileId", "fileName", "webViewLink", "docType", "schoolNo", "year", "periodKey", "uploadedByUid", "uploadedBy", "createdAt"]
+    },
+    "Sp2bKabStore": {
+      "title": "Sp2bKabStore",
+      "description": "District-level SP2B letter configurations and saved archive per fiscal year.",
+      "type": "object",
+      "properties": {
+        "year": {
+          "type": "number",
+          "description": "Fiscal year."
+        },
+        "records": {
+          "type": "object",
+          "description": "Saved SP2B configurations map."
+        },
+        "last": {
+          "type": "object",
+          "description": "Last used signatory and DPA metadata."
+        },
+        "updatedByUid": {
+          "type": "string",
+          "description": "UID of the admin/BUD who updated the store.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of the last update."
+        }
+      },
+      "required": ["year", "records", "last", "updatedByUid", "updatedAt"]
+    },
+    "AuditLog": {
+      "title": "AuditLog",
+      "description": "Immutable audit trail record for system actions.",
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string",
+          "description": "Action identifier.",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "userUid": {
+          "type": "string",
+          "description": "Firebase Auth UID of the actor.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "username": {
+          "type": "string",
+          "description": "Username or email of the actor.",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "role": {
+          "type": "string",
+          "description": "Actor role.",
+          "maxLength": 40
+        },
+        "detail": {
+          "type": "string",
+          "description": "Summary description of the event.",
+          "maxLength": 500
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the audit log was created."
+        }
+      },
+      "required": ["action", "userUid", "username", "role", "detail", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/admins/{adminId}": {
+      "schema": { "$ref": "#/entities/AdminRecord" },
+      "description": "Administrator UID registry for RBAC lookups."
+    },
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "User profiles containing role bindings and PII (restricted to owner and admin)."
+    },
+    "/schools/{schoolId}": {
+      "schema": { "$ref": "#/entities/School" },
+      "description": "Master data of educational units (SD & SMP) in Minahasa Tenggara."
+    },
+    "/monthly_reports/{reportId}": {
+      "schema": { "$ref": "#/entities/MonthlyReport" },
+      "description": "Monthly BOSP realization, reconciliation, and Google Drive document references."
+    },
+    "/anggaran_records/{recordId}": {
+      "schema": { "$ref": "#/entities/AnggaranRecord" },
+      "description": "RKAS budget submissions and parsed totals per school, stage, and funding source."
+    },
+    "/drive_files/{fileId}": {
+      "schema": { "$ref": "#/entities/DriveFileRecord" },
+      "description": "Metadata registry for PDF files uploaded to Google Drive."
+    },
+    "/sp2b_kab/{yearId}": {
+      "schema": { "$ref": "#/entities/Sp2bKabStore" },
+      "description": "District-wide SP2B configurations and archives per fiscal year."
+    },
+    "/audit_logs/{logId}": {
+      "schema": { "$ref": "#/entities/AuditLog" },
+      "description": "Immutable security and activity audit logs."
+    }
+  }
+}

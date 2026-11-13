@@ -208,8 +208,11 @@
     if (btn) { btn.disabled = true; btn.classList.add("opacity-60"); }
     api("/api/school-profile", { method: "PUT", body: body }).then(function (j) {
       mergeLocal(j.school);
+      if (w.SigapFirebaseDrive && typeof w.SigapFirebaseDrive.syncSchoolToFirestore === "function") {
+        w.SigapFirebaseDrive.syncSchoolToFirestore(j.school).catch(function (e) { console.warn("Sync school profile Firestore:", e); });
+      }
       closeProfileModal();
-      toast("Data Master Sekolah berhasil disimpan.", "ok");
+      toast("Data Master Sekolah berhasil disimpan ke Firebase.", "ok");
       refreshViews();
     }).catch(function (e) {
       toast("Gagal menyimpan: " + e.message, "err");

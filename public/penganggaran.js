@@ -298,16 +298,38 @@
     var cur = recOf(f.schoolNo, f.tahap, f.sumber);
     if (cur && !confirm("Dokumen " + srcName(f.sumber) + " " + tahapName(f.tahap) + " untuk sekolah ini sudah ada (" + cur.status + "). Ganti dengan file baru? Koreksi manual sebelumnya akan hilang.")) return;
     var box = $("inputDyn"), keep = box.innerHTML;
-    box.innerHTML = '<p class="text-slate-600 p-10 text-center"><i class="fa-solid fa-gears fa-spin mr-2"></i>Mengunggah dan membaca <b>' + esc(f.file.name) + "</b>… (dokumen besar dapat memakan beberapa detik)</p>";
+    box.innerHTML = '<p class="text-slate-600 p-10 text-center"><i class="fa-solid fa-gears fa-spin mr-2"></i>Mengunggah ke <b>Google Drive</b> dan membaca <b>' + esc(f.file.name) + "</b>… (dokumen besar dapat memakan beberapa detik)</p>";
     try {
+      var sc = schoolOf(f.schoolNo);
+      var gdriveRes = null;
+      if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.uploadPdfToGoogleDrive === "function") {
+        gdriveRes = await window.SigapFirebaseDrive.uploadPdfToGoogleDrive(f.file, {
+          schoolNo: f.schoolNo,
+          schoolName: sc.name || "",
+          npsn: sc.npsn || "",
+          periodKey: "anggaran-" + f.tahap,
+          year: S.year,
+          docType: "rkas_" + f.tahap + "_" + f.sumber,
+          fileName: f.file.name,
+          existingDriveFileId: cur && cur.driveFileId ? cur.driveFileId : ""
+        });
+      }
       var fd = new FormData();
-      fd.append("year", S.year); fd.append("tahap", f.tahap); fd.append("sumber", f.sumber); fd.append("schoolNo", f.schoolNo); fd.append("file", f.file);
+      fd.append("year", S.year); fd.append("tahap", f.tahap); fd.append("sumber", f.sumber); fd.append("schoolNo", f.schoolNo);
+      if (gdriveRes && gdriveRes.fileUrl) {
+        fd.append("driveUrl", gdriveRes.fileUrl);
+        fd.append("driveFileId", gdriveRes.driveFileId || "");
+      }
+      fd.append("file", f.file);
       var r = await api("/api/anggaran/upload", { method: "POST", headers: hdrs(false), body: fd });
+      if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.syncAnggaranRecordToFirestore === "function") {
+        try { await window.SigapFirebaseDrive.syncAnggaranRecordToFirestore(r.record); } catch (fbErr) { console.warn("Sync Anggaran Firestore:", fbErr); }
+      }
       var bl = (r.record && r.record.blockingErrors) || [];
       if (bl.length) {
-        toast("PDF terbaca, tetapi TIDAK DAPAT DIAJUKAN: " + bl.length + " masalah identitas/sumber dana.", true);
+        toast("PDF tersimpan di Google Drive & terbaca, tetapi TIDAK DAPAT DIAJUKAN: " + bl.length + " masalah identitas/sumber dana.", true);
       } else {
-        toast("PDF terbaca: " + r.record.items.length + " baris rekening, total " + rp(r.record.totals.total));
+        toast("PDF tersimpan di Google Drive & Firebase: " + r.record.items.length + " baris rekening, total " + rp(r.record.totals.total));
       }
       f.file = null;
       await loadData(); renderInputDyn();
@@ -659,7 +681,10 @@
     try {
       var j = await post("/api/anggaran/action", { year: S.year, tahap: d.tahap, sumber: d.sumber, schoolNo: d.no, action: "reclass", overrides: keys.map(function (i) { return { index: Number(i), kategori: d.dirty[i] }; }) });
       d.rec = Object.assign({}, d.rec, { items: j.record.items, totals: j.record.totals }); d.dirty = {};
-      if (!silent) toast("Koreksi tersimpan.");
+      if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.syncAnggaranRecordToFirestore === "function") {
+        try { await window.SigapFirebaseDrive.syncAnggaranRecordToFirestore(j.record); } catch (_) {}
+      }
+      if (!silent) toast("Koreksi tersimpan ke Firebase.");
       return true;
     } catch (e) { toast(e.message, true); return false; }
   }
@@ -667,6 +692,9 @@
     var d = S.detail;
     try {
       var j = await post("/api/anggaran/action", { year: S.year, tahap: d.tahap, sumber: d.sumber, schoolNo: d.no, action: action, catatan: catatan || "" });
+      if (j && j.record && window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.syncAnggaranRecordToFirestore === "function") {
+        try { await window.SigapFirebaseDrive.syncAnggaranRecordToFirestore(j.record); } catch (_) {}
+      }
       return j;
     } catch (e) {
       // Jika server menolak karena identitas/sumber dana, tampilkan detail di modal
@@ -735,6 +763,13 @@
       }
       case "detDelete":
         if (!confirm("Hapus dokumen " + srcName(d.sumber) + " " + tahapName(d.tahap) + " ini beserta hasil bacanya?")) break;
+        if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.deleteAnggaranRecordFromFirestore === "function") {
+          try {
+            await window.SigapFirebaseDrive.deleteAnggaranRecordFromFirestore(S.year, d.no, d.tahap, d.sumber, d.rec && d.rec.driveFileId, d.rec && d.rec.fileName);
+          } catch (fbErr) {
+            console.warn("Delete from Drive/Firestore:", fbErr);
+          }
+        }
         if (await detAction("delete")) { toast("Dokumen dihapus."); $("detailModal").classList.add("hidden"); S.detail = null; afterChange(); }
         break;
     }

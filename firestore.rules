@@ -1,0 +1,385 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // =========================================================================
+    // 1. GLOBAL SAFETY NET (Default Deny Catch-All)
+    // =========================================================================
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // =========================================================================
+    // 2. HARDENED PRIMITIVE HELPERS
+    // =========================================================================
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isVerifiedUser() {
+      return isSignedIn() && request.auth.token.email_verified == true;
+    }
+
+    function isBootstrappedAdmin() {
+      return isVerifiedUser() && request.auth.token.email == 'artygigiron98@gmail.com';
+    }
+
+    function isAdmin() {
+      return isBootstrappedAdmin() || (
+        isVerifiedUser() &&
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function isOwner(uid) {
+      return isVerifiedUser() && request.auth.uid == uid;
+    }
+
+    // =========================================================================
+    // 3. VALIDATION BLUEPRINTS (Anti-Update-Gap)
+    // =========================================================================
+
+    function isValidAdminRecord(data) {
+      return data.keys().hasAll(['uid', 'email', 'role', 'createdAt']) &&
+        data.keys().hasOnly(['uid', 'email', 'role', 'createdAt']) &&
+        data.uid is string && data.uid.size() >= 1 && data.uid.size() <= 128 && data.uid.matches('^[a-zA-Z0-9_\\-]+$') &&
+        data.email is string && data.email.size() >= 3 && data.email.size() <= 160 &&
+        data.role is string && data.role.size() >= 1 && data.role.size() <= 32 &&
+        (data.role == 'Admin Dinas' || data.role == 'BUD') &&
+        data.createdAt is timestamp;
+    }
+
+    function isValidUserProfile(data) {
+      return data.keys().hasAll(['uid', 'username', 'name', 'role', 'status', 'createdAt', 'updatedAt']) &&
+        data.keys().hasOnly(['uid', 'username', 'name', 'email', 'whatsapp', 'role', 'schoolNo', 'npsn', 'status', 'createdAt', 'updatedAt']) &&
+        data.uid is string && data.uid.size() >= 1 && data.uid.size() <= 128 && data.uid.matches('^[a-zA-Z0-9_\\-]+$') &&
+        data.username is string && data.username.size() >= 1 && data.username.size() <= 80 &&
+        data.name is string && data.name.size() >= 1 && data.name.size() <= 140 &&
+        (!('email' in data) || (data.email is string && data.email.size() <= 160)) &&
+        (!('whatsapp' in data) || (data.whatsapp is string && data.whatsapp.size() <= 30)) &&
+        data.role is string && data.role.size() >= 1 && data.role.size() <= 32 &&
+        (data.role == 'Operator Sekolah' || data.role == 'Admin Dinas' || data.role == 'BUD') &&
+        (!('schoolNo' in data) || (data.schoolNo is number && data.schoolNo >= 0 && data.schoolNo <= 10000)) &&
+        (!('npsn' in data) || (data.npsn is string && data.npsn.size() <= 20)) &&
+        data.status is string && data.status.size() >= 1 && data.status.size() <= 20 &&
+        (data.status == 'Pending' || data.status == 'Aktif' || data.status == 'Ditolak') &&
+        data.createdAt is timestamp &&
+        data.updatedAt is timestamp;
+    }
+
+    function isValidSchool(data) {
+      return data.keys().hasAll(['no', 'npsn', 'name', 'status', 'kecamatan', 'jenjang', 'updatedByUid', 'updatedAt']) &&
+        data.keys().hasOnly(['no', 'npsn', 'name', 'alamat', 'status', 'kecamatan', 'jenjang', 'kepalaSekolah', 'bendahara', 'updatedByUid', 'updatedAt']) &&
+        data.no is number && data.no >= 1 && data.no <= 10000 &&
+        data.npsn is string && data.npsn.size() >= 1 && data.npsn.size() <= 20 &&
+        data.name is string && data.name.size() >= 1 && data.name.size() <= 160 &&
+        (!('alamat' in data) || (data.alamat is string && data.alamat.size() <= 250)) &&
+        data.status is string && data.status.size() >= 1 && data.status.size() <= 16 &&
+        (data.status == 'NEGERI' || data.status == 'SWASTA') &&
+        data.kecamatan is string && data.kecamatan.size() >= 1 && data.kecamatan.size() <= 100 &&
+        data.jenjang is string && data.jenjang.size() >= 1 && data.jenjang.size() <= 10 &&
+        (data.jenjang == 'SD' || data.jenjang == 'SMP') &&
+        (!('kepalaSekolah' in data) || (data.kepalaSekolah is map && data.kepalaSekolah.keys().size() <= 10)) &&
+        (!('bendahara' in data) || (data.bendahara is map && data.bendahara.keys().size() <= 10)) &&
+        data.updatedByUid is string && data.updatedByUid.size() >= 1 && data.updatedByUid.size() <= 128 && data.updatedByUid.matches('^[a-zA-Z0-9_\\-]+$') &&
+        data.updatedByUid == request.auth.uid &&
+        data.updatedAt is timestamp;
+    }
+
+    function isValidMonthlyReport(data) {
+      return data.keys().hasAll(['year', 'schoolNo', 'month', 'ownerUid', 'verifStatus', 'pendapatan', 'belanja', 'documents', 'updatedAt']) &&
+        data.keys().hasOnly(['year', 'schoolNo', 'month', 'ownerUid', 'verifStatus', 'reconDone', 'reconDoneAt', 'pendapatan', 'belanja', 'rekon', 'documents', 'saldoAwalCustom', 'saldoReguler', 'saldoKinerja', 'saldoNonBOS', 'saldoTunai', 'updatedAt']) &&
+        data.year is number && data.year >= 2020 && data.year <= 2100 &&
+        data.schoolNo is number && data.schoolNo >= 1 && data.schoolNo <= 10000 &&
+        data.month is string && data.month.size() >= 1 && data.month.size() <= 10 &&
+        (data.month == 'Jan' || data.month == 'Feb' || data.month == 'Mar' || data.month == 'Apr' || data.month == 'Mei' || data.month == 'Jun' || data.month == 'Jul' || data.month == 'Agus' || data.month == 'Sep' || data.month == 'Okt' || data.month == 'Nov' || data.month == 'Des') &&
+        data.ownerUid is string && data.ownerUid.size() >= 1 && data.ownerUid.size() <= 128 && data.ownerUid.matches('^[a-zA-Z0-9_\\-]+$') &&
+        data.verifStatus is string && data.verifStatus.size() >= 1 && data.verifStatus.size() <= 32 &&
+        (data.verifStatus == 'Draft' || data.verifStatus == 'Diajukan Sekolah' || data.verifStatus == 'Diverifikasi Dinas' || data.verifStatus == 'Disahkan BUD') &&
+        (!('reconDone' in data) || data.reconDone is bool) &&
+        (!('reconDoneAt' in data) || (data.reconDoneAt is string && data.reconDoneAt.size() <= 40)) &&
+        data.pendapatan is map && data.pendapatan.keys().size() <= 20 &&
+        data.belanja is map && data.belanja.keys().size() <= 20 &&
+        (!('rekon' in data) || (data.rekon is map && data.rekon.keys().size() <= 20)) &&
+        data.documents is map && data.documents.keys().size() <= 20 &&
+        (!('saldoAwalCustom' in data) || data.saldoAwalCustom is number) &&
+        (!('saldoReguler' in data) || data.saldoReguler is number) &&
+        (!('saldoKinerja' in data) || data.saldoKinerja is number) &&
+        (!('saldoNonBOS' in data) || data.saldoNonBOS is number) &&
+        (!('saldoTunai' in data) || data.saldoTunai is number) &&
+        data.updatedAt is timestamp;
+    }
+
+    function isValidAnggaranRecord(data) {
+      return data.keys().hasAll(['year', 'schoolNo', 'tahap', 'sumber', 'ownerUid', 'fileName', 'fileUrl', 'status', 'totals', 'canSubmit', 'updatedAt']) &&
+        data.keys().hasOnly(['year', 'schoolNo', 'tahap', 'sumber', 'ownerUid', 'fileName', 'fileUrl', 'driveFileId', 'status', 'catatan', 'totals', 'meta', 'itemCount', 'canSubmit', 'updatedAt']) &&
+        data.year is number && data.year >= 2020 && data.year <= 2100 &&
+        data.schoolNo is number && data.schoolNo >= 1 && data.schoolNo <= 10000 &&
+        data.tahap is string && data.tahap.size() >= 1 && data.tahap.size() <= 16 &&
+        (data.tahap == 'induk' || data.tahap == 'perubahan') &&
+        data.sumber is string && data.sumber.size() >= 1 && data.sumber.size() <= 24 &&
+        (data.sumber == 'reguler' || data.sumber == 'kinerja' || data.sumber == 'prestasi' || data.sumber == 'silpaKinerja') &&
+        data.ownerUid is string && data.ownerUid.size() >= 1 && data.ownerUid.size() <= 128 && data.ownerUid.matches('^[a-zA-Z0-9_\\-]+$') &&
+        data.fileName is string && data.fileName.size() >= 1 && data.fileName.size() <= 200 &&
+        data.fileUrl is string && data.fileUrl.size() >= 1 && data.fileUrl.size() <= 500 &&
+        (!('driveFileId' in data) || (data.driveFileId is string && data.driveFileId.size() <= 128)) &&
+        data.status is string && data.status.size() >= 1 && data.status.size() <= 24 &&
+        (data.status == 'Draft' || data.status == 'Diajukan' || data.status == 'Terverifikasi' || data.status == 'Ditolak') &&
+        (!('catatan' in data) || (data.catatan is string && data.catatan.size() <= 500)) &&
+        data.totals is map && data.totals.keys().size() <= 10 &&
+        (!('meta' in data) || (data.meta is map && data.meta.keys().size() <= 20)) &&
+        (!('itemCount' in data) || (data.itemCount is number && data.itemCount >= 0 && data.itemCount <= 10000)) &&
+        data.canSubmit is bool &&
+        data.updatedAt is timestamp;
+    }
+
+    function isValidDriveFileRecord(data) {
+      return data.keys().hasAll(['driveFileId', 'fileName', 'webViewLink', 'docType', 'schoolNo', 'year', 'periodKey', 'uploadedByUid', 'uploadedBy', 'createdAt']) &&
+        data.keys().hasOnly(['driveFileId', 'fileName', 'webViewLink', 'docType', 'schoolNo', 'year', 'periodKey', 'uploadedByUid', 'uploadedBy', 'createdAt']) &&
+        data.driveFileId is string && data.driveFileId.size() >= 1 && data.driveFileId.size() <= 128 && data.driveFileId.matches('^[a-zA-Z0-9_\\-]+$') &&
+        data.fileName is string && data.fileName.size() >= 1 && data.fileName.size() <= 200 &&
+        data.webViewLink is string && data.webViewLink.size() >= 1 && data.webViewLink.size() <= 500 &&
+        data.docType is string && data.docType.size() >= 1 && data.docType.size() <= 64 &&
+        data.schoolNo is number && data.schoolNo >= 0 && data.schoolNo <= 10000 &&
+        data.year is number && data.year >= 2020 && data.year <= 2100 &&
+        data.periodKey is string && data.periodKey.size() >= 1 && data.periodKey.size() <= 32 &&
+        data.uploadedByUid is string && data.uploadedByUid.size() >= 1 && data.uploadedByUid.size() <= 128 && data.uploadedByUid.matches('^[a-zA-Z0-9_\\-]+$') &&
+        data.uploadedByUid == request.auth.uid &&
+        data.uploadedBy is string && data.uploadedBy.size() >= 1 && data.uploadedBy.size() <= 160 &&
+        data.createdAt is timestamp;
+    }
+
+    function isValidSp2bKabStore(data) {
+      return data.keys().hasAll(['year', 'records', 'last', 'updatedByUid', 'updatedAt']) &&
+        data.keys().hasOnly(['year', 'records', 'last', 'updatedByUid', 'updatedAt']) &&
+        data.year is number && data.year >= 2020 && data.year <= 2100 &&
+        data.records is map && data.records.keys().size() <= 200 &&
+        data.last is map && data.last.keys().size() <= 30 &&
+        data.updatedByUid is string && data.updatedByUid.size() >= 1 && data.updatedByUid.size() <= 128 && data.updatedByUid.matches('^[a-zA-Z0-9_\\-]+$') &&
+        data.updatedByUid == request.auth.uid &&
+        data.updatedAt is timestamp;
+    }
+
+    function isValidAuditLog(data) {
+      return data.keys().hasAll(['action', 'userUid', 'username', 'role', 'detail', 'createdAt']) &&
+        data.keys().hasOnly(['action', 'userUid', 'username', 'role', 'detail', 'createdAt']) &&
+        data.action is string && data.action.size() >= 1 && data.action.size() <= 80 &&
+        data.userUid is string && data.userUid.size() >= 1 && data.userUid.size() <= 128 && data.userUid.matches('^[a-zA-Z0-9_\\-]+$') &&
+        data.userUid == request.auth.uid &&
+        data.username is string && data.username.size() >= 1 && data.username.size() <= 160 &&
+        data.role is string && data.role.size() >= 1 && data.role.size() <= 40 &&
+        data.detail is string && data.detail.size() >= 1 && data.detail.size() <= 500 &&
+        data.createdAt is timestamp;
+    }
+
+    // =========================================================================
+    // 4. COLLECTION MATCH BLOCKS
+    // =========================================================================
+
+    // /admins/{adminId}
+    match /admins/{adminId} {
+      allow get: if isSignedIn() && isValidId(adminId) && (isOwner(adminId) || isAdmin());
+      allow list: if isBootstrappedAdmin() || (isVerifiedUser() && resource.data.uid == request.auth.uid);
+      allow create: if isSignedIn() && isValidId(adminId) && isValidAdminRecord(incoming()) &&
+        incoming().createdAt == request.time &&
+        isBootstrappedAdmin();
+      allow update: if isSignedIn() && isValidId(adminId) && isValidAdminRecord(incoming()) &&
+        incoming().uid == existing().uid &&
+        incoming().createdAt == existing().createdAt &&
+        isBootstrappedAdmin() &&
+        incoming().diff(existing()).affectedKeys().hasOnly(['email', 'role']);
+      allow delete: if isSignedIn() && isValidId(adminId) && isBootstrappedAdmin();
+    }
+
+    // /users/{userId} — PII Isolated to Owner or Admin
+    match /users/{userId} {
+      allow get: if isSignedIn() && isValidId(userId) && (isOwner(userId) || isAdmin());
+      allow list: if isVerifiedUser() && (resource.data.uid == request.auth.uid || isBootstrappedAdmin());
+      allow create: if isSignedIn() && isVerifiedUser() && isValidId(userId) && isValidUserProfile(incoming()) &&
+        incoming().createdAt == request.time &&
+        incoming().updatedAt == request.time && (
+          isAdmin() || (
+            userId == request.auth.uid &&
+            incoming().uid == request.auth.uid &&
+            incoming().role == 'Operator Sekolah' &&
+            incoming().status == 'Pending'
+          )
+        );
+      allow update: if isSignedIn() && isVerifiedUser() && isValidId(userId) && isValidUserProfile(incoming()) &&
+        incoming().uid == existing().uid &&
+        incoming().createdAt == existing().createdAt &&
+        incoming().updatedAt == request.time && (
+          isAdmin() ||
+          // Action: Operator updates own profile contact details (cannot alter role or status)
+          (
+            isOwner(userId) &&
+            incoming().role == existing().role &&
+            incoming().status == existing().status &&
+            incoming().diff(existing()).affectedKeys().hasOnly(['name', 'whatsapp', 'updatedAt'])
+          )
+        );
+      allow delete: if isSignedIn() && isValidId(userId) && isAdmin();
+    }
+
+    // /schools/{schoolId}
+    match /schools/{schoolId} {
+      allow get: if isSignedIn() && isValidId(schoolId) && (isVerifiedUser() || isAdmin());
+      allow list: if isVerifiedUser() && (resource.data.updatedByUid == request.auth.uid || isBootstrappedAdmin());
+      allow create: if isSignedIn() && isVerifiedUser() && isValidId(schoolId) && isValidSchool(incoming()) &&
+        incoming().updatedAt == request.time &&
+        isAdmin();
+      allow update: if isSignedIn() && isVerifiedUser() && isValidId(schoolId) && isValidSchool(incoming()) &&
+        incoming().no == existing().no &&
+        incoming().updatedAt == request.time && (
+          isAdmin() ||
+          // Action: Update Principal & Treasurer (Pejabat) Profile
+          (
+            incoming().npsn == existing().npsn &&
+            incoming().name == existing().name &&
+            incoming().status == existing().status &&
+            incoming().kecamatan == existing().kecamatan &&
+            incoming().jenjang == existing().jenjang &&
+            incoming().diff(existing()).affectedKeys().hasOnly(['kepalaSekolah', 'bendahara', 'updatedByUid', 'updatedAt'])
+          )
+        );
+      allow delete: if isSignedIn() && isValidId(schoolId) && isAdmin();
+    }
+
+    // /monthly_reports/{reportId}
+    match /monthly_reports/{reportId} {
+      allow get: if isSignedIn() && isValidId(reportId) && (resource.data.ownerUid == request.auth.uid || isAdmin());
+      allow list: if isVerifiedUser() && (resource.data.ownerUid == request.auth.uid || isBootstrappedAdmin());
+      allow create: if isSignedIn() && isVerifiedUser() && isValidId(reportId) && isValidMonthlyReport(incoming()) &&
+        incoming().updatedAt == request.time && (
+          isAdmin() || (
+            incoming().ownerUid == request.auth.uid &&
+            (incoming().verifStatus == 'Draft' || incoming().verifStatus == 'Diajukan Sekolah')
+          )
+        );
+      allow update: if isSignedIn() && isVerifiedUser() && isValidId(reportId) && isValidMonthlyReport(incoming()) &&
+        incoming().year == existing().year &&
+        incoming().schoolNo == existing().schoolNo &&
+        incoming().month == existing().month &&
+        incoming().ownerUid == existing().ownerUid &&
+        incoming().updatedAt == request.time && (
+          isAdmin() || (
+            // Terminal State Lock: Disahkan BUD cannot be modified by non-admins
+            existing().verifStatus != 'Disahkan BUD' &&
+            existing().verifStatus != 'Diverifikasi Dinas' &&
+            existing().ownerUid == request.auth.uid && (
+              // Action 1: Save or Submit Monthly Realization & Documents
+              (
+                (incoming().verifStatus == 'Draft' || incoming().verifStatus == 'Diajukan Sekolah') &&
+                incoming().diff(existing()).affectedKeys().hasOnly(['pendapatan', 'belanja', 'rekon', 'documents', 'verifStatus', 'saldoAwalCustom', 'saldoReguler', 'saldoKinerja', 'saldoNonBOS', 'saldoTunai', 'updatedAt'])
+              )
+            )
+          )
+        );
+      allow delete: if isSignedIn() && isValidId(reportId) && isAdmin();
+    }
+
+    // /anggaran_records/{recordId}
+    match /anggaran_records/{recordId} {
+      allow get: if isSignedIn() && isValidId(recordId) && (resource.data.ownerUid == request.auth.uid || isAdmin());
+      allow list: if isVerifiedUser() && (resource.data.ownerUid == request.auth.uid || isBootstrappedAdmin());
+      allow create: if isSignedIn() && isVerifiedUser() && isValidId(recordId) && isValidAnggaranRecord(incoming()) &&
+        incoming().updatedAt == request.time && (
+          isAdmin() || (
+            incoming().ownerUid == request.auth.uid &&
+            incoming().status == 'Draft'
+          )
+        );
+      allow update: if isSignedIn() && isVerifiedUser() && isValidId(recordId) && isValidAnggaranRecord(incoming()) &&
+        incoming().year == existing().year &&
+        incoming().schoolNo == existing().schoolNo &&
+        incoming().tahap == existing().tahap &&
+        incoming().sumber == existing().sumber &&
+        incoming().ownerUid == existing().ownerUid &&
+        incoming().updatedAt == request.time && (
+          isAdmin() || (
+            // Terminal State Lock: Terverifikasi & Diajukan are locked for non-admins
+            existing().status != 'Terverifikasi' &&
+            existing().status != 'Diajukan' &&
+            existing().ownerUid == request.auth.uid && (
+              // Action 1: Reclassify / Re-upload Draft
+              (
+                incoming().status == 'Draft' &&
+                incoming().diff(existing()).affectedKeys().hasOnly(['fileName', 'fileUrl', 'driveFileId', 'totals', 'meta', 'itemCount', 'canSubmit', 'status', 'catatan', 'updatedAt'])
+              ) ||
+              // Action 2: Submit to Dinas (only allowed if canSubmit is true)
+              (
+                incoming().status == 'Diajukan' &&
+                incoming().canSubmit == true &&
+                incoming().diff(existing()).affectedKeys().hasOnly(['status', 'catatan', 'updatedAt'])
+              )
+            )
+          )
+        );
+      allow delete: if isSignedIn() && isVerifiedUser() && isValidId(recordId) && (
+        isAdmin() || (
+          existing().ownerUid == request.auth.uid &&
+          existing().status != 'Terverifikasi' &&
+          existing().status != 'Diajukan'
+        )
+      );
+    }
+
+    // /drive_files/{fileId}
+    match /drive_files/{fileId} {
+      allow get: if isSignedIn() && isValidId(fileId) && (resource.data.uploadedByUid == request.auth.uid || isAdmin());
+      allow list: if isVerifiedUser() && (resource.data.uploadedByUid == request.auth.uid || isBootstrappedAdmin());
+      allow create: if isSignedIn() && isVerifiedUser() && isValidId(fileId) && isValidDriveFileRecord(incoming()) &&
+        incoming().createdAt == request.time &&
+        incoming().uploadedByUid == request.auth.uid;
+      allow update: if isSignedIn() && isVerifiedUser() && isValidId(fileId) && isValidDriveFileRecord(incoming()) &&
+        incoming().createdAt == existing().createdAt &&
+        incoming().uploadedByUid == existing().uploadedByUid && (
+          isAdmin() || (
+            existing().uploadedByUid == request.auth.uid &&
+            incoming().diff(existing()).affectedKeys().hasOnly(['fileName', 'webViewLink'])
+          )
+        );
+      allow delete: if isSignedIn() && isVerifiedUser() && isValidId(fileId) && (
+        isAdmin() || existing().uploadedByUid == request.auth.uid
+      );
+    }
+
+    // /sp2b_kab/{yearId}
+    match /sp2b_kab/{yearId} {
+      allow get: if isSignedIn() && isValidId(yearId) && isAdmin();
+      allow list: if isBootstrappedAdmin();
+      allow create: if isSignedIn() && isVerifiedUser() && isValidId(yearId) && isValidSp2bKabStore(incoming()) &&
+        incoming().updatedAt == request.time &&
+        isAdmin();
+      allow update: if isSignedIn() && isVerifiedUser() && isValidId(yearId) && isValidSp2bKabStore(incoming()) &&
+        incoming().year == existing().year &&
+        incoming().updatedAt == request.time &&
+        isAdmin() &&
+        incoming().diff(existing()).affectedKeys().hasOnly(['records', 'last', 'updatedByUid', 'updatedAt']);
+      allow delete: if isSignedIn() && isValidId(yearId) && isAdmin();
+    }
+
+    // /audit_logs/{logId}
+    match /audit_logs/{logId} {
+      allow get: if isSignedIn() && isValidId(logId) && (resource.data.userUid == request.auth.uid || isAdmin());
+      allow list: if isBootstrappedAdmin() || (isVerifiedUser() && resource.data.userUid == request.auth.uid);
+      allow create: if isSignedIn() && isVerifiedUser() && isValidId(logId) && isValidAuditLog(incoming()) &&
+        incoming().createdAt == request.time &&
+        incoming().userUid == request.auth.uid;
+      allow update, delete: if false;
+    }
+  }
+}
