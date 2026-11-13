@@ -596,6 +596,13 @@ export function signInWithGoogle(options = {}) {
     );
 
     const flowPromise = (async () => {
+      // Prioritaskan Firebase Auth popup agar tidak terbentur pembatasan verifikasi Google Cloud OAuth screen di preview environment
+      try {
+        return await runFirebasePopupFallback(options);
+      } catch (popupErr) {
+        console.warn('Firebase popup sign-in failed, trying GIS token client:', popupErr);
+      }
+
       if (canUseGisImmediately) {
         try {
           const accessToken = await requestGisAccessTokenPopup(options);
@@ -603,26 +610,20 @@ export function signInWithGoogle(options = {}) {
           const result = await signInWithCredential(auth, credential);
           return finalizeGoogleSignInResult(result.user, accessToken, options);
         } catch (gisErr) {
-          console.warn('GIS token client fallback to popup:', gisErr);
-          return runFirebasePopupFallback(options);
+          console.warn('GIS token client fallback failed:', gisErr);
+          throw gisErr;
         }
       }
 
-      // Jika script GIS belum selesai dimuat saat tombol diklik, muat dulu lalu jalankan GIS
       const gisLoaded = await ensureGisClientScript();
       if (gisLoaded && firebaseConfig && firebaseConfig.oAuthClientId) {
-        try {
-          const accessToken = await requestGisAccessTokenPopup(options);
-          const credential = GoogleAuthProvider.credential(null, accessToken);
-          const result = await signInWithCredential(auth, credential);
-          return finalizeGoogleSignInResult(result.user, accessToken, options);
-        } catch (gisErr2) {
-          console.warn('GIS loaded fallback to popup:', gisErr2);
-          return runFirebasePopupFallback(options);
-        }
+        const accessToken = await requestGisAccessTokenPopup(options);
+        const credential = GoogleAuthProvider.credential(null, accessToken);
+        const result = await signInWithCredential(auth, credential);
+        return finalizeGoogleSignInResult(result.user, accessToken, options);
       }
 
-      return runFirebasePopupFallback(options);
+      throw new Error('Autentikasi Google gagal.');
     })();
 
     activeSignInPromise = flowPromise
