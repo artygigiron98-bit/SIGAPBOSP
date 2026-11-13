@@ -1,0 +1,15 @@
+VERSI JSON (tanpa MySQL)
+
+1. npm install
+2. copy .env.example .env
+3. npm run init-db
+4. npm run hash-passwords
+5. npm start
+6. Buka http://localhost:3000
+   admin / admin2024
+
+Data tersimpan di folder:
+  data/users.json
+  data/schools.json
+  data/monthly_YYYY.json
+  uploads/

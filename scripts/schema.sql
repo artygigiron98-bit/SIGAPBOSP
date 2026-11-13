@@ -1,0 +1,63 @@
+-- Database: rekon_bosp
+CREATE DATABASE IF NOT EXISTS rekon_bosp CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE rekon_bosp;
+
+CREATE TABLE IF NOT EXISTS schools (
+  no INT PRIMARY KEY,
+  npsn VARCHAR(32) NOT NULL DEFAULT '',
+  name VARCHAR(255) NOT NULL DEFAULT '',
+  alamat VARCHAR(500) NOT NULL DEFAULT '',
+  status VARCHAR(32) NOT NULL DEFAULT 'NEGERI',
+  kecamatan VARCHAR(128) NOT NULL DEFAULT '',
+  jenjang VARCHAR(16) NOT NULL DEFAULT 'SD',
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_schools_npsn (npsn),
+  INDEX idx_schools_kecamatan (kecamatan)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL DEFAULT '',
+  username VARCHAR(64) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  role VARCHAR(64) NOT NULL DEFAULT 'Operator Sekolah',
+  school_no INT NULL,
+  npsn VARCHAR(32) NOT NULL DEFAULT '',
+  whatsapp VARCHAR(32) NOT NULL DEFAULT '',
+  status VARCHAR(32) NOT NULL DEFAULT 'Pending',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY uq_users_username (username),
+  INDEX idx_users_school (school_no)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS monthly_data (
+  year SMALLINT NOT NULL,
+  school_no INT NOT NULL,
+  month VARCHAR(16) NOT NULL,
+  payload JSON NOT NULL,
+  verif_status VARCHAR(64) NULL,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (year, school_no, month),
+  INDEX idx_monthly_year (year),
+  INDEX idx_monthly_school (school_no)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS sp2b_kab (
+  year SMALLINT PRIMARY KEY,
+  records JSON NULL,
+  last_data JSON NULL,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS audit_log (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  action VARCHAR(64) NOT NULL,
+  username VARCHAR(64) NULL,
+  role VARCHAR(64) NULL,
+  ip VARCHAR(64) NULL,
+  detail JSON NULL,
+  INDEX idx_audit_time (created_at),
+  INDEX idx_audit_user (username)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

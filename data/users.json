@@ -1,0 +1,31 @@
+[
+  {
+    "name": "Administrator Dinas",
+    "username": "admin",
+    "password": "$2a$12$9Xg6IVGPGDGAvHTV04RcVOfmvJKCynkNmkrVdnHE9niUwkYR.6GZ.",
+    "role": "Admin Dinas",
+    "schoolNo": null,
+    "npsn": "",
+    "status": "Aktif"
+  },
+  {
+    "name": "Admin Dinas (david)",
+    "username": "david",
+    "password": "$2a$12$iYI97Wro2PWX8nQiPuAbKOGAqNDnt9ujkw0v/BvJUZkVXoOMHFGFi",
+    "role": "Admin Dinas",
+    "schoolNo": null,
+    "npsn": "",
+    "whatsapp": "6285256458845",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD NEGERI KECIL BANGA",
+    "username": "juan",
+    "password": "$2a$12$It3KovGi5fxRWkQ3MnIJnOpKNJ23An112BUja91e/SFCH6enOW8nO",
+    "role": "Operator Sekolah",
+    "schoolNo": 62,
+    "npsn": "40101860",
+    "whatsapp": "6281354414942",
+    "status": "Aktif"
+  }
+]

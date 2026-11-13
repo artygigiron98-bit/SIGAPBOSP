@@ -1,0 +1,1235 @@
+[
+  {
+    "no": 1,
+    "npsn": "69762652",
+    "name": "SD NEGERI MAULIT",
+    "alamat": "MAULIT",
+    "status": "NEGERI",
+    "kecamatan": "KEC. PASAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 2,
+    "npsn": "40102206",
+    "name": "SD NEGERI II MOLOMPAR",
+    "alamat": "Molompar Dua",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU TIMUR",
+    "jenjang": "SD"
+  },
+  {
+    "no": 3,
+    "npsn": "40102145",
+    "name": "SD GMIM 361TATENGESAN",
+    "alamat": "Tatengesan Jaga II",
+    "status": "SWASTA",
+    "kecamatan": "KEC. PUSOMAEN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 4,
+    "npsn": "40101881",
+    "name": "SDN INPRES WINORANGIAN",
+    "alamat": "Winorangian",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU UTARA",
+    "jenjang": "SD"
+  },
+  {
+    "no": 5,
+    "npsn": "40102202",
+    "name": "SDN I BELANG",
+    "alamat": "BELANG",
+    "status": "NEGERI",
+    "kecamatan": "KEC. BELANG",
+    "jenjang": "SD"
+  },
+  {
+    "no": 6,
+    "npsn": "40102169",
+    "name": "SD GMIM 2 TOMBATU",
+    "alamat": "Jaga 4",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOMBATU UTARA",
+    "jenjang": "SD"
+  },
+  {
+    "no": 7,
+    "npsn": "40102204",
+    "name": "SD NEGERI I MOLOMPAR",
+    "alamat": "Jl. Pendidikan Desa Molompar Dua Jaga II Kec. Tombatu Timur",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU TIMUR",
+    "jenjang": "SD"
+  },
+  {
+    "no": 8,
+    "npsn": "40102165",
+    "name": "SD GMIM BENTENAN",
+    "alamat": "Bentenan ",
+    "status": "SWASTA",
+    "kecamatan": "KEC. PUSOMAEN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 9,
+    "npsn": "40102172",
+    "name": "SD GMIM KALI",
+    "alamat": "Jaga I",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOMBATU",
+    "jenjang": "SD"
+  },
+  {
+    "no": 10,
+    "npsn": "40102214",
+    "name": "SD MUHAMMADIYAH MOLOMPAR",
+    "alamat": "Jln. Puskesmas Jaga 4 Desa Molompar",
+    "status": "SWASTA",
+    "kecamatan": "KEC. BELANG",
+    "jenjang": "SD"
+  },
+  {
+    "no": 11,
+    "npsn": "40103498",
+    "name": "SD INPRES BENTENAN",
+    "alamat": "Bentenan",
+    "status": "NEGERI",
+    "kecamatan": "KEC. PUSOMAEN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 12,
+    "npsn": "40101858",
+    "name": "SD NEGERI PISA",
+    "alamat": "Jalan Trans Pisa",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU",
+    "jenjang": "SD"
+  },
+  {
+    "no": 13,
+    "npsn": "40101953",
+    "name": "SD INPRES RASI",
+    "alamat": "Rasi Satu, Jaga 2",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATAHAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 14,
+    "npsn": "40102230",
+    "name": "SD NEGERI I MUNDUNG",
+    "alamat": "Jaga IV",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU TIMUR",
+    "jenjang": "SD"
+  },
+  {
+    "no": 15,
+    "npsn": "40101920",
+    "name": "SD INPRES LOBU",
+    "alamat": "LOBU",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOULUAAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 16,
+    "npsn": "40103514",
+    "name": "SD COKROAMINOTO RATATOTOK",
+    "alamat": "Jl. Ratuwalangon",
+    "status": "SWASTA",
+    "kecamatan": "KEC. RATATOTOK",
+    "jenjang": "SD"
+  },
+  {
+    "no": 17,
+    "npsn": "40102093",
+    "name": "SD GMIM LOWATAG",
+    "alamat": "Jaga I",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOULUAAN SELATAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 18,
+    "npsn": "40102171",
+    "name": "SD GMIM KALAIT",
+    "alamat": "Kalait",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOULUAAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 19,
+    "npsn": "40102256",
+    "name": "SDN INPRES 2 WATULINEY",
+    "alamat": "JAGA I",
+    "status": "NEGERI",
+    "kecamatan": "KEC. BELANG",
+    "jenjang": "SD"
+  },
+  {
+    "no": 20,
+    "npsn": "40102146",
+    "name": "SD GMIM 362 MINANGA",
+    "alamat": "Minanga Dua, Jaga 1",
+    "status": "SWASTA",
+    "kecamatan": "KEC. PUSOMAEN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 21,
+    "npsn": "40101897",
+    "name": "SD NEGERI TABABO",
+    "alamat": "Tababo",
+    "status": "NEGERI",
+    "kecamatan": "KEC. BELANG",
+    "jenjang": "SD"
+  },
+  {
+    "no": 22,
+    "npsn": "40102124",
+    "name": "SD GMIM RANOAKO",
+    "alamat": "RANOAKO",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOULUAAN SELATAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 23,
+    "npsn": "40102307",
+    "name": "SD INPRES BUKU",
+    "alamat": "Jl Manunggal",
+    "status": "NEGERI",
+    "kecamatan": "KEC. BELANG",
+    "jenjang": "SD"
+  },
+  {
+    "no": 24,
+    "npsn": "40101918",
+    "name": "SD INPRES LIWUTUNG I",
+    "alamat": "Jl. Molingkawok Jaga 4",
+    "status": "NEGERI",
+    "kecamatan": "KEC. PASAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 25,
+    "npsn": "40101910",
+    "name": "SD INPRES MOREAH",
+    "alamat": "Moreah",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATATOTOK",
+    "jenjang": "SD"
+  },
+  {
+    "no": 26,
+    "npsn": "40105018",
+    "name": "SD GMIM SOLAFIDE LOBU",
+    "alamat": "LOBU DUA",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOULUAAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 27,
+    "npsn": "40102311",
+    "name": "SD INPRES 2 BORGO",
+    "alamat": "Borgo",
+    "status": "NEGERI",
+    "kecamatan": "KEC. BELANG",
+    "jenjang": "SD"
+  },
+  {
+    "no": 28,
+    "npsn": "40102121",
+    "name": "SD GMIM RANOKETANG",
+    "alamat": "Toundanouw",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOULUAAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 29,
+    "npsn": "69960341",
+    "name": "SD NEGERI WIOI TIMUR",
+    "alamat": "Wioi Timur (Nasaret)",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATAHAN TIMUR",
+    "jenjang": "SD"
+  },
+  {
+    "no": 30,
+    "npsn": "40101919",
+    "name": "SDN INPRES LIWUTUNG II",
+    "alamat": "Towuntu Timur Jaga II",
+    "status": "NEGERI",
+    "kecamatan": "KEC. PASAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 31,
+    "npsn": "40101871",
+    "name": "SD INPRES TOMBATU I",
+    "alamat": "Jln. Siswa Jaga 3",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU",
+    "jenjang": "SD"
+  },
+  {
+    "no": 32,
+    "npsn": "40102203",
+    "name": "SD NEGERI 1 LIWUTUNG",
+    "alamat": "Liwutung",
+    "status": "NEGERI",
+    "kecamatan": "KEC. PASAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 33,
+    "npsn": "40101940",
+    "name": "SD INPRES MUNDUNG",
+    "alamat": "Jaga IV",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU TIMUR",
+    "jenjang": "SD"
+  },
+  {
+    "no": 34,
+    "npsn": "40103505",
+    "name": "SD GMIM TONSAWANG",
+    "alamat": "TONSAWANG 1",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOMBATU",
+    "jenjang": "SD"
+  },
+  {
+    "no": 35,
+    "npsn": "40102196",
+    "name": "SD NEGERI 3 BELANG",
+    "alamat": "Beringin",
+    "status": "NEGERI",
+    "kecamatan": "KEC. BELANG",
+    "jenjang": "SD"
+  },
+  {
+    "no": 36,
+    "npsn": "40102112",
+    "name": "SD GMIM RATAHAN",
+    "alamat": "Jln. Lorong SD GMIM Ratahan Lingkungan III Kelurahan Lowu Dua",
+    "status": "SWASTA",
+    "kecamatan": "KEC. RATAHAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 37,
+    "npsn": "40101932",
+    "name": "SD INPRES 1 WATULINEY",
+    "alamat": "Jl Sparta Hangkang, Jaga IV",
+    "status": "NEGERI",
+    "kecamatan": "KEC. BELANG",
+    "jenjang": "SD"
+  },
+  {
+    "no": 38,
+    "npsn": "40102251",
+    "name": "SD INPRES WIOI",
+    "alamat": "Wioi Tiga",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATAHAN TIMUR",
+    "jenjang": "SD"
+  },
+  {
+    "no": 39,
+    "npsn": "40102218",
+    "name": "SD NEGERI 2 BELANG",
+    "alamat": "Buku",
+    "status": "NEGERI",
+    "kecamatan": "KEC. BELANG",
+    "jenjang": "SD"
+  },
+  {
+    "no": 40,
+    "npsn": "40101922",
+    "name": "SD INPRES LOWU",
+    "alamat": "Jl. Pondol",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATAHAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 41,
+    "npsn": "40101914",
+    "name": "SD INPRES KUYANGA",
+    "alamat": "Jln Masikolah Jaga IV Desa Kuyanga",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU UTARA",
+    "jenjang": "SD"
+  },
+  {
+    "no": 42,
+    "npsn": "40102189",
+    "name": "SD GMIM 1 SILIAN",
+    "alamat": "Jaga 1 Lorong Pendidikan",
+    "status": "SWASTA",
+    "kecamatan": "KEC. SILIAN RAYA",
+    "jenjang": "SD"
+  },
+  {
+    "no": 43,
+    "npsn": "40102194",
+    "name": "SD NEGERI 2 TOMBATU",
+    "alamat": "Desa Tombatu Tiga Selatan Jaga I",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU",
+    "jenjang": "SD"
+  },
+  {
+    "no": 44,
+    "npsn": "40102283",
+    "name": "SD GMIM WONGKAI",
+    "alamat": "Wongkai",
+    "status": "SWASTA",
+    "kecamatan": "KEC. RATAHAN TIMUR",
+    "jenjang": "SD"
+  },
+  {
+    "no": 45,
+    "npsn": "69762653",
+    "name": "SD NEGERI SILIAN RAYA",
+    "alamat": "SILIAN",
+    "status": "NEGERI",
+    "kecamatan": "KEC. SILIAN RAYA",
+    "jenjang": "SD"
+  },
+  {
+    "no": 46,
+    "npsn": "40101944",
+    "name": "SD NEGERI INPRES SILIAN DUA",
+    "alamat": "Silian Dua",
+    "status": "NEGERI",
+    "kecamatan": "KEC. SILIAN RAYA",
+    "jenjang": "SD"
+  },
+  {
+    "no": 47,
+    "npsn": "69962187",
+    "name": "SD GMIM LOWU UTARA",
+    "alamat": "Desa Kalatin",
+    "status": "SWASTA",
+    "kecamatan": "KEC. RATAHAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 48,
+    "npsn": "40102179",
+    "name": "SD GMIM I TOMBATU",
+    "alamat": "Jaga 3",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOMBATU",
+    "jenjang": "SD"
+  },
+  {
+    "no": 49,
+    "npsn": "40102250",
+    "name": "SD INPRES PANGU",
+    "alamat": "Jaga 1 Pangu Satu",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATAHAN TIMUR",
+    "jenjang": "SD"
+  },
+  {
+    "no": 50,
+    "npsn": "40102162",
+    "name": "SD ADVENT RATAHAN",
+    "alamat": "JL. Pendidikan, lingkungan 3",
+    "status": "SWASTA",
+    "kecamatan": "KEC. RATAHAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 51,
+    "npsn": "40102117",
+    "name": "SD GMIM TAMBELANG",
+    "alamat": "Tambelang",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOULUAAN SELATAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 52,
+    "npsn": "40102107",
+    "name": "SD GMIM PANGU",
+    "alamat": "Pangu 2 Jaga 4",
+    "status": "SWASTA",
+    "kecamatan": "KEC. RATAHAN TIMUR",
+    "jenjang": "SD"
+  },
+  {
+    "no": 53,
+    "npsn": "40102098",
+    "name": "SD GMIM KUYANGA",
+    "alamat": "Kuyanga",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOMBATU UTARA",
+    "jenjang": "SD"
+  },
+  {
+    "no": 54,
+    "npsn": "40102305",
+    "name": "SD INPRES BASAAN",
+    "alamat": "Basaan Satu",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATATOTOK",
+    "jenjang": "SD"
+  },
+  {
+    "no": 55,
+    "npsn": "40102309",
+    "name": "SD INPRES 1 BORGO",
+    "alamat": "Jl. Binuang Jaga 4 ",
+    "status": "NEGERI",
+    "kecamatan": "KEC. BELANG",
+    "jenjang": "SD"
+  },
+  {
+    "no": 56,
+    "npsn": "40102270",
+    "name": "SDS GP TONSAWANG",
+    "alamat": "TONSAWANG",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOMBATU",
+    "jenjang": "SD"
+  },
+  {
+    "no": 57,
+    "npsn": "40102142",
+    "name": "SD GMIM 2 SILIAN",
+    "alamat": "SILIAN TENGAH",
+    "status": "SWASTA",
+    "kecamatan": "KEC. SILIAN RAYA",
+    "jenjang": "SD"
+  },
+  {
+    "no": 58,
+    "npsn": "40103495",
+    "name": "SD INPRES MOLOMPAR",
+    "alamat": "Jln. Pendidikan Jaga 3 Desa Molompar Kecamatan Tombatu Timur",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU TIMUR",
+    "jenjang": "SD"
+  },
+  {
+    "no": 59,
+    "npsn": "40103735",
+    "name": "SDN 1 TOUNDANOW",
+    "alamat": "TOUNDANOW",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOULUAAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 60,
+    "npsn": "40101943",
+    "name": "SD INPRES SILIAN SATU",
+    "alamat": "Silian Utara",
+    "status": "NEGERI",
+    "kecamatan": "KEC. SILIAN RAYA",
+    "jenjang": "SD"
+  },
+  {
+    "no": 61,
+    "npsn": "40102201",
+    "name": "SD NEGERI BASAAN",
+    "alamat": "Jaga 3 Basaan",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATATOTOK",
+    "jenjang": "SD"
+  },
+  {
+    "no": 62,
+    "npsn": "40101860",
+    "name": "SD NEGERI KECIL BANGA",
+    "alamat": "Banga",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOULUAAN SELATAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 63,
+    "npsn": "40102147",
+    "name": "SD GMIM WATULINEY",
+    "alamat": "Jaga I",
+    "status": "SWASTA",
+    "kecamatan": "KEC. BELANG",
+    "jenjang": "SD"
+  },
+  {
+    "no": 64,
+    "npsn": "40101875",
+    "name": "SDN INPRES TOSURAYA",
+    "alamat": "Jalan Ruata",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATAHAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 65,
+    "npsn": "40101866",
+    "name": "SD NEGERI MINANGA",
+    "alamat": "Jaga   III  Minanga",
+    "status": "NEGERI",
+    "kecamatan": "KEC. PUSOMAEN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 66,
+    "npsn": "40101882",
+    "name": "SD INPRES TOMBATU 2",
+    "alamat": "Jl. Siswa Jg. 2 Desa Tombatu Dua Tengah ",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU UTARA",
+    "jenjang": "SD"
+  },
+  {
+    "no": 67,
+    "npsn": "40101934",
+    "name": "SD INPRES KALAIT",
+    "alamat": "Kalait Jaga 5",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOULUAAN SELATAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 68,
+    "npsn": "40102183",
+    "name": "SD GMIM BUNAG",
+    "alamat": "BUNAG",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOULUAAN SELATAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 69,
+    "npsn": "40103490",
+    "name": "SD NEGERI TUMBAK",
+    "alamat": "Tumbak",
+    "status": "NEGERI",
+    "kecamatan": "KEC. PUSOMAEN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 70,
+    "npsn": "69952246",
+    "name": "SD ADVENT PIONEER LOBU",
+    "alamat": "Jaga III",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOULUAAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 71,
+    "npsn": "40102246",
+    "name": "SD NEGERI 1 RATAHAN",
+    "alamat": "Wawali Pasan",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATAHAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 72,
+    "npsn": "40101856",
+    "name": "SD NEGERI KECIL SUHUYON",
+    "alamat": "Suhuyon",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOULUAAN SELATAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 73,
+    "npsn": "40102197",
+    "name": "SD NEGERI 3 LIWUTUNG",
+    "alamat": "Jln. Ratahan-Tombatu, Towuntu Barat, Jaga I",
+    "status": "NEGERI",
+    "kecamatan": "KEC. PASAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 74,
+    "npsn": "40102252",
+    "name": "SD INPRES WONGKAI",
+    "alamat": "Wongkai",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATAHAN TIMUR",
+    "jenjang": "SD"
+  },
+  {
+    "no": 75,
+    "npsn": "40102291",
+    "name": "SD INPRES RATATOTOK",
+    "alamat": "Jl. Z.s Najoan Jaga Iii",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATATOTOK",
+    "jenjang": "SD"
+  },
+  {
+    "no": 76,
+    "npsn": "40102105",
+    "name": "SD GMIM LOBU",
+    "alamat": "Lobu Satu",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOULUAAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 77,
+    "npsn": "40102205",
+    "name": "SD NEGERI 2 MUNDUNG",
+    "alamat": "Jaga 4",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU TIMUR",
+    "jenjang": "SD"
+  },
+  {
+    "no": 78,
+    "npsn": "40101864",
+    "name": "SD NEGERI MANGKIT",
+    "alamat": "JALAN SISWA, JAGA 2",
+    "status": "NEGERI",
+    "kecamatan": "KEC. BELANG",
+    "jenjang": "SD"
+  },
+  {
+    "no": 79,
+    "npsn": "40102249",
+    "name": "SD NEGERI 2 RATAHAN",
+    "alamat": "Jl. Ompi Tosuraya Lingkungan 3",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATAHAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 80,
+    "npsn": "40101895",
+    "name": "SD NEGERI WIOI",
+    "alamat": "Desa Wioi Satu ",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATAHAN TIMUR",
+    "jenjang": "SD"
+  },
+  {
+    "no": 81,
+    "npsn": "40101935",
+    "name": "SD INPRES KALI",
+    "alamat": "Jaga II",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU",
+    "jenjang": "SD"
+  },
+  {
+    "no": 82,
+    "npsn": "40102271",
+    "name": "SD GEREJA PANTEKOSTA KALI",
+    "alamat": "Desa Kali Lingkungan 1",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOMBATU",
+    "jenjang": "SD"
+  },
+  {
+    "no": 83,
+    "npsn": "40101950",
+    "name": "SDN  INPRES TATENGESAN",
+    "alamat": "Jaga  I  Tatengesan ",
+    "status": "NEGERI",
+    "kecamatan": "KEC. PUSOMAEN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 84,
+    "npsn": "40101906",
+    "name": "SD NEGERI INPRES RANOKETANG",
+    "alamat": "JL. Lorong SD Inpres, Jaga III",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOULUAAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 85,
+    "npsn": "40102110",
+    "name": "SD GMIM RASI",
+    "alamat": "Jl. Lamit Jaga 2 Rasi Satu",
+    "status": "SWASTA",
+    "kecamatan": "KEC. RATAHAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 86,
+    "npsn": "40102247",
+    "name": "SD NEGERI I TOMBATU",
+    "alamat": "Jaga V Desa Betelen",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU",
+    "jenjang": "SD"
+  },
+  {
+    "no": 87,
+    "npsn": "40102207",
+    "name": "SD NEGERI 2 LIWUTUNG",
+    "alamat": "Tolombukan Barat",
+    "status": "NEGERI",
+    "kecamatan": "KEC. PASAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 88,
+    "npsn": "40102282",
+    "name": "SD GMIM WINORANGIAN TOMBATU",
+    "alamat": "Jaga 2",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOMBATU UTARA",
+    "jenjang": "SD"
+  },
+  {
+    "no": 89,
+    "npsn": "40101939",
+    "name": "SD INPRES MOLOMPAR SATU",
+    "alamat": "Jaga 04",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU TIMUR",
+    "jenjang": "SD"
+  },
+  {
+    "no": 90,
+    "npsn": "40101902",
+    "name": "SD NEGERI PONIKI",
+    "alamat": "PONIKI",
+    "status": "NEGERI",
+    "kecamatan": "KEC. PASAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 91,
+    "npsn": "40102281",
+    "name": "SD GMIM WIAU",
+    "alamat": "Wiau Jaga III",
+    "status": "SWASTA",
+    "kecamatan": "KEC. PUSOMAEN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 92,
+    "npsn": "40102266",
+    "name": "SD GP RANOKETANG ATAS",
+    "alamat": "Toundanouw Atas",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOULUAAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 93,
+    "npsn": "40102148",
+    "name": "SD GMIM 364 RATATOTOK",
+    "alamat": "Jl. Ratuwalangon",
+    "status": "SWASTA",
+    "kecamatan": "KEC. RATATOTOK",
+    "jenjang": "SD"
+  },
+  {
+    "no": 94,
+    "npsn": "40102150",
+    "name": "SD ADVENT WINORANGIAN",
+    "alamat": "Winorangian",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOMBATU UTARA",
+    "jenjang": "SD"
+  },
+  {
+    "no": 95,
+    "npsn": "40101899",
+    "name": "SD NEGERI SOYOWAN",
+    "alamat": "Soyowan",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATATOTOK",
+    "jenjang": "SD"
+  },
+  {
+    "no": 96,
+    "npsn": "40103510",
+    "name": "SD KATOLIK TOMBATU",
+    "alamat": "Betelen",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOMBATU",
+    "jenjang": "SD"
+  },
+  {
+    "no": 97,
+    "npsn": "40103494",
+    "name": "SMP NEGERI 2 PUSOMAEN",
+    "alamat": "Tumbak Madani Kec. Pusomaen",
+    "status": "NEGERI",
+    "kecamatan": "KEC. PUSOMAEN",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 98,
+    "npsn": "69759086",
+    "name": "SMP NEGERI 4 PUSOMAEN",
+    "alamat": "PUSOMAEN",
+    "status": "NEGERI",
+    "kecamatan": "KEC. PUSOMAEN",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 99,
+    "npsn": "40102044",
+    "name": "SMP KRISPA SILIAN",
+    "alamat": "SILIAN",
+    "status": "SWASTA",
+    "kecamatan": "KEC. SILIAN RAYA",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 100,
+    "npsn": "40102046",
+    "name": "SMP KRISTEN BASAAN",
+    "alamat": "RATATOTOK",
+    "status": "SWASTA",
+    "kecamatan": "KEC. RATATOTOK",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 101,
+    "npsn": "69787890",
+    "name": "SMP NEGERI 8 TOULUAAN",
+    "alamat": "TOULUAAN SELATAN",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOULUAAN SELATAN",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 102,
+    "npsn": "40101972",
+    "name": "SMP NEGERI 2 TOULUAAN",
+    "alamat": "TOULUAAN",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOULUAAN SELATAN",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 103,
+    "npsn": "40103653",
+    "name": "SMP NEGERI 6 TOMBATU",
+    "alamat": "Jl. Siswa Kuyanga",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU UTARA",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 104,
+    "npsn": "40103652",
+    "name": "SMP NEGERI 4 TOMBATU",
+    "alamat": "Tombatu Dua Barat",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU UTARA",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 105,
+    "npsn": "40101991",
+    "name": "SMP NEGERI 3 TOMBATU",
+    "alamat": "Jaga 1",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU TIMUR",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 106,
+    "npsn": "40103657",
+    "name": "SMP NEGERI 6 RATAHAN",
+    "alamat": "RASI",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATAHAN",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 107,
+    "npsn": "40102071",
+    "name": "SMP NEGERI 1 RATATOTOK",
+    "alamat": "RATATOTOK",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATATOTOK",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 108,
+    "npsn": "40101973",
+    "name": "SMP NEGERI 3 TOULUAAN",
+    "alamat": "TOULUAAN",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOULUAAN SELATAN",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 109,
+    "npsn": "69857940",
+    "name": "SMP NEGERI 10 TOULUAAN",
+    "alamat": "DESA BANGA",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOULUAAN SELATAN",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 110,
+    "npsn": "40102061",
+    "name": "SMP NEGERI 3 BELANG",
+    "alamat": "Jalan Siswa, Jaga  1",
+    "status": "NEGERI",
+    "kecamatan": "KEC. BELANG",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 111,
+    "npsn": "69787891",
+    "name": "SMP NEGERI 9 TOULUAAN SELATAN ",
+    "alamat": "LOWATAG",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOULUAAN SELATAN",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 112,
+    "npsn": "40103493",
+    "name": "SMP NEGERI 1 PUSOMAEN",
+    "alamat": "PUSOMAEN",
+    "status": "NEGERI",
+    "kecamatan": "KEC. PUSOMAEN",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 113,
+    "npsn": "40103496",
+    "name": "SMP NEGERI 4 RATAHAN",
+    "alamat": "Jaga I Desa Pangu Satu",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATAHAN TIMUR",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 114,
+    "npsn": "40101975",
+    "name": "SMP NEGERI 1 BELANG",
+    "alamat": "Jalan Ponosakan Jaga II",
+    "status": "NEGERI",
+    "kecamatan": "KEC. BELANG",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 115,
+    "npsn": "40101985",
+    "name": "SMP NEGERI 2 TOMBATU",
+    "alamat": "Jln. Pendidikan",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU TIMUR",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 116,
+    "npsn": "40102076",
+    "name": "SMP NEGERI 2 BELANG",
+    "alamat": "BELANG",
+    "status": "NEGERI",
+    "kecamatan": "KEC. BELANG",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 117,
+    "npsn": "40101979",
+    "name": "SMP NEGERI 1 TOMBATU",
+    "alamat": "Jalan Wolter Monginsidi Jaga 4 Desa Tombatu Tiga Timur Kec. Tombatu",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 118,
+    "npsn": "40101911",
+    "name": "SMP ADVENT RATAHAN",
+    "alamat": "Jl. Siswa Lingkungan 3",
+    "status": "SWASTA",
+    "kecamatan": "KEC. RATAHAN",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 119,
+    "npsn": "40103662",
+    "name": "SMP NEGERI 7 TOULUAAN",
+    "alamat": "TOULUAAN",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOULUAAN",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 120,
+    "npsn": "40102058",
+    "name": "SMP NEGERI 1 TOULUAAN",
+    "alamat": "Jalan raya amurang lobu Dua",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOULUAAN",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 121,
+    "npsn": "40101977",
+    "name": "SMP NEGERI 1 RATAHAN",
+    "alamat": "Jl. Ompi Lingkungan III",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATAHAN",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 122,
+    "npsn": "40101974",
+    "name": "SMP NEGERI 4 TOULUAAN",
+    "alamat": "Jl. Silian Dua",
+    "status": "NEGERI",
+    "kecamatan": "KEC. SILIAN RAYA",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 123,
+    "npsn": "40102047",
+    "name": "SMP KRISTEN KALI",
+    "alamat": "KALI",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOMBATU",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 124,
+    "npsn": "40102025",
+    "name": "SMP NEGERI 3 RATAHAN",
+    "alamat": "Jl. Bpu Jaga 1 Desa Wioi Kec. Ratahan Timur",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATAHAN TIMUR",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 125,
+    "npsn": "40103651",
+    "name": "SMP NEGERI 5 TOMBATU",
+    "alamat": "JAGA 4 DESA TONSAWANG SATU KEC. TOMBATU",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 126,
+    "npsn": "40103654",
+    "name": "SMP NEGERI 7 TOMBATU",
+    "alamat": "WINORANGIAN",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU UTARA",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 127,
+    "npsn": "40102045",
+    "name": "SMP KRISTEN RATATOTOK",
+    "alamat": "RATATOTOK",
+    "status": "SWASTA",
+    "kecamatan": "KEC. RATATOTOK",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 128,
+    "npsn": "40103660",
+    "name": "SMP NEGERI 5 TOULUAAN",
+    "alamat": "JALAN TRANS",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 129,
+    "npsn": "40103658",
+    "name": "SMP NEGERI 7 RATAHAN",
+    "alamat": "WONGKAI",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATAHAN TIMUR",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 130,
+    "npsn": "40102065",
+    "name": "SMP NEGERI 2 RATAHAN",
+    "alamat": "Liwutung",
+    "status": "NEGERI",
+    "kecamatan": "KEC. PASAN",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 131,
+    "npsn": "40103656",
+    "name": "SMP NEGERI 4 BELANG",
+    "alamat": "BELANG",
+    "status": "NEGERI",
+    "kecamatan": "KEC. BELANG",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 132,
+    "npsn": "40103661",
+    "name": "SMP NEGERI 6 TOULUAAN",
+    "alamat": "SUHUYON",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOULUAAN SELATAN",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 133,
+    "npsn": "40103659",
+    "name": "SMP NEGERI 3 PUSOMAEN",
+    "alamat": "PUSOMAEN",
+    "status": "NEGERI",
+    "kecamatan": "KEC. PUSOMAEN",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 134,
+    "npsn": "40102043",
+    "name": "SMP KRISTEN TATENGESAN",
+    "alamat": "PUSOMAEN",
+    "status": "SWASTA",
+    "kecamatan": "KEC. PUSOMAEN",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 135,
+    "npsn": "40103663",
+    "name": "SMP MUHAMMADIYAH RATATOTOK",
+    "alamat": "Jl. Pelabuhan Nusantara",
+    "status": "SWASTA",
+    "kecamatan": "KEC. RATATOTOK",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 136,
+    "npsn": "40103650",
+    "name": "SMP NEGERI 5 RATAHAN",
+    "alamat": "Jalan Raya Poniki Belang Desa Poniki Kecamatan Pasan",
+    "status": "NEGERI",
+    "kecamatan": "KEC. PASAN",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 137,
+    "npsn": "40103655",
+    "name": "SMP NEGERI 5 BELANG",
+    "alamat": "Jaga IV",
+    "status": "NEGERI",
+    "kecamatan": "KEC. BELANG",
+    "jenjang": "SMP"
+  }
+]

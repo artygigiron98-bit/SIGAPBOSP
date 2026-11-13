@@ -1,0 +1,117 @@
+update 18:40 25/10/2026 V1.0.0
+1. Kunci input setelah diverifikasi Dinas
+2. Periode laporan per semester
+3. Urutan sekolah tercepat dan terlama
+4. Tabel rinci pada admin
+5. Ekspor dan unduh di fitur rekap
+6. Template & Impor Nilai (tombol emas)
+7. Perbaikan jagir swasta
+
+update 11:00 26/10/2026 V1.0.1
+1. Perbaikan UI dan UX
+2. Penyesuaian Dekstop dan Smartphone
+3. Perubahan Hak Cipta
+
+update 10:20 29/10/2026 V1.0.2
+1. Total Pendapatan -> Total Penerimaan
+2. Total Belanja -> Total Pengeluaran (row 840-854)
+3. Pemberitahuan WA Otomatis
+
+update 12:00 01/11/2026 V1.1.0
+1. Navigation bar dipindah ke kiri (sidebar) — bisa disembunyikan (tombol hamburger)
+2. Fitur dikelompokkan: Utama, Data & Input, Laporan & Cetak, Administrasi
+3. Kode rekening & uraian pada SP2B dapat diedit (klik sel, simpan otomatis)
+4. Cetak SP2B diperbaiki agar dokumen tercetak bersih
+5. Reset password akun (termasuk admin) dari web — panel Daftar User → tombol Reset
+
+
+update 01/11/2026 V1.1.1
+1. Perbaikan: PDF Cetak SP2B Kabupaten kosong (animasi modal ikut terulang saat cetak)
+2. Scrollbar menu sidebar dibuat tipis, transparan, dan muncul saat di-hover
+
+update 01/11/2026 V1.2.0
+1. Tombol "Verifikasi Dinas Kolektif" dan "Sahkan BUD Kolektif" pada Daftar Rekonsiliasi Satuan Pendidikan (akun Admin Dinas)
+2. Sekolah yang masih ada selisih (SP2B - RC Bank) / RC belum diisi otomatis dikecualikan
+3. Pratinjau daftar diproses & dikecualikan, pilih/lepas per sekolah, notifikasi WA opsional
+
+update 04/11/2026 V1.4.0 — FITUR PENGANGGARAN RKAS (HALAMAN TERPISAH)
+1. Menu "Penganggaran RKAS" (kelompok sendiri di sidebar) membuka halaman terpisah: /penganggaran.html
+   (Operator Sekolah, Admin Dinas; BUD hanya lihat). Tombol "Rekonsiliasi" di pojok kanan atas untuk kembali ke dashboard.
+2. Input Penganggaran: pilih Sekolah -> Tahap (Induk/Perubahan) -> Sumber Dana -> unggah PDF RKAS dari ARKAS
+   - Admin: sekolah dipilih lewat kolom PENCARIAN (nama sekolah / NPSN / kecamatan, bisa pakai panah + Enter)
+   - Operator: otomatis hanya sekolah yang terdaftar pada akunnya (terkunci, server juga memaksa)
+3. Sumber dana: BOSP Reguler, BOSP Kinerja, BOSP Prestasi, SiLPA BOSP Kinerja (masing-masing dokumen terpisah per tahap)
+   - Nilai diambil dari kolom dokumen yang sesuai; bila dokumen tidak punya kolom sumber dana itu
+     (mis. RKAS khusus BOSP Prestasi) maka seluruh kolom "Jumlah" dicatat sebagai sumber dana yang dipilih
+   - Sistem memberi peringatan bila bagian Penerimaan dokumen menyebut sumber dana/tahap/tahun/NPSN yang berbeda
+4. Klasifikasi jenis belanja otomatis: kegiatan 07.12 -> Pegawai | rekening 5.1.02 -> Barang & Jasa | 5.2.05 -> Modal ATL | 5.2.02 -> Modal PM
+   Baris rincian "001., 002." tidak dihitung ganda; total hasil baca divalidasi terhadap baris "Jumlah" dokumen
+5. Alur status: Draft -> Diajukan -> Terverifikasi / Ditolak (+ catatan); terkunci setelah diajukan; Admin dapat Buka Kunci
+6. Rekap & Cetak (Admin/BUD/Operator): per TAHAP dan per SUMBER DANA (atau gabungan semua), filter kecamatan,
+   pilihan data yang dihitung (Diajukan+Terverifikasi / Terverifikasi saja / semua), subtotal per kecamatan,
+   kolom tanda tangan, tombol CETAK (A4 landscape) dan EKSPOR EXCEL
+7. Tab Daftar Anggaran (filter tahap/sumber/status/kecamatan/sekolah) dan Induk vs Perubahan
+8. File: public/penganggaran.html, public/penganggaran.js, lib/arkas-parser.js; data di data/anggaran_{tahun}.json;
+   PDF di uploads/{sekolah}/anggaran-{tahun}/
+9. Dependensi baru: pdfjs-dist -> jalankan "npm install" setelah mengganti file
+
+
+update 07/11/2026 V1.5.0 — NAVIGASI & HALAMAN TERPISAH
+1. Sidebar: grup "Data Master" berisi Data Master Sekolah, Daftar User Terdaftar, Ubah Password Admin, Notifikasi WhatsApp
+2. Fitur "Ganti Akun" dihapus untuk akun Admin (operator/BUD tetap)
+3. Input realisasi dipindah ke grup "Realisasi Belanja" (Daftar Rekonsiliasi + Input Realisasi)
+4. Halaman terpisah: / (Beranda), /realisasi.html (Realisasi Belanja), /penganggaran.html (Penganggaran RKAS); sidebar sama di ketiganya
+5. Beranda Admin & User: progres rekonsiliasi sekolah + rekap penganggaran RKAS (ARKAS) per tahap Induk/Perubahan
+6. Periode laporan dibagi antar halaman; awal sesi = bulan berjalan (sebelumnya selalu Januari)
+7. Ubah Password Admin diperbaiki: verifikasi di server (endpoint baru POST /api/change-password); semua akun Admin Dinas dapat mengubah passwordnya sendiri
+8. File baru: public/realisasi.html, app.js, app.css, sidebar.css, nav-menu.js. index.html kini hanya Beranda + login
+9. Tidak ada dependensi baru (tidak perlu npm install ulang)
+
+
+update 10/11/2026 V1.6.0 — DATA MASTER PEJABAT, KARTU RINCI & MENU DROPDOWN
+1. Akun Operator Sekolah: menu Data Master > Data Master Sekolah untuk mengisi identitas Kepala Sekolah dan Bendahara BOSP (Nama, NIP, Pangkat/Golongan, Jabatan). Admin juga dapat mengisi per sekolah lewat tombol di tabel Data Master Sekolah
+2. Data pejabat terintegrasi: Dashboard Rekap, Cetak Rekap Realisasi (menu baru), Rekap Penganggaran operator, dan pratinjau SP2B (info Kepala Sekolah)
+3. "Data Realisasi Rekonsiliasi Sekolah Anda" kini berupa kartu rinci (identitas, saldo, pejabat, rincian penerimaan/pengeluaran, selisih SP2B-RC, status 6 berkas PDF, tombol aksi)
+4. Sidebar: semua grup menu berupa dropdown, kecuali Beranda dan Dashboard Rekap. Penganggaran dipecah per tab
+5. Server: endpoint GET/PUT /api/school-profile; data di schools.json (kepalaSekolah, bendahara); tidak tertimpa simpan massal
+6. File baru: public/pejabat.js
+
+
+update 11/11/2026 V1.6.1 — KEAMANAN DATA, AUDIT LOG & BACKUP
+1. Penulisan file JSON dibuat atomic (tmp + rename) untuk mencegah korupsi data saat crash atau akses multi-perangkat
+2. Endpoint baru GET /api/audit (Admin) + UI viewer Audit Log di menu Data Master
+3. Endpoint baru GET /api/backup (Admin) + tombol "Backup Data" di sidebar (unduh bundle JSON)
+4. /api/health menampilkan statistik (jumlah sekolah, user aktif, operator) + versi 1.6.1
+5. Menu Data Master Admin: ditambah "Audit Log" dan "Backup Data"
+6. Version package.json diseragamkan ke 1.6.1-json-secure
+
+
+update 11/11/2026 V1.6.2 — JADIKAN DRAFT KOLEKTIF (Admin)
+1. Tombol baru di Daftar Rekonsiliasi Satuan Pendidikan (Admin): "Jadikan Draft Kolektif"
+2. Mode bulk "draft": sekolah berstatus Diajukan Sekolah / Diverifikasi Dinas / Disahkan BUD dapat dikembalikan ke Draft sekaligus
+3. Tidak memfilter berdasarkan selisih (tujuan utama: buka kunci input operator)
+4. Setelah diproses: verifStatus=Draft, verifiedAt/By dihapus, reopenedAt/By dicatat; opsional notifikasi WA
+5. Modal pratinjau sama seperti Verifikasi/Sahkan Kolektif (pilih/lepas per sekolah, ringkasan, filter aktif)
+
+
+update 11/11/2026 V1.6.3 — VALIDASI IDENTITAS & SUMBER DANA PENGANGGARAN
+1. Operator tidak dapat mengajukan (submit) jika PDF RKAS tidak cocok dengan:
+   - NPSN sekolah (identitas)
+   - Jenis sumber dana yang dipilih (Reguler/Kinerja/Prestasi/SiLPA)
+   - Tahun anggaran & tahap (Induk/Perubahan) bila terbaca di dokumen
+2. Server: angValidateIdentity() + field blockingErrors / canSubmit pada record
+3. Endpoint submit menolak (HTTP 422) jika ada blockingErrors (operator); Admin perlu force=true
+4. UI: pesan merah di detail, tombol "Ajukan ke Dinas" diganti "Tidak dapat diajukan" bila diblokir
+5. Parser: sumberList dilengkapi dari header kolom dokumen (lebih akurat)
+
+
+update 12/11/2026 V1.6.4 — PARSER RKAS ARKAS DIPERBAIKI (multi-sumber)
+1. detectColumns: klaster header per pita Y (abaikan baris Penerimaan), pasangkan Operasi/Modal per sumber dana
+2. COLUMN_MAP: regex BOSP? mendukung "BOSP DAERAH" / "BOSP LAINNYA" / "BOSP REGULER"
+3. Ambang posisi: kode rekening x0>=30, kegiatan x0>=100, uraian x0>=140, toleransi kolom angka 40px
+4. sumberList hanya dari Penerimaan + kolom yang bernilai > 0 (bukan semua header kosong)
+5. Diuji pada RKAS SD NEGERI KECIL BANGA (NPSN 40101860):
+   - BOSP Reguler = Rp 25.220.000 (11 rekening)
+   - SiLPA BOSP Kinerja = Rp 38.203.200 (13 rekening)
+   - Total cocok dengan baris Jumlah di dokumen
+
