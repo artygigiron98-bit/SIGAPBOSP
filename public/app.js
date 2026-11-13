@@ -71,9 +71,9 @@
             { name: "Operator SDN 1 Ratahan", username: "operator", password: "operator2024", role: "Operator Sekolah", schoolNo: 1, npsn: "69762652", status: "Aktif" }
         ];
 
-        let activeYear = parseInt(localStorage.getItem("bosp_activeYear") || "2024", 10) || 2024;
+        let activeYear = parseInt(localStorage.getItem("bosp_activeYear") || "2026", 10) || 2026;
         const AVAILABLE_YEARS = [2024, 2025, 2026, 2027, 2028];
-        if (!AVAILABLE_YEARS.includes(activeYear)) activeYear = 2024;
+        if (!AVAILABLE_YEARS.includes(activeYear)) activeYear = 2026;
 
         /* Periode laporan dibagikan antar halaman (Beranda <-> Realisasi Belanja) lewat sessionStorage */
         function restorePeriodState() {
@@ -224,51 +224,73 @@
             const loader = document.getElementById("syncLoadingOverlay");
             if (loader) loader.classList.remove("hidden");
             try {
-                // ===== MODE NODE: ambil data dari /api/data =====
+                // ===== MODE FIREBASE FIRESTORE + NODE: Baca langsung dari Firebase Firestore =====
                 if (isNodeBackend()) {
                     const headers = {};
                     if (nodeAuthToken) headers["Authorization"] = "Bearer " + nodeAuthToken;
-                    // Tanpa login, server menolak — pakai localStorage
-                    const response = await fetch(NODE_API_BASE + "/api/data?year=" + encodeURIComponent(activeYear), {
-                        method: "GET",
-                        credentials: "include",
-                        headers: headers,
-                        cache: "no-store"
-                    });
-                    if (response.status === 401) {
-                        console.warn("Belum login ke Node — pakai data localStorage.");
-                        return;
+                    try {
+                        const response = await fetch(NODE_API_BASE + "/api/data?year=" + encodeURIComponent(activeYear), {
+                            method: "GET",
+                            credentials: "include",
+                            headers: headers,
+                            cache: "no-store"
+                        });
+                        if (response.ok) {
+                            const result = await response.json();
+                            if (result.status === "success") {
+                                if (result.schools && result.schools.length > 0) baseSchools = result.schools.map(normalizeSchool);
+                                if (result.monthlyData && Object.keys(result.monthlyData).length > 0) {
+                                    monthlyData = result.monthlyData;
+                                }
+                                if (Array.isArray(result.users) && result.users.length > 0) {
+                                    usersDB = result.users.map(u => normalizeUser({ ...u, password: u.password || "" }));
+                                }
+                            }
+                        }
+                    } catch (nodeErr) {
+                        console.warn("Fallback server Node:", nodeErr);
                     }
-                    const result = await response.json();
-                    if (result.status === "success") {
-                        if (result.schools && result.schools.length > 0) baseSchools = result.schools.map(normalizeSchool);
-                        if (result.monthlyData && Object.keys(result.monthlyData).length > 0) {
-                            monthlyData = result.monthlyData;
-                        }
-                        if (Array.isArray(result.users) && result.users.length > 0) {
-                            usersDB = result.users.map(u => normalizeUser({ ...u, password: u.password || "" }));
-                        }
-                        if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.loadMonthlyFromFirestore === "function") {
-                            try {
-                                const fbMonthly = await window.SigapFirebaseDrive.loadMonthlyFromFirestore(activeYear);
-                                if (fbMonthly && typeof fbMonthly === "object") {
-                                    Object.keys(fbMonthly).forEach(no => {
+
+                    // Baca langsung dari Cloud Firestore sebagai Sumber Utama (Source of Truth)
+                    if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.loadAllDataFromFirestore === "function") {
+                        try {
+                            const fbBundle = await window.SigapFirebaseDrive.loadAllDataFromFirestore(activeYear);
+                            if (fbBundle) {
+                                if (Array.isArray(fbBundle.schools) && fbBundle.schools.length > 0) {
+                                    baseSchools = fbBundle.schools.map(normalizeSchool);
+                                }
+                                if (Array.isArray(fbBundle.users) && fbBundle.users.length > 0) {
+                                    const localMap = new Map(usersDB.map(u => [String(u.username).toLowerCase(), u]));
+                                    fbBundle.users.forEach(fu => {
+                                        if (!fu || !fu.username) return;
+                                        const key = String(fu.username).toLowerCase();
+                                        const prev = localMap.get(key) || {};
+                                        localMap.set(key, normalizeUser({ ...prev, ...fu, password: prev.password || "" }));
+                                    });
+                                    usersDB = Array.from(localMap.values());
+                                }
+                                if (fbBundle.monthlyData && typeof fbBundle.monthlyData === "object") {
+                                    Object.keys(fbBundle.monthlyData).forEach(no => {
                                         if (!monthlyData[no]) monthlyData[no] = {};
-                                        Object.keys(fbMonthly[no] || {}).forEach(m => {
-                                            monthlyData[no][m] = Object.assign({}, monthlyData[no][m] || {}, fbMonthly[no][m]);
+                                        Object.keys(fbBundle.monthlyData[no] || {}).forEach(m => {
+                                            monthlyData[no][m] = Object.assign({}, monthlyData[no][m] || {}, fbBundle.monthlyData[no][m]);
                                         });
                                     });
                                 }
-                            } catch (fbErr) {
-                                console.warn("Gagal sinkron baca dari Firestore:", fbErr);
+                                if (fbBundle.sp2bKab && (Object.keys(fbBundle.sp2bKab.records || {}).length > 0 || Object.keys(fbBundle.sp2bKab.last || {}).length > 0)) {
+                                    try { localStorage.setItem(yearKey("sp2bKab"), JSON.stringify(fbBundle.sp2bKab)); } catch (_) {}
+                                }
                             }
+                        } catch (fbErr) {
+                            console.warn("Gagal sinkron baca dari Firestore:", fbErr);
                         }
-                        localStorage.setItem("bosp_baseSchools", JSON.stringify(baseSchools));
-                        localStorage.setItem(yearKey("monthlyData"), JSON.stringify(monthlyData));
-                        localStorage.setItem("bosp_usersDB", JSON.stringify(usersDB));
-                        localStorage.setItem("bosp_activeYear", String(activeYear));
-                        console.log("Data dimuat dari server Node & Firebase Firestore, tahun:", activeYear);
                     }
+
+                    localStorage.setItem("bosp_baseSchools", JSON.stringify(baseSchools));
+                    localStorage.setItem(yearKey("monthlyData"), JSON.stringify(monthlyData));
+                    localStorage.setItem("bosp_usersDB", JSON.stringify(usersDB));
+                    localStorage.setItem("bosp_activeYear", String(activeYear));
+                    console.log("Data dimuat langsung dari Firebase Firestore, tahun:", activeYear);
                     return;
                 }
 
@@ -410,9 +432,9 @@
             return h;
         }
 
-        // POST: ke Firebase / Google Drive + Node lokal ATAU Google Apps Script
+        // POST: Langsung ke Firebase Firestore & Google Drive (dengan sinkronisasi session Node)
         async function gasPost(payload) {
-            // ===== MODE NODE.JS + FIREBASE + GOOGLE DRIVE =====
+            // ===== MODE FIREBASE FIRESTORE + GOOGLE DRIVE =====
             if (isNodeBackend()) {
                 const action = payload && payload.action;
                 let url = NODE_API_BASE + "/api/save";
@@ -434,11 +456,22 @@
                             }
                         );
                         if (gdriveResult && gdriveResult.fileUrl) {
-                            payload = Object.assign({}, payload, {
-                                driveUrl: gdriveResult.fileUrl,
-                                driveFileId: gdriveResult.driveFileId
-                            });
-                            delete payload.fileObj;
+                            // Catat juga audit ke server tanpa mengirim ulang biner PDF besar
+                            try {
+                                await fetch(url, {
+                                    method: "POST",
+                                    headers: nodeHeaders(),
+                                    body: JSON.stringify({
+                                        schoolNo: payload.schoolNo,
+                                        driveUrl: gdriveResult.fileUrl,
+                                        driveFileId: gdriveResult.driveFileId,
+                                        fileName: gdriveResult.fileName
+                                    }),
+                                    credentials: "include",
+                                    cache: "no-store"
+                                });
+                            } catch (_) {}
+                            return gdriveResult;
                         }
                     }
                 } else if (action === "saveAll") {
@@ -607,22 +640,56 @@
             document.getElementById("authModal").classList.add("hidden");
         }
 
-        function handleLogout(options) {
+        async function handleLogout(options) {
             const opts = options || {};
             const silent = !!opts.silent;
             const reason = opts.reason || "";
-            if (!silent && !confirm("Apakah Anda yakin ingin keluar (logout) dari sesi ini?")) {
-                return;
-            }
-            // Simpan data terakhir sebelum keluar
+
+            // Simpan state lokal terakhir (tanpa memicu async network race setelah sign-out)
             try { waFlush(); } catch (e) { console.warn(e); }
-            try { saveToLocalStorage(); } catch (e) { console.warn(e); }
-            if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.signOutFirebase === "function") {
-                try { window.SigapFirebaseDrive.signOutFirebase(); } catch (e) {}
-            }
+            try {
+                localStorage.setItem("bosp_baseSchools", JSON.stringify(baseSchools));
+                localStorage.setItem(yearKey("monthlyData"), JSON.stringify(monthlyData));
+                localStorage.setItem("bosp_usersDB", JSON.stringify(usersDB));
+                localStorage.setItem("bosp_activeYear", String(activeYear));
+            } catch (e) { console.warn(e); }
+
+            // Hapus sesi di server Node & Firebase Auth
+            const prevToken = nodeAuthToken;
             stopIdleWatch();
             currentUser = null;
-            try { localStorage.setItem("bosp_currentUser", JSON.stringify(null)); } catch (e) {}
+            nodeAuthToken = "";
+            try {
+                localStorage.removeItem("bosp_currentUser");
+                sessionStorage.removeItem("rekon_node_token");
+            } catch (e) {}
+
+            if (isNodeBackend()) {
+                try {
+                    const hdrs = { "Content-Type": "application/json" };
+                    if (prevToken) hdrs["Authorization"] = "Bearer " + prevToken;
+                    await fetch(NODE_API_BASE + "/api/logout", {
+                        method: "POST",
+                        credentials: "include",
+                        headers: hdrs
+                    });
+                } catch (e) {}
+            }
+
+            if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.signOutFirebase === "function") {
+                try { await window.SigapFirebaseDrive.signOutFirebase(); } catch (e) {}
+            }
+
+            document.body.classList.remove("kb-printing");
+            // Tutup semua modal / pratinjau yang mungkin masih terbuka
+            ["authModal", "inputModal", "detailModal", "sp2bModal", "masterModal", "userListModal",
+             "waLogModal", "changePasswordModal", "kecamatanModal", "sp2bAnnualModal", "schoolDashboardModal", "sp2bKabModal",
+             "profileModal", "rekapSekolahModal", "rankModal", "bulkVerifModal", "nilaiModal", "auditLogModal"
+            ].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.add("hidden");
+            });
+
             const mainApp = document.getElementById("mainAppContainer");
             if (mainApp) {
                 mainApp.classList.add("hidden");
@@ -633,23 +700,23 @@
             const tg = document.getElementById("sbToggleBtn");
             if (tg) tg.classList.remove("shifted");
             const lpOut = document.getElementById("landingPage");
-            if (lpOut) lpOut.classList.remove("hidden");
-            else {
+            if (lpOut) {
+                lpOut.classList.remove("hidden");
+                // Pastikan semua elemen animasi landing page terlihat penuh
+                document.querySelectorAll("#landingPage .rv").forEach(el => el.classList.add("in"));
+                try { if (typeof renderPublicRank === "function") renderPublicRank(); } catch (e) {}
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            } else {
                 // Halaman Realisasi Belanja: kembali ke Beranda (halaman login)
                 try { if (silent && reason) sessionStorage.setItem("rekon_logout_msg", reason); } catch (e) {}
                 window.location.replace("/");
                 return;
             }
-            // Tutup modal yang mungkin masih terbuka
-            ["authModal", "inputModal", "detailModal", "sp2bModal", "masterModal", "userListModal",
-             "waLogModal", "changePasswordModal", "kecamatanModal", "sp2bAnnualModal", "schoolDashboardModal", "sp2bKabModal",
-             "profileModal", "rekapSekolahModal"
-            ].forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.classList.add("hidden");
-            });
+
             if (silent && reason) {
                 alert(reason);
+            } else {
+                alert("Anda telah berhasil keluar dari sesi.");
             }
         }
 
@@ -1224,7 +1291,7 @@
                 return;
             }
             document.getElementById("searchUserBox").value = "";
-            // Muat daftar user terbaru dari server (termasuk yang daftar dari laptop lain)
+            // 1. Muat daftar user dari server & langsung dari Firebase Firestore
             if (typeof isNodeBackend === "function" && isNodeBackend()) {
                 try {
                     const resp = await fetch(NODE_API_BASE + "/api/users", {
@@ -1234,18 +1301,34 @@
                     });
                     const data = await resp.json();
                     if (resp.ok && data.status === "success" && Array.isArray(data.users)) {
-                        // gabungkan: data server utama, password lokal dipertahankan jika ada
                         const localMap = new Map(usersDB.map(u => [String(u.username).toLowerCase(), u]));
                         usersDB = data.users.map(u => {
                             const loc = localMap.get(String(u.username).toLowerCase()) || {};
                             return Object.assign({}, u, { password: loc.password || u.password || "" });
                         });
-                        try { localStorage.setItem("bosp_usersDB", JSON.stringify(usersDB)); } catch (e) {}
                     }
                 } catch (e) {
                     console.warn("Gagal muat users dari server:", e);
                 }
             }
+            if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.loadUsersFromFirestore === "function") {
+                try {
+                    const fbUsers = await window.SigapFirebaseDrive.loadUsersFromFirestore();
+                    if (Array.isArray(fbUsers) && fbUsers.length > 0) {
+                        const localMap = new Map(usersDB.map(u => [String(u.username).toLowerCase(), u]));
+                        fbUsers.forEach(fu => {
+                            if (!fu || !fu.username) return;
+                            const k = String(fu.username).toLowerCase();
+                            const loc = localMap.get(k) || {};
+                            localMap.set(k, Object.assign({}, loc, fu, { password: loc.password || "" }));
+                        });
+                        usersDB = Array.from(localMap.values());
+                    }
+                } catch (fbErr) {
+                    console.warn("Gagal muat users dari Firestore:", fbErr);
+                }
+            }
+            try { localStorage.setItem("bosp_usersDB", JSON.stringify(usersDB)); } catch (e) {}
             renderUserTable();
             document.getElementById("userListModal").classList.remove("hidden");
             const pending = usersDB.filter(u => u.status === "Pending").length;
@@ -1355,11 +1438,14 @@
                     return;
                 }
             }
+            if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.saveUserToFirestore === "function") {
+                try { await window.SigapFirebaseDrive.saveUserToFirestore(targetUser); } catch (fbErr) { console.warn("Sync user Firestore:", fbErr); }
+            }
             try { localStorage.setItem("bosp_usersDB", JSON.stringify(usersDB)); } catch (e) {}
             saveToLocalStorage();
             renderUserTable();
             try { waNotifyAccountApproved(targetUser); } catch (e) {}
-            alert("Akun (" + targetUser.username + ") berhasil disetujui & diaktifkan!");
+            alert("Akun (" + targetUser.username + ") berhasil disetujui & diaktifkan di Firebase!");
         }
 
         async function deleteUser(username) {
@@ -1367,8 +1453,7 @@
                 alert("Akun admin utama tidak boleh dihapus.");
                 return;
             }
-            if (!confirm("Hapus akun \"" + username + "\" dari sistem?\nData akun akan dihapus permanen dari database server.")) return;
-            const removed = usersDB.find(u => u.username === username);
+            if (!confirm("Hapus akun \"" + username + "\" dari sistem?\nData akun akan dihapus permanen dari database Firebase.")) return;
             if (typeof isNodeBackend === "function" && isNodeBackend()) {
                 try {
                     const resp = await fetch(NODE_API_BASE + "/api/users/" + encodeURIComponent(username), {
@@ -1381,7 +1466,6 @@
                         alert(data.message || "Gagal menghapus user di database server.");
                         return;
                     }
-                    // sinkron daftar dari server
                     if (Array.isArray(data.users)) {
                         const localMap = new Map(usersDB.map(u => [String(u.username).toLowerCase(), u]));
                         usersDB = data.users.map(u => {
@@ -1398,9 +1482,12 @@
             } else {
                 usersDB = usersDB.filter(u => u.username !== username);
             }
+            if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.deleteUserFromFirestore === "function") {
+                try { await window.SigapFirebaseDrive.deleteUserFromFirestore(username); } catch (fbErr) { console.warn("Delete user Firestore:", fbErr); }
+            }
             try { localStorage.setItem("bosp_usersDB", JSON.stringify(usersDB)); } catch (e) {}
             renderUserTable();
-            alert("Akun \"" + username + "\" berhasil dihapus dari database.");
+            alert("Akun \"" + username + "\" berhasil dihapus dari database Firebase.");
         }
 
         // =====================================================================
@@ -1446,6 +1533,9 @@
             if (!n) { alert("Nomor tidak valid. Gunakan nomor HP Indonesia, misalnya 081234567890."); return; }
             u.whatsapp = n;
             if (currentUser.username === u.username) currentUser.whatsapp = n;
+            if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.saveUserToFirestore === "function") {
+                window.SigapFirebaseDrive.saveUserToFirestore(u).catch(e => console.warn("Sync WA Firestore:", e));
+            }
             saveToLocalStorage();
             renderUserTable();
         }
@@ -1688,29 +1778,45 @@
             const tb = document.getElementById("auditLogBody");
             const totalEl = document.getElementById("auditTotal");
             if (!tb) return;
-            tb.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-slate-400">Memuat...</td></tr>`;
+            tb.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-slate-400">Memuat dari Firebase Firestore...</td></tr>`;
             try {
                 const filter = (document.getElementById("auditFilter")?.value || "").trim();
-                const q = new URLSearchParams({ limit: "150" });
-                if (filter) q.set("action", filter);
-                const resp = await fetch(NODE_API_BASE + "/api/audit?" + q.toString(), {
-                    credentials: "include",
-                    headers: typeof nodeHeaders === "function" ? nodeHeaders() : {}
-                });
-                const j = await resp.json();
-                if (!resp.ok || j.status !== "success") {
-                    tb.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-rose-600">${escHtml(j.message || "Gagal memuat audit log")}</td></tr>`;
-                    return;
+                let items = [];
+                let total = 0;
+
+                if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.loadAuditLogsFromFirestore === "function") {
+                    const fbLogs = await window.SigapFirebaseDrive.loadAuditLogsFromFirestore(150, filter);
+                    if (fbLogs && Array.isArray(fbLogs.items) && fbLogs.items.length > 0) {
+                        items = fbLogs.items;
+                        total = fbLogs.total;
+                    }
                 }
-                if (totalEl) totalEl.textContent = "Menampilkan " + j.items.length + " dari ~" + j.total + " entri";
-                if (!j.items.length) {
+
+                if (!items.length) {
+                    const q = new URLSearchParams({ limit: "150" });
+                    if (filter) q.set("action", filter);
+                    const resp = await fetch(NODE_API_BASE + "/api/audit?" + q.toString(), {
+                        credentials: "include",
+                        headers: typeof nodeHeaders === "function" ? nodeHeaders() : {}
+                    });
+                    const j = await resp.json();
+                    if (resp.ok && j.status === "success") {
+                        items = j.items || [];
+                        total = j.total || items.length;
+                    }
+                }
+
+                if (totalEl) totalEl.textContent = "Menampilkan " + items.length + " dari ~" + total + " entri";
+                if (!items.length) {
                     tb.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-slate-400">Tidak ada data.</td></tr>`;
                     return;
                 }
-                tb.innerHTML = j.items.map((e) => {
+                tb.innerHTML = items.map((e) => {
                     const t = e.time ? new Date(e.time).toLocaleString("id-ID", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit" }) : "-";
-                    const detail = Object.keys(e).filter(k => !["time","action","username","role","ip"].includes(k))
-                        .map(k => k + "=" + JSON.stringify(e[k])).join(", ");
+                    const detail = e.detail
+                        ? String(e.detail)
+                        : Object.keys(e).filter(k => !["time","action","username","role","ip","id"].includes(k))
+                            .map(k => k + "=" + JSON.stringify(e[k])).join(", ");
                     return `<tr class="hover:bg-slate-50">
                       <td class="px-3 py-1.5 whitespace-nowrap text-slate-600 text-xs">${escHtml(t)}</td>
                       <td class="px-3 py-1.5 font-mono text-xs font-semibold text-indigo-700">${escHtml(e.action || "")}</td>
@@ -1877,22 +1983,35 @@
                 };
             });
 
+            if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.syncSchoolToFirestore === "function") {
+                window.SigapFirebaseDrive.syncSchoolToFirestore(newSchoolObj).catch(e => console.warn("Sync new school Firestore:", e));
+            }
             saveToLocalStorage();
             document.getElementById("newSchoolNpsn").value = '';
             document.getElementById("newSchoolName").value = '';
             document.getElementById("newSchoolAlamat").value = '';
             document.getElementById("newSchoolKec").value = '';
             renderMasterSchoolTable();
-            alert("Satuan pendidikan baru berhasil ditambahkan & disinkronkan!");
+            alert("Satuan pendidikan baru berhasil ditambahkan & disimpan ke Firebase Firestore!");
         }
 
         function deleteSchool(no) {
-            if (confirm("Apakah Anda yakin ingin menghapus satuan pendidikan ini?")) {
+            if (confirm("Apakah Anda yakin ingin menghapus satuan pendidikan ini dari database Firebase?")) {
                 baseSchools = baseSchools.filter(s => s.no !== no);
                 delete monthlyData[no];
+                if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.deleteSchoolFromFirestore === "function") {
+                    window.SigapFirebaseDrive.deleteSchoolFromFirestore(no).catch(e => console.warn("Delete school Firestore:", e));
+                }
+                if (typeof isNodeBackend === "function" && isNodeBackend()) {
+                    fetch(NODE_API_BASE + "/api/schools/" + encodeURIComponent(no), {
+                        method: "DELETE",
+                        credentials: "include",
+                        headers: typeof nodeHeaders === "function" ? nodeHeaders() : {}
+                    }).catch(() => {});
+                }
                 saveToLocalStorage();
                 renderMasterSchoolTable();
-                alert("Satuan pendidikan berhasil dihapus.");
+                alert("Satuan pendidikan berhasil dihapus dari Firebase Firestore.");
             }
         }
 
@@ -4403,6 +4522,17 @@
         }
         function sp2bKabPersist(st) {
             try { localStorage.setItem(yearKey("sp2bKab"), JSON.stringify(st)); } catch (e) { console.error(e); }
+            if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.syncSp2bKabToFirestore === "function") {
+                window.SigapFirebaseDrive.syncSp2bKabToFirestore(activeYear, st.records || {}, st.last || {}).catch(e => console.warn("Sync sp2bKab Firestore:", e));
+            }
+            if (typeof isNodeBackend === "function" && isNodeBackend()) {
+                fetch(NODE_API_BASE + "/api/sp2b-kab", {
+                    method: "POST",
+                    credentials: "include",
+                    headers: typeof nodeHeaders === "function" ? nodeHeaders() : { "Content-Type": "application/json" },
+                    body: JSON.stringify({ year: activeYear, records: st.records || {}, last: st.last || {} })
+                }).catch(() => {});
+            }
         }
         function kbEl(id) { return document.getElementById(id); }
 
@@ -4796,14 +4926,38 @@
         async function renderBerandaArkas() {
             const el = document.getElementById("berandaArkas");
             if (!el || !currentUser) return;
-            el.innerHTML = '<p class="text-xs text-slate-500"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Memuat rekap penganggaran RKAS…</p>';
+            el.innerHTML = '<p class="text-xs text-slate-500"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Memuat rekap penganggaran RKAS dari Firebase Firestore…</p>';
             try {
-                const resp = await fetch(NODE_API_BASE + "/api/anggaran?year=" + encodeURIComponent(activeYear), {
-                    credentials: "include", cache: "no-store", headers: nodeHeaders()
-                });
-                const j = await resp.json();
-                if (!resp.ok || j.status !== "success") throw new Error(j.message || ("HTTP " + resp.status));
-                arkasData = j.data || {};
+                let merged = {};
+                try {
+                    const resp = await fetch(NODE_API_BASE + "/api/anggaran?year=" + encodeURIComponent(activeYear), {
+                        credentials: "include", cache: "no-store", headers: nodeHeaders()
+                    });
+                    const j = await resp.json();
+                    if (resp.ok && j.status === "success" && j.data) {
+                        merged = j.data;
+                    }
+                } catch (_) {}
+
+                if (window.SigapFirebaseDrive && typeof window.SigapFirebaseDrive.loadAnggaranFromFirestore === "function") {
+                    try {
+                        const filterNo = currentUser.role === "Operator Sekolah" ? currentUser.schoolNo : null;
+                        const fbArkas = await window.SigapFirebaseDrive.loadAnggaranFromFirestore(activeYear, filterNo);
+                        if (fbArkas && typeof fbArkas === "object") {
+                            Object.keys(fbArkas).forEach(no => {
+                                if (!merged[no]) merged[no] = {};
+                                Object.keys(fbArkas[no] || {}).forEach(t => {
+                                    if (!merged[no][t]) merged[no][t] = {};
+                                    Object.assign(merged[no][t], fbArkas[no][t]);
+                                });
+                            });
+                        }
+                    } catch (fbErr) {
+                        console.warn("Load Arkas Beranda dari Firestore:", fbErr);
+                    }
+                }
+
+                arkasData = merged;
                 drawBerandaArkas();
             } catch (e) {
                 el.innerHTML = '<div class="flex flex-wrap items-center gap-3"><p class="text-xs text-rose-700 flex-1"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Rekap penganggaran belum dapat dimuat: ' +
@@ -5060,12 +5214,19 @@
                     io2.observe(n);
                 });
 
-                // Tutup menu admin dengan tombol Esc, & modal login dengan Esc
+                // Tutup menu admin & semua modal pratinjau/detail dengan tombol Esc
                 document.addEventListener("keydown", function (e) {
                     if (e.key !== "Escape") return;
                     if (typeof closeAdminMenu === "function") closeAdminMenu();
-                    var am = document.getElementById("authModal");
-                    if (am && !am.classList.contains("hidden") && typeof closeAuthModal === "function") closeAuthModal();
+                    document.body.classList.remove("kb-printing");
+                    ["authModal", "sp2bModal", "sp2bKabModal", "sp2bAnnualModal", "schoolDashboardModal",
+                     "kecamatanModal", "rekapSekolahModal", "detailModal", "profileModal", "inputModal",
+                     "masterModal", "userListModal", "waLogModal", "changePasswordModal", "rankModal",
+                     "bulkVerifModal", "nilaiModal", "auditLogModal"
+                    ].forEach(function (id) {
+                        var m = document.getElementById(id);
+                        if (m && !m.classList.contains("hidden")) m.classList.add("hidden");
+                    });
                 });
                 // Enter pada kolom login = Masuk
                 ["loginUsername", "loginPassword"].forEach(function (id) {

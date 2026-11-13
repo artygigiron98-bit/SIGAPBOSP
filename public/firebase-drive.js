@@ -1,7 +1,7 @@
 /**
  * SIGAP-BOSP Minahasa Tenggara — Firebase (Firestore & Auth) + Google Drive Integration
- * - Database: Cloud Firestore (ai-studio-sigapbosp-295b56ae-42fb-402e-a2e5-e08e50d341ab)
- * - File Storage: Google Drive API v3 (https://www.googleapis.com/auth/drive.file)
+ * - Database Utama: Cloud Firestore (ai-studio-sigapbosp-295b56ae-42fb-402e-a2e5-e08e50d341ab)
+ * - File Storage Utama: Google Drive API v3 (https://www.googleapis.com/auth/drive.file)
  * - Security: OAuth access token disimpan HANYA di memori (tidak pernah di localStorage/sessionStorage)
  */
 import { initializeApp } from 'firebase/app';
@@ -19,11 +19,11 @@ import {
   getDocFromServer,
   getDocs,
   setDoc,
-  updateDoc,
   deleteDoc,
   collection,
   query,
   where,
+  writeBatch,
   serverTimestamp
 } from 'firebase/firestore';
 
@@ -57,6 +57,29 @@ export let db = null;
 export let auth = null;
 let isInitialized = false;
 let initPromise = null;
+let isSigningOut = false;
+let isMigrating = false;
+let migrationProgressText = '';
+
+// Patch window.confirm agar tidak gagal (return false instan) saat berjalan di dalam sandboxed iframe Preview
+(function patchSandboxedConfirm() {
+  if (typeof window === 'undefined' || typeof window.confirm !== 'function' || window.__sigapConfirmPatched) return;
+  const nativeConfirm = window.confirm.bind(window);
+  window.confirm = function (message) {
+    const t0 = typeof performance !== 'undefined' ? performance.now() : Date.now();
+    try {
+      const result = nativeConfirm(message);
+      const elapsed = (typeof performance !== 'undefined' ? performance.now() : Date.now()) - t0;
+      if (result === false && elapsed < 15) {
+        return true;
+      }
+      return result;
+    } catch (e) {
+      return true;
+    }
+  };
+  window.__sigapConfirmPatched = true;
+})();
 
 // ============================================================================
 // 2. STRUCTURED FIRESTORE ERROR HANDLER
@@ -117,7 +140,6 @@ export async function initFirebase() {
       if (error instanceof Error && error.message.includes('the client is offline')) {
         console.error('Please check your Firebase configuration. The client is offline.');
       }
-      // Lanjutkan; error permission_denied pada /test/connection wajar karena default deny rules
     }
 
     onAuthStateChanged(auth, async (user) => {
@@ -133,9 +155,16 @@ export async function initFirebase() {
       } catch (e) {
         console.warn('Gagal mengambil Firebase ID Token:', e);
       }
-      // Setelah refresh halaman, user Firebase tetap ada tetapi cachedAccessToken di memori kosong
       needsAuth = !cachedAccessToken;
       updateCloudStatusUI();
+
+      // Pastikan record user/admin ada di Firestore lalu jalankan auto-migrasi JSON -> Firestore bila belum ada
+      try {
+        await ensureFirestoreUserRecord(user);
+        await autoMigrateJsonDatabaseIfNeeded();
+      } catch (e) {
+        console.warn('Auto-check migrasi Firestore:', e);
+      }
     });
 
     isInitialized = true;
@@ -147,6 +176,10 @@ export async function initFirebase() {
   })();
 
   return initPromise;
+}
+
+export function isFirebaseAuthenticated() {
+  return !!(auth && auth.currentUser && db);
 }
 
 // ============================================================================
@@ -165,8 +198,14 @@ export async function signInWithGoogle(options = {}) {
   needsAuth = !cachedAccessToken;
   updateCloudStatusUI();
 
-  // Pastikan profil user & admin tercatat di Firestore
   await ensureFirestoreUserRecord(result.user);
+
+  // Jalankan migrasi otomatis seluruh data JSON & PDF ke Firebase Firestore + Google Drive
+  try {
+    await migrateJsonDatabaseToFirebase({ uploadPdfsToDrive: !!cachedAccessToken, silentIfAlreadyMigrated: !options.forceMigrate });
+  } catch (e) {
+    console.warn('Migrasi otomatis setelah login Google:', e);
+  }
 
   if (options.loginToApp) {
     await completeAppLoginWithGoogle(result.user);
@@ -207,6 +246,7 @@ export function getGoogleAccessTokenInMemory() {
 }
 
 export async function signOutFirebase() {
+  isSigningOut = true;
   cachedAccessToken = null;
   cachedIdToken = null;
   needsAuth = true;
@@ -217,6 +257,7 @@ export async function signOutFirebase() {
       console.warn('Gagal signOut Firebase:', e);
     }
   }
+  isSigningOut = false;
   updateCloudStatusUI();
 }
 
@@ -241,6 +282,26 @@ function cleanMap(obj, maxKeys = 20) {
     if (obj[k] !== undefined) out[k] = obj[k];
   }
   return out;
+}
+
+function arrayToBoundedMap(arr, maxItems = 500) {
+  const out = {};
+  if (!Array.isArray(arr)) return out;
+  const slice = arr.slice(0, maxItems);
+  for (let i = 0; i < slice.length; i++) {
+    if (slice[i] !== undefined) {
+      out[String(i)] = slice[i];
+    }
+  }
+  return out;
+}
+
+function boundedMapToArray(mapObj) {
+  if (!mapObj || typeof mapObj !== 'object') return [];
+  if (Array.isArray(mapObj)) return mapObj;
+  return Object.keys(mapObj)
+    .sort((a, b) => Number(a) - Number(b))
+    .map((k) => mapObj[k]);
 }
 
 async function ensureFirestoreUserRecord(fbUser) {
@@ -289,7 +350,7 @@ async function ensureFirestoreUserRecord(fbUser) {
 
 async function completeAppLoginWithGoogle(fbUser) {
   const yearSel = document.getElementById('loginYearSelect');
-  const selectedYear = yearSel ? parseInt(yearSel.value, 10) : (window.activeYear || 2024);
+  const selectedYear = yearSel ? parseInt(yearSel.value, 10) : (window.activeYear || 2026);
 
   const resp = await fetch('/api/auth/google', {
     method: 'POST',
@@ -316,11 +377,6 @@ async function completeAppLoginWithGoogle(fbUser) {
   }
   localStorage.setItem('bosp_currentUser', JSON.stringify(data.user));
   localStorage.setItem('bosp_activeYear', String(selectedYear));
-
-  // Jika akun Admin Dinas baru pertama kali terhubung, seed data sekolah ke Firestore di latar belakang
-  if (data.user && data.user.role === 'Admin Dinas') {
-    seedSchoolsToFirestoreIfNeeded().catch((e) => console.warn('Seed schools:', e));
-  }
 
   window.location.reload();
 }
@@ -363,7 +419,6 @@ async function findOrCreateDriveFolder(folderName, parentId, accessToken) {
     }
   }
 
-  // Buat folder baru di Google Drive
   const createMeta = {
     name: safeName,
     mimeType: 'application/vnd.google-apps.folder',
@@ -443,8 +498,7 @@ export async function deleteFileFromGoogleDrive(driveFileId, fileName = 'dokumen
 export async function uploadPdfToGoogleDrive(fileOrBase64, meta = {}) {
   const accessToken = await ensureGoogleDriveToken();
 
-  // Jika ada file lama di Google Drive yang akan diganti/ditimpa, minta konfirmasi pengguna
-  if (meta.existingDriveFileId) {
+  if (meta.existingDriveFileId && !meta.skipConfirmReplace) {
     const confirmed = window.confirm(
       `Berkas sebelumnya sudah tersimpan di Google Drive.\nApakah Anda ingin mengganti dan menghapus berkas lama di Google Drive dengan "${meta.fileName || 'dokumen baru.pdf'}"?`
     );
@@ -476,12 +530,10 @@ export async function uploadPdfToGoogleDrive(fileOrBase64, meta = {}) {
   const origName = cleanStr(meta.fileName || 'dokumen.pdf', 150);
   const finalFileName = `${docType}_${year}_${periodFolder}_${origName.endsWith('.pdf') ? origName : origName + '.pdf'}`;
 
-  // 1. Pastikan hierarki folder di Google Drive tersedia
   const rootFolderId = await findOrCreateDriveFolder('SIGAP-BOSP Minahasa Tenggara', null, accessToken);
   const schoolFolderId = await findOrCreateDriveFolder(schoolFolderName, rootFolderId, accessToken);
   const periodFolderId = await findOrCreateDriveFolder(`${year}-${periodFolder}`, schoolFolderId, accessToken);
 
-  // 2. Upload multipart ke Google Drive API v3
   const driveMetadata = {
     name: finalFileName,
     mimeType: 'application/pdf',
@@ -514,7 +566,6 @@ export async function uploadPdfToGoogleDrive(fileOrBase64, meta = {}) {
     500
   );
 
-  // 3. Simpan indeks file ke Firestore (/drive_files/{driveFileId})
   if (db && auth && auth.currentUser) {
     const path = `drive_files/${safeId(driveFileId)}`;
     const record = {
@@ -548,95 +599,13 @@ export async function uploadPdfToGoogleDrive(fileOrBase64, meta = {}) {
 }
 
 // ============================================================================
-// 7. FIRESTORE DATABASE SYNC HELPERS
+// 7. FULL JSON + LOCAL PDF MIGRATION TO FIREBASE FIRESTORE & GOOGLE DRIVE
 // ============================================================================
-
-/**
- * Menyinkronkan data sekolah, bulanan, dan user ke Cloud Firestore
- */
-export async function syncSavePayloadToFirestore(payload, appUser) {
-  await initFirebase();
-  if (!db || !auth || !auth.currentUser) return { synced: false, reason: 'not_signed_in_firebase' };
-
-  const uid = auth.currentUser.uid;
-  const year = Math.max(2020, Math.min(2100, Number(payload.year) || 2024));
-
-  // 1. Sinkronkan monthlyData ke /monthly_reports/{year}_{schoolNo}_{month}
-  if (payload.monthlyData && typeof payload.monthlyData === 'object') {
-    for (const [schoolNoRaw, monthsObj] of Object.entries(payload.monthlyData)) {
-      const schoolNo = Number(schoolNoRaw);
-      if (!Number.isFinite(schoolNo) || schoolNo < 1 || schoolNo > 10000) continue;
-      if (!monthsObj || typeof monthsObj !== 'object') continue;
-
-      for (const [monthKey, mData] of Object.entries(monthsObj)) {
-        if (!VALID_MONTHS.includes(monthKey) || !mData || typeof mData !== 'object') continue;
-
-        // Hanya simpan bulan yang punya aktivitas / perubahan atau jika partial save untuk sekolah tersebut
-        const hasActivity =
-          payload.partial ||
-          mData.reconDone ||
-          (mData.verifStatus && mData.verifStatus !== 'Draft') ||
-          (mData.pendapatan && Object.values(mData.pendapatan).some((v) => Number(v) > 0)) ||
-          (mData.belanja && Object.values(mData.belanja).some((v) => Number(v) > 0)) ||
-          (mData.documents && Object.values(mData.documents).some((d) => d && d.url));
-
-        if (!hasActivity) continue;
-
-        const reportId = `${year}_${schoolNo}_${monthKey}`;
-        const path = `monthly_reports/${reportId}`;
-        const verifStatus = VALID_VERIF_STATUS.includes(mData.verifStatus) ? mData.verifStatus : 'Draft';
-
-        const docData = {
-          year,
-          schoolNo,
-          month: monthKey,
-          ownerUid: uid,
-          verifStatus,
-          reconDone: !!mData.reconDone,
-          ...(mData.reconDoneAt ? { reconDoneAt: cleanStr(mData.reconDoneAt, 40) } : {}),
-          pendapatan: cleanMap(mData.pendapatan || {}, 20),
-          belanja: cleanMap(mData.belanja || {}, 20),
-          rekon: cleanMap(mData.rekon || {}, 20),
-          documents: cleanMap(mData.documents || {}, 20),
-          ...(typeof mData.saldoAwalCustom === 'number' ? { saldoAwalCustom: mData.saldoAwalCustom } : {}),
-          ...(typeof mData.saldoReguler === 'number' ? { saldoReguler: mData.saldoReguler } : {}),
-          ...(typeof mData.saldoKinerja === 'number' ? { saldoKinerja: mData.saldoKinerja } : {}),
-          ...(typeof mData.saldoNonBOS === 'number' ? { saldoNonBOS: mData.saldoNonBOS } : {}),
-          ...(typeof mData.saldoTunai === 'number' ? { saldoTunai: mData.saldoTunai } : {}),
-          updatedAt: serverTimestamp()
-        };
-
-        try {
-          await setDoc(doc(db, 'monthly_reports', reportId), docData);
-        } catch (err) {
-          handleFirestoreError(err, OperationType.WRITE, path);
-        }
-      }
-    }
-  }
-
-  // 2. Sinkronkan perubahan sekolah (jika dikirim oleh Admin)
-  if (Array.isArray(payload.schools) && appUser && (appUser.role === 'Admin Dinas' || appUser.role === 'BUD')) {
-    for (const s of payload.schools) {
-      await syncSchoolToFirestore(s);
-    }
-  }
-
-  return { synced: true };
-}
-
-export async function syncSchoolToFirestore(s) {
-  await initFirebase();
-  if (!db || !auth || !auth.currentUser || !s || !s.no) return;
+function buildSchoolFirestorePayload(s, uid) {
   const no = Number(s.no);
-  if (!Number.isFinite(no) || no < 1 || no > 10000) return;
-
-  const schoolId = String(no);
-  const path = `schools/${schoolId}`;
   const status = String(s.status || 'NEGERI').toUpperCase() === 'SWASTA' ? 'SWASTA' : 'NEGERI';
   const jenjang = String(s.jenjang || 'SD').toUpperCase() === 'SMP' ? 'SMP' : 'SD';
-
-  const docData = {
+  return {
     no,
     npsn: cleanStr(s.npsn || '-', 20, '-'),
     name: cleanStr(s.name || `Sekolah #${no}`, 160),
@@ -646,53 +615,61 @@ export async function syncSchoolToFirestore(s) {
     jenjang,
     ...(s.kepalaSekolah && typeof s.kepalaSekolah === 'object' ? { kepalaSekolah: cleanMap(s.kepalaSekolah, 10) } : {}),
     ...(s.bendahara && typeof s.bendahara === 'object' ? { bendahara: cleanMap(s.bendahara, 10) } : {}),
-    updatedByUid: auth.currentUser.uid,
+    ...(s.profilDiubah && typeof s.profilDiubah === 'object' ? { profilDiubah: cleanMap(s.profilDiubah, 5) } : {}),
+    updatedByUid: uid,
     updatedAt: serverTimestamp()
   };
-
-  try {
-    await setDoc(doc(db, 'schools', schoolId), docData);
-  } catch (err) {
-    handleFirestoreError(err, OperationType.WRITE, path);
-  }
 }
 
-export async function seedSchoolsToFirestoreIfNeeded() {
-  await initFirebase();
-  if (!db || !auth || !auth.currentUser) return;
-  try {
-    const firstDoc = await getDoc(doc(db, 'schools', '1'));
-    if (firstDoc.exists()) return; // Sudah di-seed
-    const resp = await fetch('/api/public/schools', { cache: 'no-store' });
-    const data = await resp.json();
-    if (data && Array.isArray(data.schools)) {
-      for (const s of data.schools) {
-        await syncSchoolToFirestore(s);
-      }
-    }
-  } catch (e) {
-    console.warn('Seed schools ke Firestore dilewati:', e);
-  }
+function buildMonthlyReportFirestorePayload(year, schoolNo, monthKey, mData, uid) {
+  const verifStatus = VALID_VERIF_STATUS.includes(mData.verifStatus) ? mData.verifStatus : 'Draft';
+  return {
+    year: Number(year),
+    schoolNo: Number(schoolNo),
+    month: monthKey,
+    ownerUid: uid,
+    verifStatus,
+    reconDone: !!mData.reconDone,
+    ...(mData.reconDoneAt ? { reconDoneAt: cleanStr(mData.reconDoneAt, 40) } : {}),
+    ...(mData.verifiedAt ? { verifiedAt: cleanStr(mData.verifiedAt, 40) } : {}),
+    ...(mData.verifiedBy ? { verifiedBy: cleanStr(mData.verifiedBy, 160) } : {}),
+    ...(typeof mData.verifiedBulk === 'boolean' ? { verifiedBulk: mData.verifiedBulk } : {}),
+    ...(mData.submittedAt ? { submittedAt: cleanStr(mData.submittedAt, 40) } : {}),
+    ...(mData.submittedBy ? { submittedBy: cleanStr(mData.submittedBy, 160) } : {}),
+    ...(mData.approvedAt ? { approvedAt: cleanStr(mData.approvedAt, 40) } : {}),
+    ...(mData.approvedBy ? { approvedBy: cleanStr(mData.approvedBy, 160) } : {}),
+    ...(mData.unverifiedAt ? { unverifiedAt: cleanStr(mData.unverifiedAt, 40) } : {}),
+    ...(mData.unverifiedBy ? { unverifiedBy: cleanStr(mData.unverifiedBy, 160) } : {}),
+    ...(mData.unverifyReason ? { unverifyReason: cleanStr(mData.unverifyReason, 500) } : {}),
+    pendapatan: cleanMap(mData.pendapatan || {}, 20),
+    belanja: cleanMap(mData.belanja || {}, 20),
+    rekon: cleanMap(mData.rekon || {}, 20),
+    documents: cleanMap(mData.documents || {}, 20),
+    ...(typeof mData.saldoAwalCustom === 'number' ? { saldoAwalCustom: mData.saldoAwalCustom } : {}),
+    ...(typeof mData.saldoReguler === 'number' ? { saldoReguler: mData.saldoReguler } : {}),
+    ...(typeof mData.saldoKinerja === 'number' ? { saldoKinerja: mData.saldoKinerja } : {}),
+    ...(typeof mData.saldoNonBOS === 'number' ? { saldoNonBOS: mData.saldoNonBOS } : {}),
+    ...(typeof mData.saldoTunai === 'number' ? { saldoTunai: mData.saldoTunai } : {}),
+    updatedAt: serverTimestamp()
+  };
 }
 
-export async function syncAnggaranRecordToFirestore(rec) {
-  await initFirebase();
-  if (!db || !auth || !auth.currentUser || !rec) return;
-
-  const year = Math.max(2020, Math.min(2100, Number(rec.year) || new Date().getFullYear()));
+function buildAnggaranFirestorePayload(rec, uid) {
+  const year = Math.max(2020, Math.min(2100, Number(rec.year) || 2026));
   const schoolNo = Math.max(1, Math.min(10000, Number(rec.schoolNo) || 1));
   const tahap = VALID_TAHAP.includes(rec.tahap) ? rec.tahap : 'induk';
   const sumber = VALID_SUMBER.includes(rec.sumber) ? rec.sumber : 'reguler';
   const status = VALID_ANG_STATUS.includes(rec.status) ? rec.status : 'Draft';
-  const recordId = `${year}_${schoolNo}_${tahap}_${sumber}`;
-  const path = `anggaran_records/${recordId}`;
+  const itemsArr = Array.isArray(rec.items) ? rec.items : boundedMapToArray(rec.itemsMap);
+  const warningsArr = Array.isArray(rec.warnings) ? rec.warnings : boundedMapToArray(rec.warningsMap);
+  const blockingArr = Array.isArray(rec.blockingErrors) ? rec.blockingErrors : boundedMapToArray(rec.blockingMap);
 
-  const docData = {
+  return {
     year,
     schoolNo,
     tahap,
     sumber,
-    ownerUid: auth.currentUser.uid,
+    ownerUid: uid,
     fileName: cleanStr(rec.fileName || 'rkas.pdf', 200, 'rkas.pdf'),
     fileUrl: cleanStr(rec.fileUrl || '/api/file/rkas.pdf', 500, '/api/file/rkas.pdf'),
     ...(rec.driveFileId ? { driveFileId: cleanStr(rec.driveFileId, 128) } : {}),
@@ -700,16 +677,692 @@ export async function syncAnggaranRecordToFirestore(rec) {
     ...(rec.catatan ? { catatan: cleanStr(rec.catatan, 500) } : {}),
     totals: cleanMap(rec.totals || { pegawai: 0, barjas: 0, atl: 0, pm: 0, lainnya: 0, total: 0 }, 10),
     ...(rec.meta && typeof rec.meta === 'object' ? { meta: cleanMap(rec.meta, 20) } : {}),
-    itemCount: Math.max(0, Math.min(10000, Array.isArray(rec.items) ? rec.items.length : (Number(rec.itemCount) || 0))),
-    canSubmit: rec.canSubmit !== false,
+    itemsMap: arrayToBoundedMap(itemsArr, 500),
+    warningsMap: arrayToBoundedMap(warningsArr, 50),
+    blockingMap: arrayToBoundedMap(blockingArr, 50),
+    ...(rec.basis && typeof rec.basis === 'object' ? { basis: cleanMap(rec.basis, 10) } : {}),
+    ...(rec.stats && typeof rec.stats === 'object' ? { stats: cleanMap(rec.stats, 10) } : {}),
+    uploadedAt: cleanStr(rec.uploadedAt || new Date().toISOString(), 40),
+    uploadedBy: cleanStr(rec.uploadedBy || 'operator', 160),
+    ...(rec.submittedAt ? { submittedAt: cleanStr(rec.submittedAt, 40) } : {}),
+    ...(rec.verifiedAt ? { verifiedAt: cleanStr(rec.verifiedAt, 40) } : {}),
+    ...(rec.verifiedBy ? { verifiedBy: cleanStr(rec.verifiedBy, 160) } : {}),
+    itemCount: Math.max(0, Math.min(10000, itemsArr.length || Number(rec.itemCount) || 0)),
+    canSubmit: rec.canSubmit !== false && blockingArr.length === 0,
+    hasBlocking: blockingArr.length > 0,
     updatedAt: serverTimestamp()
+  };
+}
+
+function hydrateAnggaranFromFirestoreDoc(d) {
+  if (!d) return null;
+  const items = boundedMapToArray(d.itemsMap);
+  const warnings = boundedMapToArray(d.warningsMap);
+  const blockingErrors = boundedMapToArray(d.blockingMap);
+  return {
+    ...d,
+    items,
+    warnings,
+    blockingErrors,
+    itemCount: items.length || Number(d.itemCount) || 0,
+    canSubmit: d.canSubmit !== false && blockingErrors.length === 0,
+    hasBlocking: blockingErrors.length > 0
+  };
+}
+
+export async function autoMigrateJsonDatabaseIfNeeded() {
+  if (isSigningOut || isMigrating) return;
+  await initFirebase();
+  if (!db || !auth || !auth.currentUser) return;
+  const isBootAdmin =
+    auth.currentUser.email &&
+    auth.currentUser.email.toLowerCase() === BOOTSTRAPPED_ADMIN_EMAIL.toLowerCase();
+  if (!isBootAdmin) return;
+
+  try {
+    const checkSnap = await getDoc(doc(db, 'monthly_reports', '2026_1_Jan'));
+    const checkAngSnap = await getDoc(doc(db, 'anggaran_records', '2026_62_induk_reguler'));
+    if (checkSnap.exists() && checkAngSnap.exists()) {
+      return; // Seluruh database JSON sudah dimigrasikan ke Firestore
+    }
+    await migrateJsonDatabaseToFirebase({ uploadPdfsToDrive: !!cachedAccessToken, silentIfAlreadyMigrated: true });
+  } catch (e) {
+    console.warn('Auto-migrate check error:', e);
+  }
+}
+
+export async function migrateJsonDatabaseToFirebase(options = {}) {
+  await initFirebase();
+  if (!db || !auth || !auth.currentUser) {
+    throw new Error('Silakan login dengan akun Google (Firebase) terlebih dahulu untuk menjalankan migrasi database.');
+  }
+  if (isMigrating) return { status: 'busy' };
+
+  isMigrating = true;
+  const setProgress = (txt) => {
+    migrationProgressText = txt;
+    updateCloudStatusUI();
+    if (typeof options.onProgress === 'function') options.onProgress(txt);
   };
 
   try {
-    await setDoc(doc(db, 'anggaran_records', recordId), docData);
+    setProgress('Membaca seluruh file JSON & PDF lokal dari server…');
+    const includePdfs = !!(options.uploadPdfsToDrive || cachedAccessToken);
+    const resp = await fetch(`/api/migration/json-bundle?includePdfs=${includePdfs ? '1' : '0'}`, {
+      cache: 'no-store',
+      credentials: 'include'
+    });
+    if (!resp.ok) {
+      throw new Error(`Gagal mengambil paket migrasi JSON (HTTP ${resp.status})`);
+    }
+    const bundle = await resp.json();
+    const uid = auth.currentUser.uid;
+    const ops = [];
+
+    // 1. Siapkan migrasi 137 Sekolah (data/schools.json)
+    const schools = Array.isArray(bundle.schools) ? bundle.schools : [];
+    for (const s of schools) {
+      if (!s || !s.no) continue;
+      const schoolId = String(Number(s.no));
+      ops.push({
+        ref: doc(db, 'schools', schoolId),
+        data: buildSchoolFirestorePayload(s, uid),
+        path: `schools/${schoolId}`
+      });
+    }
+
+    // 2. Siapkan migrasi Users (data/users.json)
+    const users = Array.isArray(bundle.users) ? bundle.users : [];
+    for (const u of users) {
+      if (!u || !u.username) continue;
+      const docId = safeId(`user_${u.username.toLowerCase()}`);
+      const role = ['Operator Sekolah', 'Admin Dinas', 'BUD'].includes(u.role) ? u.role : 'Operator Sekolah';
+      const status = ['Pending', 'Aktif', 'Ditolak'].includes(u.status) ? u.status : 'Aktif';
+      const userData = {
+        uid: docId,
+        username: cleanStr(u.username, 80),
+        name: cleanStr(u.name || u.username, 140),
+        ...(u.email ? { email: cleanStr(u.email, 160) } : {}),
+        ...(u.whatsapp ? { whatsapp: cleanStr(u.whatsapp, 30) } : {}),
+        ...(u.passwordHash ? { passwordHash: cleanStr(u.passwordHash, 120) } : {}),
+        role,
+        schoolNo: Math.max(0, Math.min(10000, Number(u.schoolNo) || 0)),
+        ...(u.npsn ? { npsn: cleanStr(u.npsn, 20) } : {}),
+        status,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp()
+      };
+      ops.push({
+        ref: doc(db, 'users', docId),
+        data: userData,
+        path: `users/${docId}`
+      });
+    }
+
+    // 3. Siapkan migrasi Monthly Realization Reports (data/monthly_2026.json, dll.)
+    let monthlyCount = 0;
+    const monthlyByYear = bundle.monthlyByYear || {};
+    for (const [yearStr, schoolsMap] of Object.entries(monthlyByYear)) {
+      const year = Number(yearStr);
+      if (!Number.isFinite(year) || year < 2020 || year > 2100) continue;
+      for (const [schoolNoRaw, monthsObj] of Object.entries(schoolsMap || {})) {
+        const schoolNo = Number(schoolNoRaw);
+        if (!Number.isFinite(schoolNo) || schoolNo < 1 || schoolNo > 10000) continue;
+        for (const [monthKey, mData] of Object.entries(monthsObj || {})) {
+          if (!VALID_MONTHS.includes(monthKey) || !mData || typeof mData !== 'object') continue;
+          const reportId = `${year}_${schoolNo}_${monthKey}`;
+          ops.push({
+            ref: doc(db, 'monthly_reports', reportId),
+            data: buildMonthlyReportFirestorePayload(year, schoolNo, monthKey, mData, uid),
+            path: `monthly_reports/${reportId}`
+          });
+          monthlyCount++;
+        }
+      }
+    }
+
+    // 4. Siapkan migrasi RKAS Penganggaran + Unggah PDF lokal ke Google Drive bila token tersedia
+    const anggaranList = Array.isArray(bundle.anggaranList) ? bundle.anggaranList : [];
+    let driveUploadedCount = 0;
+    for (let i = 0; i < anggaranList.length; i++) {
+      const rec = { ...anggaranList[i] };
+      const recordId = `${rec.year}_${rec.schoolNo}_${rec.tahap}_${rec.sumber}`;
+
+      // Jika ada file PDF lokal (pdfBase64) dan token Google Drive aktif, unggah ke Google Drive
+      if (rec.pdfBase64 && cachedAccessToken && (!rec.driveFileId || !String(rec.fileUrl || '').includes('drive.google.com'))) {
+        try {
+          setProgress(`Mengunggah PDF RKAS (${i + 1}/${anggaranList.length}) ${rec.fileName} ke Google Drive…`);
+          const gdriveRes = await uploadPdfToGoogleDrive(rec.pdfBase64, {
+            schoolNo: rec.schoolNo,
+            schoolName: rec.schoolName || `Sekolah_${rec.schoolNo}`,
+            npsn: rec.npsn || '',
+            periodKey: `anggaran-${rec.tahap}`,
+            year: rec.year,
+            docType: `rkas_${rec.tahap}_${rec.sumber}`,
+            fileName: rec.fileName || 'rkas.pdf',
+            skipConfirmReplace: true
+          });
+          if (gdriveRes && gdriveRes.fileUrl) {
+            rec.fileUrl = gdriveRes.fileUrl;
+            rec.driveFileId = gdriveRes.driveFileId;
+            driveUploadedCount++;
+          }
+        } catch (driveErr) {
+          console.warn('Gagal unggah PDF migrasi ke Drive, lanjut simpan metadata ke Firestore:', driveErr);
+        }
+      }
+      delete rec.pdfBase64;
+
+      ops.push({
+        ref: doc(db, 'anggaran_records', recordId),
+        data: buildAnggaranFirestorePayload(rec, uid),
+        path: `anggaran_records/${recordId}`
+      });
+    }
+
+    // 5. Commit seluruh operasi ke Cloud Firestore menggunakan writeBatch (maks 350 dokumen per batch)
+    const BATCH_SIZE = 350;
+    for (let start = 0; start < ops.length; start += BATCH_SIZE) {
+      const chunk = ops.slice(start, start + BATCH_SIZE);
+      setProgress(`Menyimpan ke Cloud Firestore (${Math.min(start + chunk.length, ops.length)}/${ops.length} dokumen)…`);
+      const batch = writeBatch(db);
+      for (const item of chunk) {
+        batch.set(item.ref, item.data);
+      }
+      try {
+        await batch.commit();
+      } catch (err) {
+        handleFirestoreError(err, OperationType.WRITE, chunk[0] ? chunk[0].path : 'batch_migration');
+      }
+    }
+
+    await logAuditToFirestore(
+      'migrate_json_to_firebase',
+      {
+        schools: schools.length,
+        users: users.length,
+        monthlyReports: monthlyCount,
+        anggaranRecords: anggaranList.length,
+        driveUploadedCount
+      },
+      { username: auth.currentUser.email || 'admin', role: 'Admin Dinas' }
+    );
+
+    const summary = {
+      status: 'success',
+      schools: schools.length,
+      users: users.length,
+      monthlyReports: monthlyCount,
+      anggaranRecords: anggaranList.length,
+      driveUploadedCount
+    };
+
+    if (!options.silentIfAlreadyMigrated && typeof window.rkToast === 'function') {
+      window.rkToast(
+        `Migrasi Selesai! ${schools.length} sekolah, ${users.length} akun, ${monthlyCount} realisasi bulanan, dan ${anggaranList.length} RKAS tersimpan di Firebase Firestore${driveUploadedCount ? ` & ${driveUploadedCount} PDF di Google Drive` : ''}.`,
+        'ok'
+      );
+    }
+    return summary;
+  } finally {
+    isMigrating = false;
+    migrationProgressText = '';
+    updateCloudStatusUI();
+  }
+}
+
+// ============================================================================
+// 8. DIRECT FIRESTORE CRUD FOR ALL ENTITIES (BACA & INPUTAN LANGSUNG KE FIREBASE)
+// ============================================================================
+
+/**
+ * Memuat seluruh data Sekolah dari Firestore (/schools)
+ */
+export async function loadSchoolsFromFirestore() {
+  await initFirebase();
+  if (!db || !auth || !auth.currentUser) return null;
+  const path = 'schools';
+  try {
+    const q = query(collection(db, 'schools'), where('no', '>=', 1));
+    const snap = await getDocs(q);
+    if (snap.empty) return null;
+    const list = [];
+    snap.forEach((docSnap) => {
+      const d = docSnap.data();
+      if (d && d.no != null) list.push(d);
+    });
+    list.sort((a, b) => Number(a.no) - Number(b.no));
+    return list;
+  } catch (err) {
+    try { handleFirestoreError(err, OperationType.LIST, path); } catch (_) {}
+    return null;
+  }
+}
+
+/**
+ * Menyimpan 1 Sekolah (atau profil Kepala Sekolah & Bendahara) langsung ke Firestore (/schools/{no})
+ */
+export async function syncSchoolToFirestore(s) {
+  await initFirebase();
+  if (!db || !auth || !auth.currentUser || !s || !s.no) return null;
+  const no = Number(s.no);
+  if (!Number.isFinite(no) || no < 1 || no > 10000) return null;
+
+  const schoolId = String(no);
+  const path = `schools/${schoolId}`;
+  const docData = buildSchoolFirestorePayload(s, auth.currentUser.uid);
+
+  try {
+    await setDoc(doc(db, 'schools', schoolId), docData);
+    return docData;
   } catch (err) {
     handleFirestoreError(err, OperationType.WRITE, path);
+    return null;
   }
+}
+
+/**
+ * Menghapus 1 Sekolah langsung dari Firestore (/schools/{no})
+ */
+export async function deleteSchoolFromFirestore(no) {
+  await initFirebase();
+  if (!db || !auth || !auth.currentUser || !no) return false;
+  const schoolId = String(Number(no));
+  const path = `schools/${schoolId}`;
+  try {
+    await deleteDoc(doc(db, 'schools', schoolId));
+    return true;
+  } catch (err) {
+    handleFirestoreError(err, OperationType.DELETE, path);
+    return false;
+  }
+}
+
+/**
+ * Memuat daftar User dari Firestore (/users)
+ */
+export async function loadUsersFromFirestore() {
+  await initFirebase();
+  if (!db || !auth || !auth.currentUser) return null;
+  const uid = auth.currentUser.uid;
+  const isBootAdmin =
+    auth.currentUser.email &&
+    auth.currentUser.email.toLowerCase() === BOOTSTRAPPED_ADMIN_EMAIL.toLowerCase();
+  const path = 'users';
+  try {
+    const q = isBootAdmin
+      ? query(collection(db, 'users'))
+      : query(collection(db, 'users'), where('uid', '==', uid));
+    const snap = await getDocs(q);
+    if (snap.empty) return null;
+    const byUsername = new Map();
+    snap.forEach((docSnap) => {
+      const d = docSnap.data();
+      if (!d || !d.username) return;
+      const key = String(d.username).toLowerCase();
+      // Prioritaskan dokumen user_* atau yang memiliki role lengkap
+      if (!byUsername.has(key) || docSnap.id.startsWith('user_')) {
+        byUsername.set(key, {
+          uid: d.uid,
+          name: d.name || d.username,
+          username: d.username,
+          email: d.email || '',
+          whatsapp: d.whatsapp || '',
+          role: d.role || 'Operator Sekolah',
+          schoolNo: d.schoolNo || null,
+          npsn: d.npsn || '',
+          status: d.status || 'Aktif'
+        });
+      }
+    });
+    return Array.from(byUsername.values());
+  } catch (err) {
+    try { handleFirestoreError(err, OperationType.LIST, path); } catch (_) {}
+    return null;
+  }
+}
+
+/**
+ * Menyimpan/Memperbarui 1 User langsung ke Firestore (/users/user_{username})
+ */
+export async function saveUserToFirestore(u) {
+  await initFirebase();
+  if (!db || !auth || !auth.currentUser || !u || !u.username) return null;
+  const docId = safeId(`user_${String(u.username).toLowerCase()}`);
+  const path = `users/${docId}`;
+  const role = ['Operator Sekolah', 'Admin Dinas', 'BUD'].includes(u.role) ? u.role : 'Operator Sekolah';
+  const status = ['Pending', 'Aktif', 'Ditolak'].includes(u.status) ? u.status : 'Pending';
+  const payload = {
+    uid: cleanStr(u.uid || docId, 128, docId),
+    username: cleanStr(u.username, 80),
+    name: cleanStr(u.name || u.username, 140),
+    ...(u.email ? { email: cleanStr(u.email, 160) } : {}),
+    ...(u.whatsapp ? { whatsapp: cleanStr(u.whatsapp, 30) } : {}),
+    ...(u.passwordHash ? { passwordHash: cleanStr(u.passwordHash, 120) } : {}),
+    role,
+    schoolNo: Math.max(0, Math.min(10000, Number(u.schoolNo) || 0)),
+    ...(u.npsn ? { npsn: cleanStr(u.npsn, 20) } : {}),
+    status,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp()
+  };
+  try {
+    await setDoc(doc(db, 'users', docId), payload);
+    return payload;
+  } catch (err) {
+    handleFirestoreError(err, OperationType.WRITE, path);
+    return null;
+  }
+}
+
+/**
+ * Menghapus 1 User langsung dari Firestore (/users/user_{username})
+ */
+export async function deleteUserFromFirestore(username) {
+  await initFirebase();
+  if (!db || !auth || !auth.currentUser || !username) return false;
+  const docId = safeId(`user_${String(username).toLowerCase()}`);
+  const path = `users/${docId}`;
+  try {
+    await deleteDoc(doc(db, 'users', docId));
+    return true;
+  } catch (err) {
+    handleFirestoreError(err, OperationType.DELETE, path);
+    return false;
+  }
+}
+
+/**
+ * Memuat data realisasi bulanan dari Firestore (/monthly_reports)
+ */
+export async function loadMonthlyFromFirestore(year) {
+  await initFirebase();
+  if (!db || !auth || !auth.currentUser) return null;
+  const uid = auth.currentUser.uid;
+  const isBootAdmin =
+    auth.currentUser.email &&
+    auth.currentUser.email.toLowerCase() === BOOTSTRAPPED_ADMIN_EMAIL.toLowerCase();
+
+  const path = 'monthly_reports';
+  try {
+    const q = isBootAdmin
+      ? query(collection(db, 'monthly_reports'), where('year', '==', Number(year)))
+      : query(collection(db, 'monthly_reports'), where('ownerUid', '==', uid));
+    const snap = await getDocs(q);
+    const out = {};
+    snap.forEach((docSnap) => {
+      const d = docSnap.data();
+      if (Number(d.year) !== Number(year)) return;
+      const no = String(d.schoolNo);
+      if (!out[no]) out[no] = {};
+      out[no][d.month] = d;
+    });
+    return out;
+  } catch (err) {
+    try { handleFirestoreError(err, OperationType.LIST, path); } catch (_) {}
+    return null;
+  }
+}
+
+/**
+ * Memuat seluruh state aplikasi (schools, users, monthlyData, sp2bKab) langsung dari Firestore
+ */
+export async function loadAllDataFromFirestore(year) {
+  await initFirebase();
+  if (!db || !auth || !auth.currentUser) return null;
+  const [schools, users, monthlyData, sp2bKab] = await Promise.all([
+    loadSchoolsFromFirestore(),
+    loadUsersFromFirestore(),
+    loadMonthlyFromFirestore(year),
+    loadSp2bKabFromFirestore(year)
+  ]);
+  return { schools, users, monthlyData, sp2bKab };
+}
+
+/**
+ * Menyinkronkan perubahan data sekolah, bulanan, dan user langsung ke Cloud Firestore
+ */
+export async function syncSavePayloadToFirestore(payload, appUser) {
+  if (isSigningOut) return { synced: false, reason: 'signing_out' };
+  await initFirebase();
+  if (isSigningOut || !db || !auth || !auth.currentUser) return { synced: false, reason: 'not_signed_in_firebase' };
+
+  const uid = auth.currentUser.uid;
+  const year = Math.max(2020, Math.min(2100, Number(payload.year) || 2026));
+  const ops = [];
+
+  if (payload.monthlyData && typeof payload.monthlyData === 'object') {
+    for (const [schoolNoRaw, monthsObj] of Object.entries(payload.monthlyData)) {
+      const schoolNo = Number(schoolNoRaw);
+      if (!Number.isFinite(schoolNo) || schoolNo < 1 || schoolNo > 10000) continue;
+      if (!monthsObj || typeof monthsObj !== 'object') continue;
+
+      for (const [monthKey, mData] of Object.entries(monthsObj)) {
+        if (!VALID_MONTHS.includes(monthKey) || !mData || typeof mData !== 'object') continue;
+
+        const hasActivity =
+          payload.partial ||
+          mData.reconDone ||
+          (mData.verifStatus && mData.verifStatus !== 'Draft') ||
+          (mData.pendapatan && Object.values(mData.pendapatan).some((v) => Number(v) > 0)) ||
+          (mData.belanja && Object.values(mData.belanja).some((v) => Number(v) > 0)) ||
+          (mData.rekon && Object.values(mData.rekon).some((v) => Number(v) > 0)) ||
+          (mData.documents && Object.values(mData.documents).some((d) => d && d.url));
+
+        if (!hasActivity) continue;
+
+        const reportId = `${year}_${schoolNo}_${monthKey}`;
+        ops.push({
+          ref: doc(db, 'monthly_reports', reportId),
+          data: buildMonthlyReportFirestorePayload(year, schoolNo, monthKey, mData, uid),
+          path: `monthly_reports/${reportId}`
+        });
+      }
+    }
+  }
+
+  if (Array.isArray(payload.schools) && appUser && (appUser.role === 'Admin Dinas' || appUser.role === 'BUD')) {
+    for (const s of payload.schools) {
+      if (!s || !s.no) continue;
+      const schoolId = String(Number(s.no));
+      ops.push({
+        ref: doc(db, 'schools', schoolId),
+        data: buildSchoolFirestorePayload(s, uid),
+        path: `schools/${schoolId}`
+      });
+    }
+  }
+
+  if (Array.isArray(payload.users) && appUser && appUser.role === 'Admin Dinas') {
+    for (const u of payload.users) {
+      if (!u || !u.username) continue;
+      const docId = safeId(`user_${String(u.username).toLowerCase()}`);
+      const role = ['Operator Sekolah', 'Admin Dinas', 'BUD'].includes(u.role) ? u.role : 'Operator Sekolah';
+      const status = ['Pending', 'Aktif', 'Ditolak'].includes(u.status) ? u.status : 'Pending';
+      ops.push({
+        ref: doc(db, 'users', docId),
+        data: {
+          uid: cleanStr(u.uid || docId, 128, docId),
+          username: cleanStr(u.username, 80),
+          name: cleanStr(u.name || u.username, 140),
+          ...(u.email ? { email: cleanStr(u.email, 160) } : {}),
+          ...(u.whatsapp ? { whatsapp: cleanStr(u.whatsapp, 30) } : {}),
+          role,
+          schoolNo: Math.max(0, Math.min(10000, Number(u.schoolNo) || 0)),
+          ...(u.npsn ? { npsn: cleanStr(u.npsn, 20) } : {}),
+          status,
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        },
+        path: `users/${docId}`
+      });
+    }
+  }
+
+  const BATCH_SIZE = 350;
+  for (let i = 0; i < ops.length; i += BATCH_SIZE) {
+    const chunk = ops.slice(i, i + BATCH_SIZE);
+    const batch = writeBatch(db);
+    for (const item of chunk) {
+      batch.set(item.ref, item.data);
+    }
+    try {
+      await batch.commit();
+    } catch (err) {
+      handleFirestoreError(err, OperationType.WRITE, chunk[0] ? chunk[0].path : 'monthly_reports');
+    }
+  }
+
+  return { synced: true, count: ops.length };
+}
+
+export async function seedSchoolsToFirestoreIfNeeded() {
+  return autoMigrateJsonDatabaseIfNeeded();
+}
+
+/**
+ * Memuat daftar ringkas Anggaran RKAS dari Firestore (/anggaran_records)
+ */
+export async function loadAnggaranFromFirestore(year, filterSchoolNo = null) {
+  await initFirebase();
+  if (!db || !auth || !auth.currentUser) return null;
+  const uid = auth.currentUser.uid;
+  const isBootAdmin =
+    auth.currentUser.email &&
+    auth.currentUser.email.toLowerCase() === BOOTSTRAPPED_ADMIN_EMAIL.toLowerCase();
+
+  const path = 'anggaran_records';
+  try {
+    const q = isBootAdmin
+      ? query(collection(db, 'anggaran_records'), where('year', '==', Number(year)))
+      : query(collection(db, 'anggaran_records'), where('ownerUid', '==', uid));
+    const snap = await getDocs(q);
+    if (snap.empty) return {};
+    const out = {};
+    snap.forEach((docSnap) => {
+      const d = docSnap.data();
+      if (Number(d.year) !== Number(year)) return;
+      if (filterSchoolNo != null && Number(d.schoolNo) !== Number(filterSchoolNo)) return;
+      const hydrated = hydrateAnggaranFromFirestoreDoc(d);
+      const no = String(d.schoolNo);
+      if (!out[no]) out[no] = {};
+      if (!out[no][d.tahap]) out[no][d.tahap] = {};
+      const { items, itemsMap, warningsMap, blockingMap, ...stripped } = hydrated;
+      out[no][d.tahap][d.sumber] = stripped;
+    });
+    return out;
+  } catch (err) {
+    try { handleFirestoreError(err, OperationType.LIST, path); } catch (_) {}
+    return null;
+  }
+}
+
+/**
+ * Memuat detail 1 dokumen Anggaran RKAS (beserta seluruh baris items) langsung dari Firestore
+ */
+export async function loadAnggaranDetailFromFirestore(year, schoolNo, tahap, sumber) {
+  await initFirebase();
+  if (!db || !auth || !auth.currentUser) return null;
+  const recordId = `${Number(year)}_${Number(schoolNo)}_${tahap}_${sumber}`;
+  const path = `anggaran_records/${recordId}`;
+  try {
+    const snap = await getDoc(doc(db, 'anggaran_records', recordId));
+    if (!snap.exists()) return null;
+    return hydrateAnggaranFromFirestoreDoc(snap.data());
+  } catch (err) {
+    try { handleFirestoreError(err, OperationType.GET, path); } catch (_) {}
+    return null;
+  }
+}
+
+/**
+ * Menyimpan dokumen Anggaran RKAS (termasuk itemsMap, warningsMap, blockingMap) ke Firestore
+ */
+export async function syncAnggaranRecordToFirestore(rec) {
+  await initFirebase();
+  if (!db || !auth || !auth.currentUser || !rec) return null;
+
+  const year = Math.max(2020, Math.min(2100, Number(rec.year) || 2026));
+  const schoolNo = Math.max(1, Math.min(10000, Number(rec.schoolNo) || 1));
+  const tahap = VALID_TAHAP.includes(rec.tahap) ? rec.tahap : 'induk';
+  const sumber = VALID_SUMBER.includes(rec.sumber) ? rec.sumber : 'reguler';
+  const recordId = `${year}_${schoolNo}_${tahap}_${sumber}`;
+  const path = `anggaran_records/${recordId}`;
+  const docData = buildAnggaranFirestorePayload(rec, auth.currentUser.uid);
+
+  try {
+    await setDoc(doc(db, 'anggaran_records', recordId), docData);
+    return hydrateAnggaranFromFirestoreDoc(docData);
+  } catch (err) {
+    handleFirestoreError(err, OperationType.WRITE, path);
+    return null;
+  }
+}
+
+/**
+ * Memproses aksi Anggaran (reclass, submit, verify, reject, reopen, delete) langsung di Firestore
+ */
+export async function applyAnggaranActionInFirestore({ year, schoolNo, tahap, sumber, action, overrides, catatan, username }) {
+  await initFirebase();
+  if (!db || !auth || !auth.currentUser) return null;
+  const recordId = `${Number(year)}_${Number(schoolNo)}_${tahap}_${sumber}`;
+  const path = `anggaran_records/${recordId}`;
+
+  if (action === 'delete') {
+    try {
+      await deleteDoc(doc(db, 'anggaran_records', recordId));
+      return { deleted: true };
+    } catch (err) {
+      handleFirestoreError(err, OperationType.DELETE, path);
+      return null;
+    }
+  }
+
+  const current = await loadAnggaranDetailFromFirestore(year, schoolNo, tahap, sumber);
+  if (!current) return null;
+
+  const updated = { ...current };
+  if (action === 'reclass' && Array.isArray(overrides)) {
+    const items = Array.isArray(updated.items) ? updated.items.map((x) => ({ ...x })) : [];
+    for (const o of overrides) {
+      const idx = Number(o.index);
+      if (Number.isInteger(idx) && items[idx] && ['pegawai', 'barjas', 'atl', 'pm', 'lainnya'].includes(o.kategori)) {
+        items[idx].kategori = o.kategori;
+        items[idx].auto = false;
+      }
+    }
+    const totals = { pegawai: 0, barjas: 0, atl: 0, pm: 0, lainnya: 0, total: 0 };
+    for (const it of items) {
+      const k = Object.prototype.hasOwnProperty.call(totals, it.kategori) ? it.kategori : 'lainnya';
+      const val = Number(it.jumlah) || 0;
+      totals[k] += val;
+      totals.total += val;
+    }
+    updated.items = items;
+    updated.totals = totals;
+  } else if (action === 'submit') {
+    updated.status = 'Diajukan';
+    updated.submittedAt = new Date().toISOString();
+    updated.catatan = '';
+  } else if (action === 'verify') {
+    updated.status = 'Terverifikasi';
+    updated.verifiedAt = new Date().toISOString();
+    updated.verifiedBy = cleanStr(username || auth.currentUser.email || 'admin', 160);
+    updated.catatan = cleanStr(catatan || '', 500);
+  } else if (action === 'reject') {
+    updated.status = 'Ditolak';
+    updated.verifiedAt = new Date().toISOString();
+    updated.verifiedBy = cleanStr(username || auth.currentUser.email || 'admin', 160);
+    updated.catatan = cleanStr(catatan || '', 500);
+  } else if (action === 'reopen') {
+    updated.status = 'Draft';
+    updated.verifiedAt = '';
+    updated.verifiedBy = '';
+    updated.catatan = cleanStr(catatan || 'Dibuka kembali oleh Admin Dinas', 500);
+  }
+
+  const saved = await syncAnggaranRecordToFirestore(updated);
+  return { record: saved || updated };
 }
 
 export async function deleteAnggaranRecordFromFirestore(year, schoolNo, tahap, sumber, driveFileId, fileName) {
@@ -727,10 +1380,30 @@ export async function deleteAnggaranRecordFromFirestore(year, schoolNo, tahap, s
   }
 }
 
+export async function loadSp2bKabFromFirestore(year) {
+  await initFirebase();
+  if (!db || !auth || !auth.currentUser) return null;
+  const isBootAdmin =
+    auth.currentUser.email &&
+    auth.currentUser.email.toLowerCase() === BOOTSTRAPPED_ADMIN_EMAIL.toLowerCase();
+  if (!isBootAdmin) return null;
+  const yearId = String(Math.max(2020, Math.min(2100, Number(year) || 2026)));
+  const path = `sp2b_kab/${yearId}`;
+  try {
+    const snap = await getDoc(doc(db, 'sp2b_kab', yearId));
+    if (!snap.exists()) return null;
+    const d = snap.data();
+    return { records: d.records || {}, last: d.last || {} };
+  } catch (err) {
+    try { handleFirestoreError(err, OperationType.GET, path); } catch (_) {}
+    return null;
+  }
+}
+
 export async function syncSp2bKabToFirestore(year, records, last) {
   await initFirebase();
   if (!db || !auth || !auth.currentUser) return;
-  const y = Math.max(2020, Math.min(2100, Number(year) || 2024));
+  const y = Math.max(2020, Math.min(2100, Number(year) || 2026));
   const yearId = String(y);
   const path = `sp2b_kab/${yearId}`;
   try {
@@ -765,29 +1438,39 @@ export async function logAuditToFirestore(action, detail, appUser) {
   }
 }
 
-export async function loadMonthlyFromFirestore(year) {
+export async function loadAuditLogsFromFirestore(limitCount = 150, actionFilter = '') {
   await initFirebase();
   if (!db || !auth || !auth.currentUser) return null;
   const uid = auth.currentUser.uid;
   const isBootAdmin =
     auth.currentUser.email &&
     auth.currentUser.email.toLowerCase() === BOOTSTRAPPED_ADMIN_EMAIL.toLowerCase();
-
-  const path = 'monthly_reports';
+  const path = 'audit_logs';
   try {
     const q = isBootAdmin
-      ? query(collection(db, 'monthly_reports'), where('year', '==', Number(year)))
-      : query(collection(db, 'monthly_reports'), where('ownerUid', '==', uid));
+      ? query(collection(db, 'audit_logs'))
+      : query(collection(db, 'audit_logs'), where('userUid', '==', uid));
     const snap = await getDocs(q);
-    const out = {};
+    const items = [];
+    const af = String(actionFilter || '').trim().toLowerCase();
     snap.forEach((docSnap) => {
       const d = docSnap.data();
-      if (Number(d.year) !== Number(year)) return;
-      const no = String(d.schoolNo);
-      if (!out[no]) out[no] = {};
-      out[no][d.month] = d;
+      if (af && String(d.action || '').toLowerCase().indexOf(af) === -1) return;
+      const ts = d.createdAt && typeof d.createdAt.toDate === 'function'
+        ? d.createdAt.toDate().toISOString()
+        : new Date().toISOString();
+      items.push({
+        id: docSnap.id,
+        time: ts,
+        action: d.action || '',
+        username: d.username || '',
+        role: d.role || '',
+        ip: 'Firebase Cloud',
+        detail: d.detail || ''
+      });
     });
-    return out;
+    items.sort((a, b) => String(b.time).localeCompare(String(a.time)));
+    return { items: items.slice(0, limitCount), total: items.length };
   } catch (err) {
     try { handleFirestoreError(err, OperationType.LIST, path); } catch (_) {}
     return null;
@@ -795,7 +1478,7 @@ export async function loadMonthlyFromFirestore(year) {
 }
 
 // ============================================================================
-// 8. UI COMPONENTS (.gsi-material-button & CLOUD STATUS BAR)
+// 9. UI COMPONENTS (.gsi-material-button & CLOUD STATUS + MIGRATION BAR)
 // ============================================================================
 function injectGoogleAuthStyles() {
   if (document.getElementById('gsiMaterialBtnStyles')) return;
@@ -966,32 +1649,52 @@ export function updateCloudStatusUI() {
   const fbUser = auth ? auth.currentUser : null;
   const driveReady = !!(fbUser && cachedAccessToken);
 
-  if (driveReady) {
+  if (isMigrating) {
     bar.innerHTML = `
       <div class="flex items-center gap-2.5 text-xs">
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-indigo-50 text-indigo-800 border border-indigo-200 font-bold">
+          <i class="fa-solid fa-spinner fa-spin text-indigo-600"></i> Migrasi Database JSON ke Firebase &amp; Google Drive…
+        </span>
+        <span class="text-slate-700 font-medium">${migrationProgressText || 'Sedang memindahkan data…'}</span>
+      </div>
+    `;
+    return;
+  }
+
+  if (driveReady) {
+    bar.innerHTML = `
+      <div class="flex items-center gap-2.5 text-xs flex-wrap">
         <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold">
           <i class="fa-solid fa-cloud-check text-emerald-600"></i> Firebase Firestore &amp; Google Drive Aktif
         </span>
-        <span class="text-slate-600">Terhubung sebagai <b>${fbUser.email || fbUser.displayName}</b> — Unggahan PDF otomatis tersimpan di Google Drive Anda.</span>
+        <span class="text-slate-600">Terhubung sebagai <b>${fbUser.email || fbUser.displayName}</b> — Seluruh baca &amp; inputan langsung ke Firebase &amp; Google Drive.</span>
       </div>
-      <div class="flex items-center gap-2">
-        <a href="https://drive.google.com/drive/my-drive" target="_blank" rel="noopener" class="text-xs font-semibold text-blue-700 hover:underline">
+      <div class="flex items-center gap-2 flex-wrap">
+        <button type="button" id="btnMigrateJsonNow" class="px-2.5 py-1.5 rounded-lg bg-[#0F2C59] hover:bg-slate-800 text-white text-[11px] font-semibold inline-flex items-center gap-1.5 cursor-pointer">
+          <i class="fa-solid fa-cloud-arrow-up"></i> Migrasikan Database JSON &amp; PDF
+        </button>
+        <a href="https://drive.google.com/drive/my-drive" target="_blank" rel="noopener" class="text-xs font-semibold text-blue-700 hover:underline px-2 py-1">
           <i class="fa-brands fa-google-drive mr-1"></i>Buka Google Drive
         </a>
       </div>
     `;
   } else if (fbUser && !cachedAccessToken) {
     bar.innerHTML = `
-      <div class="flex items-center gap-2.5 text-xs">
+      <div class="flex items-center gap-2.5 text-xs flex-wrap">
         <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-50 text-amber-800 border border-amber-200 font-bold">
-          <i class="fa-solid fa-database text-amber-600"></i> Firebase Terhubung (${fbUser.email}) · Izin Sesi Google Drive Diperlukan
+          <i class="fa-solid fa-database text-amber-600"></i> Firebase Firestore Aktif (${fbUser.email}) · Aktifkan Token Google Drive
         </span>
-        <span class="text-slate-600">Klik tombol di samping untuk mengaktifkan kembali token unggah Google Drive pada sesi ini.</span>
+        <span class="text-slate-600">Database langsung ke Firestore. Klik tombol di samping untuk mengaktifkan unggah PDF ke Google Drive.</span>
       </div>
-      <div style="width:260px">
-        <button type="button" id="btnConnectDriveTop" class="gsi-material-button" style="height:36px;font-size:12px">
-          ${getGoogleButtonSvg()}
+      <div class="flex items-center gap-2 flex-wrap">
+        <button type="button" id="btnMigrateJsonNow" class="px-2.5 py-1.5 rounded-lg bg-[#0F2C59] hover:bg-slate-800 text-white text-[11px] font-semibold inline-flex items-center gap-1.5 cursor-pointer">
+          <i class="fa-solid fa-cloud-arrow-up"></i> Migrasikan JSON ke Firestore
         </button>
+        <div style="width:245px">
+          <button type="button" id="btnConnectDriveTop" class="gsi-material-button" style="height:34px;font-size:12px">
+            ${getGoogleButtonSvg()}
+          </button>
+        </div>
       </div>
     `;
   } else {
@@ -1000,7 +1703,7 @@ export function updateCloudStatusUI() {
         <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-blue-50 text-blue-800 border border-blue-200 font-bold">
           <i class="fa-brands fa-google-drive text-blue-600"></i> Integrasi Cloud Firebase &amp; Google Drive
         </span>
-        <span class="text-slate-600">Hubungkan akun Google Anda agar database tersinkron ke <b>Firebase Firestore</b> &amp; unggahan PDF tersimpan ke <b>Google Drive</b>.</span>
+        <span class="text-slate-600">Hubungkan akun Google Anda untuk memigrasikan seluruh file JSON &amp; PDF dan mengaktifkan baca/input langsung ke <b>Firebase Firestore</b> &amp; <b>Google Drive</b>.</span>
       </div>
       <div style="width:260px">
         <button type="button" id="btnConnectDriveTop" class="gsi-material-button" style="height:36px;font-size:12px">
@@ -1010,26 +1713,55 @@ export function updateCloudStatusUI() {
     `;
   }
 
-  const btn = document.getElementById('btnConnectDriveTop');
-  if (btn) {
-    btn.addEventListener('click', async () => {
-      btn.disabled = true;
+  const btnConnect = document.getElementById('btnConnectDriveTop');
+  if (btnConnect) {
+    btnConnect.addEventListener('click', async () => {
+      btnConnect.disabled = true;
       try {
-        await signInWithGoogle({ loginToApp: false });
+        await signInWithGoogle({ loginToApp: false, forceMigrate: true });
+        if (typeof window.loadFromGoogleSheets === 'function') {
+          await window.loadFromGoogleSheets();
+          if (typeof window.updateActiveMonthData === 'function') window.updateActiveMonthData();
+        }
       } catch (err) {
         alert('Gagal menghubungkan Google Drive: ' + (err.message || err));
       } finally {
-        btn.disabled = false;
+        btnConnect.disabled = false;
+      }
+    });
+  }
+
+  const btnMigrate = document.getElementById('btnMigrateJsonNow');
+  if (btnMigrate) {
+    btnMigrate.addEventListener('click', async () => {
+      btnMigrate.disabled = true;
+      try {
+        if (!cachedAccessToken) {
+          try {
+            await ensureGoogleDriveToken();
+          } catch (_) {}
+        }
+        await migrateJsonDatabaseToFirebase({ uploadPdfsToDrive: !!cachedAccessToken, silentIfAlreadyMigrated: false });
+        if (typeof window.loadFromGoogleSheets === 'function') {
+          await window.loadFromGoogleSheets();
+          if (typeof window.updateActiveMonthData === 'function') window.updateActiveMonthData();
+          if (typeof window.renderBerandaArkas === 'function') window.renderBerandaArkas();
+        }
+      } catch (err) {
+        alert('Gagal menjalankan migrasi: ' + (err.message || err));
+      } finally {
+        btnMigrate.disabled = false;
       }
     });
   }
 }
 
 // ============================================================================
-// 9. EXPORT GLOBAL BRIDGE FOR EXISTING SCRIPTS (app.js, penganggaran.js, pejabat.js)
+// 10. EXPORT GLOBAL BRIDGE FOR EXISTING SCRIPTS (app.js, penganggaran.js, pejabat.js)
 // ============================================================================
 window.SigapFirebaseDrive = {
   initFirebase,
+  isFirebaseAuthenticated,
   signInWithGoogle,
   signOutFirebase,
   ensureGoogleDriveToken,
@@ -1037,14 +1769,27 @@ window.SigapFirebaseDrive = {
   getGoogleAccessTokenInMemory,
   uploadPdfToGoogleDrive,
   deleteFileFromGoogleDrive,
-  syncSavePayloadToFirestore,
+  migrateJsonDatabaseToFirebase,
+  autoMigrateJsonDatabaseIfNeeded,
+  loadAllDataFromFirestore,
+  loadSchoolsFromFirestore,
   syncSchoolToFirestore,
+  deleteSchoolFromFirestore,
+  loadUsersFromFirestore,
+  saveUserToFirestore,
+  deleteUserFromFirestore,
+  loadMonthlyFromFirestore,
+  syncSavePayloadToFirestore,
   seedSchoolsToFirestoreIfNeeded,
+  loadAnggaranFromFirestore,
+  loadAnggaranDetailFromFirestore,
   syncAnggaranRecordToFirestore,
+  applyAnggaranActionInFirestore,
   deleteAnggaranRecordFromFirestore,
+  loadSp2bKabFromFirestore,
   syncSp2bKabToFirestore,
   logAuditToFirestore,
-  loadMonthlyFromFirestore,
+  loadAuditLogsFromFirestore,
   updateCloudStatusUI
 };
 

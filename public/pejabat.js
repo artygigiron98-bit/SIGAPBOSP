@@ -170,11 +170,23 @@
     state.no = Number(sch.no);
     fillForm(sch);                                   // tampil cepat dari data lokal
     $("profileModal").classList.remove("hidden");
-    var q = isOp() ? "" : "?no=" + encodeURIComponent(sch.no);
-    api("/api/school-profile" + q).then(function (j) {   // lalu sinkron dengan server
-      if (!j.school || state.no !== Number(j.school.no)) return;
-      mergeLocal(j.school); fillForm(Object.assign({}, sch, j.school));
-    }).catch(function () { /* pakai data lokal */ });
+    // Prioritaskan baca langsung dari Firebase Firestore
+    if (w.SigapFirebaseDrive && typeof w.SigapFirebaseDrive.loadSchoolsFromFirestore === "function") {
+      w.SigapFirebaseDrive.loadSchoolsFromFirestore().then(function (fbSchools) {
+        if (!Array.isArray(fbSchools)) return;
+        var found = fbSchools.find(function (x) { return Number(x.no) === Number(sch.no); });
+        if (found && state.no === Number(found.no)) {
+          mergeLocal(found);
+          fillForm(Object.assign({}, sch, found));
+        }
+      }).catch(function () {});
+    } else {
+      var q = isOp() ? "" : "?no=" + encodeURIComponent(sch.no);
+      api("/api/school-profile" + q).then(function (j) {
+        if (!j.school || state.no !== Number(j.school.no)) return;
+        mergeLocal(j.school); fillForm(Object.assign({}, sch, j.school));
+      }).catch(function () { /* pakai data lokal */ });
+    }
     setTimeout(function () { var el = $("pf_kepsek_nama"); if (el) el.focus(); }, 60);
   }
   function closeProfileModal() { var m = $("profileModal"); if (m) m.classList.add("hidden"); }
@@ -197,7 +209,7 @@
     try { localStorage.setItem("bosp_baseSchools", JSON.stringify(baseSchools)); } catch (e) {}
   }
 
-  function save() {
+  async function save() {
     var body = {
       no: state.no,
       kepalaSekolah: { nama: getVal("pf_kepsek_nama"), nip: getVal("pf_kepsek_nip"), pangkat: getVal("pf_kepsek_pangkat"), jabatan: getVal("pf_kepsek_jabatan") },
@@ -206,19 +218,33 @@
     if (!body.kepalaSekolah.nama) { toast("Nama Kepala Sekolah wajib diisi.", "err"); var el = $("pf_kepsek_nama"); if (el) el.focus(); return; }
     var btn = $("pf_saveBtn");
     if (btn) { btn.disabled = true; btn.classList.add("opacity-60"); }
-    api("/api/school-profile", { method: "PUT", body: body }).then(function (j) {
-      mergeLocal(j.school);
+    try {
+      var targetSch = (typeof baseSchools !== "undefined" ? baseSchools.find(function (s) { return Number(s.no) === Number(state.no); }) : null) || { no: state.no };
+      var updatedSchool = Object.assign({}, targetSch, {
+        no: Number(state.no),
+        kepalaSekolah: norm(body.kepalaSekolah, KEPSEK_DEF),
+        bendahara: norm(body.bendahara, BEND_DEF),
+        profilDiubah: {
+          waktu: new Date().toISOString(),
+          oleh: (typeof currentUser !== "undefined" && currentUser && (currentUser.name || currentUser.username)) || "Operator Sekolah"
+        }
+      });
       if (w.SigapFirebaseDrive && typeof w.SigapFirebaseDrive.syncSchoolToFirestore === "function") {
-        w.SigapFirebaseDrive.syncSchoolToFirestore(j.school).catch(function (e) { console.warn("Sync school profile Firestore:", e); });
+        await w.SigapFirebaseDrive.syncSchoolToFirestore(updatedSchool);
       }
+      try {
+        var j = await api("/api/school-profile", { method: "PUT", body: body });
+        if (j && j.school) updatedSchool = Object.assign({}, updatedSchool, j.school);
+      } catch (_) {}
+      mergeLocal(updatedSchool);
       closeProfileModal();
-      toast("Data Master Sekolah berhasil disimpan ke Firebase.", "ok");
+      toast("Data Master Sekolah berhasil disimpan langsung ke Firebase.", "ok");
       refreshViews();
-    }).catch(function (e) {
+    } catch (e) {
       toast("Gagal menyimpan: " + e.message, "err");
-    }).then(function () {
+    } finally {
       if (btn) { btn.disabled = false; btn.classList.remove("opacity-60"); }
-    });
+    }
   }
 
   /** Segarkan tampilan yang memakai data pejabat setelah disimpan. */

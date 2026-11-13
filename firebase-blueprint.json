@@ -40,7 +40,7 @@
       "properties": {
         "uid": {
           "type": "string",
-          "description": "Firebase Auth UID of the user.",
+          "description": "Firebase Auth UID or migrated user identifier.",
           "minLength": 1,
           "maxLength": 128,
           "pattern": "^[a-zA-Z0-9_\\-]+$"
@@ -67,6 +67,11 @@
           "type": "string",
           "description": "WhatsApp phone number for notifications (PII restricted to owner and admin).",
           "maxLength": 30
+        },
+        "passwordHash": {
+          "type": "string",
+          "description": "Bcrypt password hash migrated from legacy JSON store.",
+          "maxLength": 120
         },
         "role": {
           "type": "string",
@@ -154,6 +159,10 @@
           "type": "object",
           "description": "BOSP Treasurer identity details (nama, nip, pangkat, jabatan)."
         },
+        "profilDiubah": {
+          "type": "object",
+          "description": "Audit metadata for profile changes (oleh, waktu)."
+        },
         "updatedByUid": {
           "type": "string",
           "description": "UID of the user who last updated this school.",
@@ -210,6 +219,55 @@
           "description": "ISO timestamp when reconciliation was completed.",
           "maxLength": 40
         },
+        "verifiedAt": {
+          "type": "string",
+          "description": "ISO timestamp when verified by Dinas.",
+          "maxLength": 40
+        },
+        "verifiedBy": {
+          "type": "string",
+          "description": "Username of the verifier.",
+          "maxLength": 160
+        },
+        "verifiedBulk": {
+          "type": "boolean",
+          "description": "Whether verified via bulk verification."
+        },
+        "submittedAt": {
+          "type": "string",
+          "description": "ISO timestamp when submitted by school.",
+          "maxLength": 40
+        },
+        "submittedBy": {
+          "type": "string",
+          "description": "Username who submitted the report.",
+          "maxLength": 160
+        },
+        "approvedAt": {
+          "type": "string",
+          "description": "ISO timestamp when approved by BUD.",
+          "maxLength": 40
+        },
+        "approvedBy": {
+          "type": "string",
+          "description": "Username who approved the report.",
+          "maxLength": 160
+        },
+        "unverifiedAt": {
+          "type": "string",
+          "description": "ISO timestamp when verification was reopened.",
+          "maxLength": 40
+        },
+        "unverifiedBy": {
+          "type": "string",
+          "description": "Username who reopened verification.",
+          "maxLength": 160
+        },
+        "unverifyReason": {
+          "type": "string",
+          "description": "Reason for reopening verification.",
+          "maxLength": 500
+        },
         "pendapatan": {
           "type": "object",
           "description": "Monthly income breakdown map."
@@ -256,7 +314,7 @@
     },
     "AnggaranRecord": {
       "title": "AnggaranRecord",
-      "description": "RKAS budget document metadata and parsed totals per school, stage, and funding source.",
+      "description": "RKAS budget document metadata, parsed line items map, and totals per school, stage, and funding source.",
       "type": "object",
       "properties": {
         "year": {
@@ -322,6 +380,51 @@
           "type": "object",
           "description": "Extracted RKAS header metadata (npsn, namaSekolah, tahun, tahap)."
         },
+        "itemsMap": {
+          "type": "object",
+          "description": "Map of parsed budget line items indexed by row number."
+        },
+        "warningsMap": {
+          "type": "object",
+          "description": "Map of parser/validation warnings."
+        },
+        "blockingMap": {
+          "type": "object",
+          "description": "Map of blocking identity/source validation errors."
+        },
+        "basis": {
+          "type": "object",
+          "description": "Parser basis metadata."
+        },
+        "stats": {
+          "type": "object",
+          "description": "Parser statistics metadata."
+        },
+        "uploadedAt": {
+          "type": "string",
+          "description": "ISO timestamp when uploaded.",
+          "maxLength": 40
+        },
+        "uploadedBy": {
+          "type": "string",
+          "description": "Username who uploaded the file.",
+          "maxLength": 160
+        },
+        "submittedAt": {
+          "type": "string",
+          "description": "ISO timestamp when submitted to Dinas.",
+          "maxLength": 40
+        },
+        "verifiedAt": {
+          "type": "string",
+          "description": "ISO timestamp when verified or rejected.",
+          "maxLength": 40
+        },
+        "verifiedBy": {
+          "type": "string",
+          "description": "Username of Admin Dinas who verified or rejected.",
+          "maxLength": 160
+        },
         "itemCount": {
           "type": "number",
           "description": "Number of parsed budget line items."
@@ -329,6 +432,10 @@
         "canSubmit": {
           "type": "boolean",
           "description": "Whether the document passed identity validation and can be submitted."
+        },
+        "hasBlocking": {
+          "type": "boolean",
+          "description": "Whether the document has blocking errors."
         },
         "updatedAt": {
           "type": "string",

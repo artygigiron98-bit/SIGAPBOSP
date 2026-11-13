@@ -478,9 +478,11 @@ app.post("/api/auth/google", loginLimiter, async (req, res) => {
   }
 });
 
-app.post("/api/logout", requireAuth, (req, res) => {
+app.post("/api/logout", (req, res) => {
   res.clearCookie("token");
-  audit("logout", req);
+  try {
+    audit("logout", req);
+  } catch (_) {}
   res.json({ status: "success" });
 });
 
@@ -492,7 +494,7 @@ app.get("/api/me", requireAuth, (req, res) => {
 
 app.get("/api/data", requireAuth, (req, res) => {
   try {
-    const year = Number(req.query.year) || 2024;
+    const year = Number(req.query.year) || 2026;
     let schools = getSchools();
     let monthlyData = getMonthly(year);
     let users = getUsers();
@@ -514,7 +516,7 @@ app.get("/api/data", requireAuth, (req, res) => {
 app.post("/api/save", requireAuth, async (req, res) => {
   try {
     const body = parseBody(req);
-    const year = Number(body.year) || 2024;
+    const year = Number(body.year) || 2026;
     if (req.user.role === "Operator Sekolah") {
       if (body.monthlyData) {
         const allowed = {};
@@ -1235,17 +1237,19 @@ app.post(
         blockingErrors.push("Tidak ada baris anggaran yang berhasil dibaca dari PDF. Pastikan file adalah Lembar RKAS hasil cetak ARKAS (bukan scan/foto).");
       }
 
-      // simpan berkas
-      const schoolFolder = resolveSchoolFolder({ schoolNo: no, schoolName: school.name, npsn: school.npsn });
-      const dir = path.join(UPLOAD_DIR, schoolFolder, `anggaran-${year}`);
-      fs.mkdirSync(dir, { recursive: true });
-      const safe = sanitizeFolderPart(req.file.originalname || "rkas.pdf", 80);
-      const fileName = `${tahap}_${sumber}_${Date.now()}_${safe.toLowerCase().endsWith(".pdf") ? safe : safe + ".pdf"}`;
-      fs.renameSync(tmp, path.join(dir, fileName));
-      const relativePath = path.join(schoolFolder, `anggaran-${year}`, fileName).replace(/\\/g, "/");
-
       const driveFileId = req.body.driveFileId ? String(req.body.driveFileId).trim() : null;
       const driveUrl = req.body.driveUrl ? String(req.body.driveUrl).trim() : null;
+
+      let relativePath = "";
+      if (!driveFileId || !driveUrl) {
+        const schoolFolder = resolveSchoolFolder({ schoolNo: no, schoolName: school.name, npsn: school.npsn });
+        const dir = path.join(UPLOAD_DIR, schoolFolder, `anggaran-${year}`);
+        fs.mkdirSync(dir, { recursive: true });
+        const safe = sanitizeFolderPart(req.file.originalname || "rkas.pdf", 80);
+        const fileName = `${tahap}_${sumber}_${Date.now()}_${safe.toLowerCase().endsWith(".pdf") ? safe : safe + ".pdf"}`;
+        fs.renameSync(tmp, path.join(dir, fileName));
+        relativePath = path.join(schoolFolder, `anggaran-${year}`, fileName).replace(/\\/g, "/");
+      }
 
       const rec = {
         year, schoolNo: no, tahap, sumber,
@@ -1456,6 +1460,184 @@ app.get("/api/backup", requireAuth, requireRole("Admin Dinas"), (req, res) => {
     res.setHeader("Content-Type", "application/json");
     res.setHeader("Content-Disposition", `attachment; filename="${fname}"`);
     res.send(payload);
+  } catch (err) {
+    res.status(500).json({ status: "error", message: err.message });
+  }
+});
+
+// ---------- Migration Bundle (JSON + Local Uploads -> Firebase Firestore & Google Drive) ----------
+async function buildUploadedAnggaranMigrationList(includePdfs = false) {
+  const schools = getSchools();
+  const out = [];
+  if (!fs.existsSync(UPLOAD_DIR)) return out;
+  const schoolFolders = fs.readdirSync(UPLOAD_DIR);
+  for (const sFolder of schoolFolders) {
+    const sPath = path.join(UPLOAD_DIR, sFolder);
+    try {
+      if (!fs.statSync(sPath).isDirectory()) continue;
+    } catch (_) { continue; }
+    const npsnMatch = sFolder.match(/^(\d{6,12})_/);
+    const npsn = npsnMatch ? npsnMatch[1] : "";
+    const school = schools.find((s) => String(s.npsn).trim() === npsn) || schools.find((s) => sFolder.includes(sanitizeFolderPart(s.name, 40)));
+    if (!school) continue;
+
+    const subFolders = fs.readdirSync(sPath);
+    for (const sub of subFolders) {
+      const aMatch = sub.match(/^anggaran-(\d{4})$/);
+      if (!aMatch) continue;
+      const year = Number(aMatch[1]);
+      const aPath = path.join(sPath, sub);
+      try {
+        if (!fs.statSync(aPath).isDirectory()) continue;
+      } catch (_) { continue; }
+      const files = fs.readdirSync(aPath).filter((f) => f.toLowerCase().endsWith(".pdf"));
+      for (const fname of files) {
+        const fMatch = fname.match(/^(induk|perubahan)_(reguler|kinerja|prestasi|silpaKinerja)_(\d+)_(.+)$/);
+        if (!fMatch) continue;
+        const tahap = fMatch[1];
+        const sumber = fMatch[2];
+        const origName = fMatch[4];
+        const fullFile = path.join(aPath, fname);
+        const relativePath = path.join(sFolder, sub, fname).replace(/\\/g, "/");
+        try {
+          const buf = fs.readFileSync(fullFile);
+          const parsed = await parseRkasPdf(buf, { sumber });
+          const idCheck = angValidateIdentity(school, parsed.meta || {}, sumber, tahap, year);
+          const warnings = [...(parsed.warnings || []), ...idCheck.soft];
+          const blockingErrors = idCheck.blocking.slice();
+          if (!parsed.items || !parsed.items.length) {
+            blockingErrors.push("Tidak ada baris anggaran yang berhasil dibaca dari PDF.");
+          }
+          const rec = {
+            year,
+            schoolNo: Number(school.no),
+            schoolName: school.name,
+            npsn: school.npsn,
+            tahap,
+            sumber,
+            fileName: origName,
+            filePath: relativePath,
+            fileUrl: `/api/file/${relativePath}`,
+            uploadedAt: new Date().toISOString(),
+            uploadedBy: "juan",
+            items: parsed.items || [],
+            totals: parsed.totals || { pegawai: 0, barjas: 0, atl: 0, pm: 0, lainnya: 0, total: 0 },
+            basis: parsed.basis || null,
+            meta: parsed.meta || {},
+            warnings,
+            blockingErrors,
+            canSubmit: blockingErrors.length === 0,
+            stats: parsed.stats || {},
+            status: "Draft",
+            catatan: "",
+            ...(includePdfs ? { pdfBase64: buf.toString("base64") } : {}),
+          };
+          out.push(rec);
+        } catch (err) {
+          console.warn("Gagal parse PDF lokal saat migrasi:", fullFile, err.message);
+        }
+      }
+    }
+  }
+  return out;
+}
+
+app.get("/api/migration/json-bundle", async (req, res) => {
+  try {
+    const includePdfs = req.query.includePdfs === "1" || req.query.includePdfs === "true";
+    const schools = getSchools();
+    const users = getUsers().map((u) => ({
+      name: u.name || u.username,
+      username: u.username,
+      passwordHash: u.password || "",
+      role: u.role || "Operator Sekolah",
+      schoolNo: u.schoolNo ?? 0,
+      npsn: u.npsn || "",
+      whatsapp: u.whatsapp || "",
+      status: u.status || "Aktif",
+    }));
+
+    // Kumpulkan semua monthly_{year}.json yang memiliki aktivitas
+    const monthlyByYear = {};
+    const dataFiles = fs.existsSync(DATA_DIR) ? fs.readdirSync(DATA_DIR) : [];
+    for (const f of dataFiles) {
+      const mMatch = f.match(/^monthly_(\d{4})\.json$/);
+      if (!mMatch) continue;
+      const y = Number(mMatch[1]);
+      const mData = getMonthly(y);
+      const activeSchools = {};
+      for (const [no, monthsObj] of Object.entries(mData || {})) {
+        for (const [mKey, rec] of Object.entries(monthsObj || {})) {
+          if (!rec || typeof rec !== "object") continue;
+          const hasData =
+            rec.reconDone ||
+            (rec.verifStatus && rec.verifStatus !== "Draft") ||
+            (rec.pendapatan && Object.values(rec.pendapatan).some((v) => Number(v) > 0)) ||
+            (rec.belanja && Object.values(rec.belanja).some((v) => Number(v) > 0)) ||
+            (rec.rekon && Object.values(rec.rekon).some((v) => Number(v) > 0)) ||
+            (rec.documents && Object.values(rec.documents).some((d) => d && d.url)) ||
+            Number(rec.saldoAwalCustom) > 0 ||
+            Number(rec.saldoReguler) > 0 ||
+            Number(rec.saldoKinerja) > 0 ||
+            Number(rec.saldoNonBOS) > 0 ||
+            Number(rec.saldoTunai) > 0;
+          if (hasData) {
+            if (!activeSchools[no]) activeSchools[no] = {};
+            activeSchools[no][mKey] = rec;
+          }
+        }
+      }
+      if (Object.keys(activeSchools).length > 0) {
+        monthlyByYear[y] = activeSchools;
+      }
+    }
+
+    // Kumpulkan semua anggaran_{year}.json + PDF yang ada di folder uploads/
+    const anggaranList = [];
+    for (const f of dataFiles) {
+      const aMatch = f.match(/^anggaran_(\d{4})\.json$/);
+      if (!aMatch) continue;
+      const y = Number(aMatch[1]);
+      const aData = angRead(y);
+      for (const [no, tahaps] of Object.entries(aData || {})) {
+        for (const [tahap, srcs] of Object.entries(tahaps || {})) {
+          for (const [sumber, rec] of Object.entries(srcs || {})) {
+            if (rec && typeof rec === "object") {
+              anggaranList.push({ ...rec, year: y, schoolNo: Number(no), tahap, sumber });
+            }
+          }
+        }
+      }
+    }
+
+    const uploadedAnggaran = await buildUploadedAnggaranMigrationList(includePdfs);
+    for (const uRec of uploadedAnggaran) {
+      const existsIdx = anggaranList.findIndex(
+        (x) =>
+          Number(x.year) === Number(uRec.year) &&
+          Number(x.schoolNo) === Number(uRec.schoolNo) &&
+          x.tahap === uRec.tahap &&
+          x.sumber === uRec.sumber
+      );
+      if (existsIdx >= 0) {
+        if (includePdfs && uRec.pdfBase64) anggaranList[existsIdx].pdfBase64 = uRec.pdfBase64;
+      } else {
+        anggaranList.push(uRec);
+        // Sinkronkan juga ke anggaran_{year}.json jika belum tercatat
+        const db = angRead(uRec.year);
+        const { pdfBase64, ...cleanRec } = uRec;
+        angSetRecord(db, uRec.schoolNo, uRec.tahap, uRec.sumber, cleanRec);
+        angWrite(uRec.year, db);
+      }
+    }
+
+    res.json({
+      status: "success",
+      schools,
+      users,
+      monthlyByYear,
+      anggaranList,
+    });
   } catch (err) {
     res.status(500).json({ status: "error", message: err.message });
   }
