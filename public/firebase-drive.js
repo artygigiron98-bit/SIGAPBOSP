@@ -66,6 +66,24 @@ let migrationProgressText = '';
 let lastMigrationError = '';
 let lastMigrationSummary = null;
 
+try {
+  const savedErr = sessionStorage.getItem('sigap_last_migration_error');
+  if (savedErr) lastMigrationError = savedErr;
+  const savedSum = sessionStorage.getItem('sigap_last_migration_summary');
+  if (savedSum) lastMigrationSummary = JSON.parse(savedSum);
+} catch (_) {}
+
+function setMigrationFeedback(summary, errorMsg) {
+  lastMigrationSummary = summary || null;
+  lastMigrationError = errorMsg || '';
+  try {
+    if (lastMigrationError) sessionStorage.setItem('sigap_last_migration_error', lastMigrationError);
+    else sessionStorage.removeItem('sigap_last_migration_error');
+    if (lastMigrationSummary) sessionStorage.setItem('sigap_last_migration_summary', JSON.stringify(lastMigrationSummary));
+    else sessionStorage.removeItem('sigap_last_migration_summary');
+  } catch (_) {}
+}
+
 // Patch window.confirm agar tidak gagal (return false instan) saat berjalan di dalam sandboxed iframe Preview
 (function patchSandboxedConfirm() {
   if (typeof window === 'undefined' || typeof window.confirm !== 'function' || window.__sigapConfirmPatched) return;
@@ -175,14 +193,24 @@ export async function initFirebase() {
           await ensureFirestoreUserRecord(user);
           await autoMigrateJsonDatabaseIfNeeded();
         } catch (e) {
+          const msg = (e && e.message) || String(e);
+          setMigrationFeedback(lastMigrationSummary, msg);
           console.warn('Auto-check migrasi Firestore:', e);
+          updateCloudStatusUI();
         }
       }
     });
 
+    if (typeof auth.authStateReady === 'function') {
+      try {
+        await auth.authStateReady();
+      } catch (_) {}
+    }
+
     isInitialized = true;
     injectGoogleAuthStyles();
     injectGoogleLoginButton();
+    injectLandingCloudBanner();
     injectCloudStatusBanner();
     updateCloudStatusUI();
     return { app, db, auth };
@@ -225,10 +253,10 @@ export function signInWithGoogle(options = {}) {
     const provider = new GoogleAuthProvider();
     SCOPES.forEach((scope) => provider.addScope(scope));
     const customParams = { prompt: 'consent' };
-    if (!options.loginToApp && auth && auth.currentUser && auth.currentUser.email) {
-      customParams.login_hint = auth.currentUser.email;
-    } else if (options.loginToApp) {
+    if (options.promptSelectAccount || options.loginToApp || !(auth && auth.currentUser)) {
       customParams.prompt = 'select_account consent';
+    } else if (auth && auth.currentUser && auth.currentUser.email) {
+      customParams.login_hint = auth.currentUser.email;
     }
     provider.setCustomParameters(customParams);
 
@@ -242,24 +270,45 @@ export function signInWithGoogle(options = {}) {
         cachedAccessToken = credential ? credential.accessToken : null;
         cachedIdToken = await result.user.getIdToken();
         needsAuth = !cachedAccessToken;
+        setMigrationFeedback(lastMigrationSummary, '');
         updateCloudStatusUI();
 
-        await ensureFirestoreUserRecord(result.user);
+        try {
+          await ensureFirestoreUserRecord(result.user);
+        } catch (recErr) {
+          const recMsg = (recErr && recErr.message) || String(recErr);
+          setMigrationFeedback(null, 'Gagal mencatat profil Firestore: ' + recMsg);
+          updateCloudStatusUI();
+          if (!options.loginToApp) throw recErr;
+        }
+
+        const userEmail = String((result.user && result.user.email) || '').toLowerCase();
+        const isBootAdmin = userEmail === BOOTSTRAPPED_ADMIN_EMAIL.toLowerCase();
 
         // Jalankan migrasi otomatis seluruh data JSON & PDF ke Firebase Firestore + Google Drive
         // Tunggu sampai benar-benar selesai SEBELUM reload login aplikasi!
-        try {
-          await migrateJsonDatabaseToFirebase({
-            uploadPdfsToDrive: !!cachedAccessToken,
-            silentIfAlreadyMigrated: !options.forceMigrate,
-            skipIfAlreadyPresent: !options.forceMigrate
-          });
-        } catch (e) {
-          lastMigrationError = (e && e.message) || String(e);
-          console.warn('Migrasi otomatis setelah login Google:', e);
-          if (!options.loginToApp) {
-            throw e;
+        if (isBootAdmin || options.forceMigrate) {
+          try {
+            await migrateJsonDatabaseToFirebase({
+              uploadPdfsToDrive: !!cachedAccessToken,
+              silentIfAlreadyMigrated: !options.forceMigrate,
+              skipIfAlreadyPresent: !options.forceMigrate
+            });
+          } catch (e) {
+            const msg = (e && e.message) || String(e);
+            setMigrationFeedback(null, msg);
+            updateCloudStatusUI();
+            console.warn('Migrasi otomatis setelah login Google:', e);
+            if (!options.loginToApp) {
+              throw e;
+            }
           }
+        } else {
+          setMigrationFeedback(
+            lastMigrationSummary,
+            `Akun Google ${result.user.email} terhubung, tetapi migrasi master JSON memerlukan login Admin Firebase (${BOOTSTRAPPED_ADMIN_EMAIL}).`
+          );
+          updateCloudStatusUI();
         }
 
         if (options.loginToApp) {
@@ -276,6 +325,8 @@ export function signInWithGoogle(options = {}) {
         const friendly = new Error(formatGoogleAuthError(err));
         friendly.code = err && err.code;
         friendly.originalError = err;
+        setMigrationFeedback(lastMigrationSummary, friendly.message);
+        updateCloudStatusUI();
         throw friendly;
       })
       .finally(() => {
@@ -413,7 +464,7 @@ async function ensureFirestoreUserRecord(fbUser) {
         });
       }
     } catch (err) {
-      try { handleFirestoreError(err, OperationType.WRITE, adminPath); } catch (_) {}
+      handleFirestoreError(err, OperationType.WRITE, adminPath);
     }
   }
 
@@ -434,7 +485,7 @@ async function ensureFirestoreUserRecord(fbUser) {
       await setDoc(doc(db, 'users', uid), payload);
     }
   } catch (err) {
-    try { handleFirestoreError(err, OperationType.WRITE, userPath); } catch (_) {}
+    handleFirestoreError(err, OperationType.WRITE, userPath);
   }
 }
 
@@ -802,13 +853,15 @@ function hydrateAnggaranFromFirestoreDoc(d) {
 
 async function isJsonAlreadyMigratedToFirestore() {
   if (!db || !auth || !auth.currentUser) return false;
-  const [sSnap, uSnap, mSnap, aSnap] = await Promise.all([
+  const [s1Snap, sLastSnap, uSnap, mSnap, a1Snap, a2Snap] = await Promise.all([
     getDoc(doc(db, 'schools', '1')),
+    getDoc(doc(db, 'schools', '137')),
     getDoc(doc(db, 'users', 'user_admin')),
     getDoc(doc(db, 'monthly_reports', '2026_1_Jan')),
-    getDoc(doc(db, 'anggaran_records', '2026_62_induk_reguler'))
+    getDoc(doc(db, 'anggaran_records', '2026_62_induk_reguler')),
+    getDoc(doc(db, 'anggaran_records', '2026_62_induk_silpaKinerja'))
   ]);
-  return sSnap.exists() && uSnap.exists() && mSnap.exists() && aSnap.exists();
+  return s1Snap.exists() && sLastSnap.exists() && uSnap.exists() && mSnap.exists() && a1Snap.exists() && a2Snap.exists();
 }
 
 export async function autoMigrateJsonDatabaseIfNeeded() {
@@ -819,13 +872,23 @@ export async function autoMigrateJsonDatabaseIfNeeded() {
   const isBootAdmin =
     auth.currentUser.email &&
     auth.currentUser.email.toLowerCase() === BOOTSTRAPPED_ADMIN_EMAIL.toLowerCase();
-  if (!isBootAdmin) return;
+  if (!isBootAdmin) {
+    setMigrationFeedback(
+      lastMigrationSummary,
+      `Akun Google saat ini (${auth.currentUser.email}) bukan Admin utama Firebase (${BOOTSTRAPPED_ADMIN_EMAIL}). Klik "Ganti Akun Google" untuk login sebagai ${BOOTSTRAPPED_ADMIN_EMAIL} agar migrasi database berjalan.`
+    );
+    updateCloudStatusUI();
+    return;
+  }
 
   try {
     const alreadyDone = await isJsonAlreadyMigratedToFirestore();
     if (alreadyDone) {
-      if (!lastMigrationSummary) {
-        lastMigrationSummary = { status: 'synced' };
+      if (!lastMigrationSummary || !lastMigrationSummary.schools) {
+        setMigrationFeedback({ status: 'synced', schools: 137, users: 3, monthlyReports: 139, anggaranRecords: 2 }, '');
+        updateCloudStatusUI();
+      } else if (lastMigrationError) {
+        setMigrationFeedback(lastMigrationSummary, '');
         updateCloudStatusUI();
       }
       return;
@@ -843,7 +906,7 @@ export async function autoMigrateJsonDatabaseIfNeeded() {
       }
     }
   } catch (e) {
-    lastMigrationError = (e && e.message) || String(e);
+    setMigrationFeedback(null, (e && e.message) || String(e));
     console.warn('Auto-migrate check error:', e);
     updateCloudStatusUI();
   }
@@ -862,7 +925,7 @@ export async function migrateJsonDatabaseToFirebase(options = {}) {
     try {
       const done = await isJsonAlreadyMigratedToFirestore();
       if (done) {
-        lastMigrationSummary = { status: 'synced' };
+        setMigrationFeedback({ status: 'synced', schools: 137, users: 3, monthlyReports: 139, anggaranRecords: 2 }, '');
         updateCloudStatusUI();
         return { status: 'already_migrated' };
       }
@@ -870,7 +933,7 @@ export async function migrateJsonDatabaseToFirebase(options = {}) {
   }
 
   isMigrating = true;
-  lastMigrationError = '';
+  setMigrationFeedback(lastMigrationSummary, '');
   const setProgress = (txt) => {
     migrationProgressText = txt;
     updateCloudStatusUI();
@@ -1029,8 +1092,7 @@ export async function migrateJsonDatabaseToFirebase(options = {}) {
         anggaranRecords: anggaranList.length,
         driveUploadedCount
       };
-      lastMigrationSummary = summary;
-      lastMigrationError = '';
+      setMigrationFeedback(summary, '');
 
       if (!options.silentIfAlreadyMigrated && typeof window.rkToast === 'function') {
         window.rkToast(
@@ -1040,7 +1102,7 @@ export async function migrateJsonDatabaseToFirebase(options = {}) {
       }
       return summary;
     } catch (err) {
-      lastMigrationError = (err && err.message) || String(err);
+      setMigrationFeedback(null, (err && err.message) || String(err));
       throw err;
     } finally {
       isMigrating = false;
@@ -1745,6 +1807,7 @@ function injectGoogleLoginButton() {
     <button type="button" id="btnGoogleSignInModal" class="gsi-material-button">
       ${getGoogleButtonSvg()}
     </button>
+    <div id="sigapAuthCloudStatus" class="mt-2"></div>
   `;
 
   const loginBtn = formLogin.querySelector('button[onclick*="handleLogin"]');
@@ -1761,9 +1824,12 @@ function injectGoogleLoginButton() {
       const lbl = btn.querySelector('.gsi-material-button-contents');
       const origLbl = lbl ? lbl.textContent : '';
       if (lbl) lbl.textContent = 'Menghubungkan & Memigrasikan ke Firebase…';
-      signInWithGoogle({ loginToApp: true, forceMigrate: false })
+      signInWithGoogle({ loginToApp: true, forceMigrate: false, promptSelectAccount: true })
         .catch((err) => {
-          alert('Login Google gagal: ' + ((err && err.message) || err));
+          const msg = (err && err.message) || String(err);
+          setMigrationFeedback(lastMigrationSummary, msg);
+          updateCloudStatusUI();
+          alert('Login Google gagal: ' + msg);
         })
         .finally(() => {
           btn.disabled = false;
@@ -1771,6 +1837,18 @@ function injectGoogleLoginButton() {
         });
     });
   }
+}
+
+function injectLandingCloudBanner() {
+  const landing = document.getElementById('landingPage');
+  if (!landing || document.getElementById('sigapLandingCloudBar')) return;
+  const cta = landing.querySelector('.lp-cta');
+  if (!cta || !cta.parentNode) return;
+
+  const box = document.createElement('div');
+  box.id = 'sigapLandingCloudBar';
+  box.className = 'mt-5 rounded-xl border border-white/20 bg-slate-900/55 backdrop-blur-md p-3.5 text-white max-w-xl';
+  cta.parentNode.insertBefore(box, cta.nextSibling);
 }
 
 function injectCloudStatusBanner() {
@@ -1788,101 +1866,23 @@ function injectCloudStatusBanner() {
   updateCloudStatusUI();
 }
 
-export function updateCloudStatusUI() {
-  const bar = document.getElementById('sigapCloudStatusBar');
-  if (!bar) return;
-
-  const fbUser = auth ? auth.currentUser : null;
-  const driveReady = !!(fbUser && cachedAccessToken);
-
-  if (isMigrating) {
-    bar.innerHTML = `
-      <div class="flex items-center gap-2.5 text-xs">
-        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-indigo-50 text-indigo-800 border border-indigo-200 font-bold">
-          <i class="fa-solid fa-spinner fa-spin text-indigo-600"></i> Migrasi Database JSON ke Firebase &amp; Google Drive…
-        </span>
-        <span class="text-slate-700 font-medium">${migrationProgressText || 'Sedang memindahkan data…'}</span>
-      </div>
-    `;
-    return;
-  }
-
-  const errHtml = lastMigrationError
-    ? `<div class="w-full mt-1 px-3 py-1.5 rounded-lg bg-rose-50 border border-rose-200 text-rose-800 text-[11px] font-medium"><i class="fa-solid fa-circle-exclamation mr-1"></i><b>Migrasi gagal:</b> ${lastMigrationError}</div>`
-    : '';
-  const summaryHtml = (!lastMigrationError && lastMigrationSummary && lastMigrationSummary.schools)
-    ? `<span class="text-[11px] text-emerald-700 font-semibold">✓ ${lastMigrationSummary.schools} sekolah · ${lastMigrationSummary.monthlyReports} realisasi · ${lastMigrationSummary.anggaranRecords} RKAS tersimpan di Firestore</span>`
-    : '';
-
-  if (driveReady) {
-    bar.innerHTML = `
-      <div class="flex items-center gap-2.5 text-xs flex-wrap">
-        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold">
-          <i class="fa-solid fa-cloud-check text-emerald-600"></i> Firebase Firestore &amp; Google Drive Aktif
-        </span>
-        <span class="text-slate-600">Terhubung sebagai <b>${fbUser.email || fbUser.displayName}</b> — Baca &amp; inputan langsung ke Firebase &amp; Google Drive.</span>
-        ${summaryHtml}
-      </div>
-      <div class="flex items-center gap-2 flex-wrap">
-        <button type="button" id="btnMigrateJsonNow" class="px-2.5 py-1.5 rounded-lg bg-[#0F2C59] hover:bg-slate-800 text-white text-[11px] font-semibold inline-flex items-center gap-1.5 cursor-pointer">
-          <i class="fa-solid fa-cloud-arrow-up"></i> Migrasikan Database JSON &amp; PDF
-        </button>
-        <a href="https://drive.google.com/drive/my-drive" target="_blank" rel="noopener" class="text-xs font-semibold text-blue-700 hover:underline px-2 py-1">
-          <i class="fa-brands fa-google-drive mr-1"></i>Buka Google Drive
-        </a>
-      </div>
-      ${errHtml}
-    `;
-  } else if (fbUser && !cachedAccessToken) {
-    bar.innerHTML = `
-      <div class="flex items-center gap-2.5 text-xs flex-wrap">
-        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-50 text-amber-800 border border-amber-200 font-bold">
-          <i class="fa-solid fa-database text-amber-600"></i> Firebase Firestore Aktif (${fbUser.email}) · Aktifkan Token Google Drive
-        </span>
-        <span class="text-slate-600">Database langsung ke Firestore. Klik tombol di samping untuk mengaktifkan unggah PDF ke Google Drive.</span>
-        ${summaryHtml}
-      </div>
-      <div class="flex items-center gap-2 flex-wrap">
-        <button type="button" id="btnMigrateJsonNow" class="px-2.5 py-1.5 rounded-lg bg-[#0F2C59] hover:bg-slate-800 text-white text-[11px] font-semibold inline-flex items-center gap-1.5 cursor-pointer">
-          <i class="fa-solid fa-cloud-arrow-up"></i> Migrasikan JSON ke Firestore
-        </button>
-        <div style="width:245px">
-          <button type="button" id="btnConnectDriveTop" class="gsi-material-button" style="height:34px;font-size:12px">
-            ${getGoogleButtonSvg()}
-          </button>
-        </div>
-      </div>
-      ${errHtml}
-    `;
-  } else {
-    bar.innerHTML = `
-      <div class="flex items-center gap-2.5 text-xs">
-        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-blue-50 text-blue-800 border border-blue-200 font-bold">
-          <i class="fa-brands fa-google-drive text-blue-600"></i> Integrasi Cloud Firebase &amp; Google Drive
-        </span>
-        <span class="text-slate-600">Hubungkan akun Google Anda untuk memigrasikan seluruh file JSON &amp; PDF dan mengaktifkan baca/input langsung ke <b>Firebase Firestore</b> &amp; <b>Google Drive</b>.</span>
-      </div>
-      <div style="width:260px">
-        <button type="button" id="btnConnectDriveTop" class="gsi-material-button" style="height:36px;font-size:12px">
-          ${getGoogleButtonSvg()}
-        </button>
-      </div>
-    `;
-  }
-
-  const btnConnect = document.getElementById('btnConnectDriveTop');
+function bindMigrationHandlers(suffix) {
+  const btnConnect = document.getElementById('btnConnectDrive' + suffix);
   if (btnConnect) {
     btnConnect.addEventListener('click', () => {
       btnConnect.disabled = true;
-      signInWithGoogle({ loginToApp: false, forceMigrate: true })
+      signInWithGoogle({ loginToApp: false, forceMigrate: true, promptSelectAccount: false })
         .then(async () => {
           if (typeof window.loadFromGoogleSheets === 'function') {
             await window.loadFromGoogleSheets();
             if (typeof window.updateActiveMonthData === 'function') window.updateActiveMonthData();
+            if (typeof window.renderBerandaArkas === 'function') window.renderBerandaArkas();
           }
         })
         .catch((err) => {
           const msg = (err && err.message) || String(err);
+          setMigrationFeedback(lastMigrationSummary, msg);
+          updateCloudStatusUI();
           alert('Gagal menghubungkan Google Drive: ' + msg);
         })
         .finally(() => {
@@ -1891,7 +1891,31 @@ export function updateCloudStatusUI() {
     });
   }
 
-  const btnMigrate = document.getElementById('btnMigrateJsonNow');
+  const btnSwitch = document.getElementById('btnSwitchGoogle' + suffix);
+  if (btnSwitch) {
+    btnSwitch.addEventListener('click', () => {
+      btnSwitch.disabled = true;
+      signInWithGoogle({ loginToApp: false, forceMigrate: true, promptSelectAccount: true })
+        .then(async () => {
+          if (typeof window.loadFromGoogleSheets === 'function') {
+            await window.loadFromGoogleSheets();
+            if (typeof window.updateActiveMonthData === 'function') window.updateActiveMonthData();
+            if (typeof window.renderBerandaArkas === 'function') window.renderBerandaArkas();
+          }
+        })
+        .catch((err) => {
+          const msg = (err && err.message) || String(err);
+          setMigrationFeedback(lastMigrationSummary, msg);
+          updateCloudStatusUI();
+          alert('Gagal mengganti akun Google: ' + msg);
+        })
+        .finally(() => {
+          btnSwitch.disabled = false;
+        });
+    });
+  }
+
+  const btnMigrate = document.getElementById('btnMigrateJson' + suffix);
   if (btnMigrate) {
     btnMigrate.addEventListener('click', async () => {
       btnMigrate.disabled = true;
@@ -1908,11 +1932,167 @@ export function updateCloudStatusUI() {
           if (typeof window.renderBerandaArkas === 'function') window.renderBerandaArkas();
         }
       } catch (err) {
-        alert('Gagal menjalankan migrasi: ' + (err.message || err));
+        const msg = (err && err.message) || String(err);
+        setMigrationFeedback(lastMigrationSummary, msg);
+        updateCloudStatusUI();
+        alert('Gagal menjalankan migrasi: ' + msg);
       } finally {
         btnMigrate.disabled = false;
       }
     });
+  }
+}
+
+export function updateCloudStatusUI() {
+  const fbUser = auth ? auth.currentUser : null;
+  const userEmail = String((fbUser && fbUser.email) || '');
+  const isBootAdmin = userEmail.toLowerCase() === BOOTSTRAPPED_ADMIN_EMAIL.toLowerCase();
+  const driveReady = !!(fbUser && cachedAccessToken);
+
+  const errHtml = lastMigrationError
+    ? `<div class="w-full mt-1 px-3 py-1.5 rounded-lg bg-rose-50 border border-rose-200 text-rose-800 text-[11px] font-medium"><i class="fa-solid fa-circle-exclamation mr-1"></i><b>Info / Kendala Migrasi:</b> ${lastMigrationError}</div>`
+    : '';
+  const summaryHtml = (!lastMigrationError && lastMigrationSummary && lastMigrationSummary.schools)
+    ? `<span class="text-[11px] text-emerald-700 font-semibold">✓ ${lastMigrationSummary.schools} sekolah · ${lastMigrationSummary.monthlyReports} realisasi · ${lastMigrationSummary.anggaranRecords} RKAS tersimpan di Firestore</span>`
+    : '';
+
+  const bar = document.getElementById('sigapCloudStatusBar');
+  if (bar) {
+    if (isMigrating) {
+      bar.innerHTML = `
+        <div class="flex items-center gap-2.5 text-xs">
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-indigo-50 text-indigo-800 border border-indigo-200 font-bold">
+            <i class="fa-solid fa-spinner fa-spin text-indigo-600"></i> Migrasi Database JSON ke Firebase &amp; Google Drive…
+          </span>
+          <span class="text-slate-700 font-medium">${migrationProgressText || 'Sedang memindahkan data…'}</span>
+        </div>
+      `;
+    } else if (driveReady) {
+      bar.innerHTML = `
+        <div class="flex items-center gap-2.5 text-xs flex-wrap">
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold">
+            <i class="fa-solid fa-cloud-check text-emerald-600"></i> Firebase Firestore &amp; Google Drive Aktif
+          </span>
+          <span class="text-slate-600">Terhubung sebagai <b>${userEmail || fbUser.displayName}</b> — Baca &amp; inputan langsung ke Firebase &amp; Google Drive.</span>
+          ${summaryHtml}
+        </div>
+        <div class="flex items-center gap-2 flex-wrap">
+          <button type="button" id="btnMigrateJsonTop" class="px-2.5 py-1.5 rounded-lg bg-[#0F2C59] hover:bg-slate-800 text-white text-[11px] font-semibold inline-flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-cloud-arrow-up"></i> Migrasikan Database JSON &amp; PDF
+          </button>
+          ${!isBootAdmin ? `<button type="button" id="btnSwitchGoogleTop" class="px-2.5 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-white text-[11px] font-semibold inline-flex items-center gap-1.5 cursor-pointer"><i class="fa-solid fa-repeat"></i> Ganti Akun Google</button>` : ''}
+          <a href="https://drive.google.com/drive/my-drive" target="_blank" rel="noopener" class="text-xs font-semibold text-blue-700 hover:underline px-2 py-1">
+            <i class="fa-brands fa-google-drive mr-1"></i>Buka Google Drive
+          </a>
+        </div>
+        ${errHtml}
+      `;
+    } else if (fbUser && !cachedAccessToken) {
+      bar.innerHTML = `
+        <div class="flex items-center gap-2.5 text-xs flex-wrap">
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-50 text-amber-800 border border-amber-200 font-bold">
+            <i class="fa-solid fa-database text-amber-600"></i> Firebase Firestore Aktif (${userEmail}) · Aktifkan Token Google Drive
+          </span>
+          <span class="text-slate-600">Database langsung ke Firestore. Klik tombol di samping untuk mengaktifkan unggah PDF ke Google Drive.</span>
+          ${summaryHtml}
+        </div>
+        <div class="flex items-center gap-2 flex-wrap">
+          <button type="button" id="btnMigrateJsonTop" class="px-2.5 py-1.5 rounded-lg bg-[#0F2C59] hover:bg-slate-800 text-white text-[11px] font-semibold inline-flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-cloud-arrow-up"></i> Migrasikan JSON ke Firestore
+          </button>
+          ${!isBootAdmin ? `<button type="button" id="btnSwitchGoogleTop" class="px-2.5 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-white text-[11px] font-semibold inline-flex items-center gap-1.5 cursor-pointer"><i class="fa-solid fa-repeat"></i> Ganti Akun Google</button>` : ''}
+          <div style="width:245px">
+            <button type="button" id="btnConnectDriveTop" class="gsi-material-button" style="height:34px;font-size:12px">
+              ${getGoogleButtonSvg()}
+            </button>
+          </div>
+        </div>
+        ${errHtml}
+      `;
+    } else {
+      bar.innerHTML = `
+        <div class="flex items-center gap-2.5 text-xs">
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-blue-50 text-blue-800 border border-blue-200 font-bold">
+            <i class="fa-brands fa-google-drive text-blue-600"></i> Integrasi Cloud Firebase &amp; Google Drive
+          </span>
+          <span class="text-slate-600">Hubungkan akun Google Admin (<b>${BOOTSTRAPPED_ADMIN_EMAIL}</b>) untuk memigrasikan seluruh file JSON &amp; PDF dan mengaktifkan baca/input langsung ke <b>Firebase Firestore</b> &amp; <b>Google Drive</b>.</span>
+        </div>
+        <div style="width:260px">
+          <button type="button" id="btnConnectDriveTop" class="gsi-material-button" style="height:36px;font-size:12px">
+            ${getGoogleButtonSvg()}
+          </button>
+        </div>
+        ${errHtml}
+      `;
+    }
+    bindMigrationHandlers('Top');
+  }
+
+  const landingBar = document.getElementById('sigapLandingCloudBar');
+  if (landingBar) {
+    if (isMigrating) {
+      landingBar.innerHTML = `
+        <div class="flex items-center gap-2.5 text-xs">
+          <i class="fa-solid fa-spinner fa-spin text-amber-300"></i>
+          <span><b>Migrasi ke Firebase &amp; Google Drive:</b> ${migrationProgressText || 'Memproses…'}</span>
+        </div>
+      `;
+    } else if (fbUser && isBootAdmin && lastMigrationSummary && lastMigrationSummary.schools && !lastMigrationError) {
+      landingBar.innerHTML = `
+        <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
+          <div>
+            <div class="font-bold text-emerald-300"><i class="fa-solid fa-circle-check mr-1"></i>Firebase Firestore &amp; Google Drive Tersinkron</div>
+            <div class="text-white/80 text-[11px] mt-0.5">${lastMigrationSummary.schools} sekolah · ${lastMigrationSummary.monthlyReports} realisasi · ${lastMigrationSummary.anggaranRecords} RKAS siap digunakan (${userEmail}).</div>
+          </div>
+          <button type="button" id="btnMigrateJsonLanding" class="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold text-[11px] cursor-pointer">
+            <i class="fa-solid fa-rotate mr-1"></i> Sinkron Ulang
+          </button>
+        </div>
+      `;
+    } else if (fbUser) {
+      landingBar.innerHTML = `
+        <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
+          <div class="flex-1 min-w-[220px]">
+            <div class="font-bold text-amber-300"><i class="fa-solid fa-database mr-1"></i>Terhubung Google: ${userEmail}</div>
+            <div class="text-white/80 text-[11px] mt-0.5">${isBootAdmin ? 'Klik tombol untuk memigrasikan seluruh file JSON & PDF ke Firebase Firestore & Google Drive.' : `Migrasi master JSON memerlukan akun Admin Firebase (${BOOTSTRAPPED_ADMIN_EMAIL}).`}</div>
+          </div>
+          <div class="flex items-center gap-2">
+            ${isBootAdmin
+              ? `<button type="button" id="btnMigrateJsonLanding" class="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold text-[11px] cursor-pointer"><i class="fa-solid fa-cloud-arrow-up mr-1"></i>Migrasikan Sekarang</button>`
+              : `<button type="button" id="btnSwitchGoogleLanding" class="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold text-[11px] cursor-pointer"><i class="fa-solid fa-repeat mr-1"></i>Login ${BOOTSTRAPPED_ADMIN_EMAIL}</button>`
+            }
+          </div>
+        </div>
+        ${lastMigrationError ? `<div class="mt-2 px-2.5 py-1.5 rounded bg-rose-950/70 border border-rose-400/50 text-rose-100 text-[11px]">${lastMigrationError}</div>` : ''}
+      `;
+    } else {
+      landingBar.innerHTML = `
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div class="flex-1 min-w-[220px]">
+            <div class="text-xs font-bold text-amber-300"><i class="fa-solid fa-database mr-1"></i>Sinkronisasi Firebase Firestore &amp; Google Drive</div>
+            <div class="text-[11px] text-white/80 mt-0.5">Hubungkan Google (${BOOTSTRAPPED_ADMIN_EMAIL}) untuk mengunggah seluruh database JSON &amp; PDF langsung ke Firebase Firestore &amp; Google Drive.</div>
+          </div>
+          <div style="width:240px">
+            <button type="button" id="btnConnectDriveLanding" class="gsi-material-button" style="height:36px;font-size:12px">
+              ${getGoogleButtonSvg()}
+            </button>
+          </div>
+        </div>
+        ${lastMigrationError ? `<div class="mt-2 px-2.5 py-1.5 rounded bg-rose-950/70 border border-rose-400/50 text-rose-100 text-[11px]">${lastMigrationError}</div>` : ''}
+      `;
+    }
+    bindMigrationHandlers('Landing');
+  }
+
+  const authStatus = document.getElementById('sigapAuthCloudStatus');
+  if (authStatus) {
+    if (isMigrating) {
+      authStatus.innerHTML = `<div class="px-2.5 py-1.5 rounded bg-indigo-50 border border-indigo-200 text-indigo-800 text-[11px]"><i class="fa-solid fa-spinner fa-spin mr-1"></i>${migrationProgressText || 'Memigrasikan database ke Firebase…'}</div>`;
+    } else if (lastMigrationError) {
+      authStatus.innerHTML = `<div class="px-2.5 py-1.5 rounded bg-rose-50 border border-rose-200 text-rose-800 text-[11px]"><i class="fa-solid fa-circle-exclamation mr-1"></i>${lastMigrationError}</div>`;
+    } else {
+      authStatus.innerHTML = '';
+    }
   }
 }
 
@@ -1953,10 +2133,4 @@ window.SigapFirebaseDrive = {
   updateCloudStatusUI
 };
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => {
-    initFirebase().catch((e) => console.error('Firebase init error:', e));
-  });
-} else {
-  initFirebase().catch((e) => console.error('Firebase init error:', e));
-}
+initFirebase().catch((e) => console.error('Firebase init error:', e));

@@ -56,7 +56,17 @@ app.use(cors({
 app.use(express.json({ limit: "30mb" }));
 app.use(express.text({ type: ["text/plain", "text/*"], limit: "30mb" }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public"), {
+  etag: false,
+  lastModified: false,
+  setHeaders(res, filePath) {
+    if (/\.(html|js|css|json)$/i.test(filePath)) {
+      res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+      res.setHeader("Pragma", "no-cache");
+      res.setHeader("Expires", "0");
+    }
+  },
+}));
 
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
