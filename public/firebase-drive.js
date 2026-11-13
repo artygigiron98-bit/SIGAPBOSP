@@ -597,19 +597,29 @@ export function signInWithGoogle(options = {}) {
 
     const flowPromise = (async () => {
       if (canUseGisImmediately) {
-        const accessToken = await requestGisAccessTokenPopup(options);
-        const credential = GoogleAuthProvider.credential(null, accessToken);
-        const result = await signInWithCredential(auth, credential);
-        return finalizeGoogleSignInResult(result.user, accessToken, options);
+        try {
+          const accessToken = await requestGisAccessTokenPopup(options);
+          const credential = GoogleAuthProvider.credential(null, accessToken);
+          const result = await signInWithCredential(auth, credential);
+          return finalizeGoogleSignInResult(result.user, accessToken, options);
+        } catch (gisErr) {
+          console.warn('GIS token client fallback to popup:', gisErr);
+          return runFirebasePopupFallback(options);
+        }
       }
 
       // Jika script GIS belum selesai dimuat saat tombol diklik, muat dulu lalu jalankan GIS
       const gisLoaded = await ensureGisClientScript();
       if (gisLoaded && firebaseConfig && firebaseConfig.oAuthClientId) {
-        const accessToken = await requestGisAccessTokenPopup(options);
-        const credential = GoogleAuthProvider.credential(null, accessToken);
-        const result = await signInWithCredential(auth, credential);
-        return finalizeGoogleSignInResult(result.user, accessToken, options);
+        try {
+          const accessToken = await requestGisAccessTokenPopup(options);
+          const credential = GoogleAuthProvider.credential(null, accessToken);
+          const result = await signInWithCredential(auth, credential);
+          return finalizeGoogleSignInResult(result.user, accessToken, options);
+        } catch (gisErr2) {
+          console.warn('GIS loaded fallback to popup:', gisErr2);
+          return runFirebasePopupFallback(options);
+        }
       }
 
       return runFirebasePopupFallback(options);
