@@ -58,8 +58,13 @@ export let auth = null;
 let isInitialized = false;
 let initPromise = null;
 let isSigningOut = false;
+let isSigningIn = false;
+let activeSignInPromise = null;
 let isMigrating = false;
+let activeMigrationPromise = null;
 let migrationProgressText = '';
+let lastMigrationError = '';
+let lastMigrationSummary = null;
 
 // Patch window.confirm agar tidak gagal (return false instan) saat berjalan di dalam sandboxed iframe Preview
 (function patchSandboxedConfirm() {
@@ -155,15 +160,23 @@ export async function initFirebase() {
       } catch (e) {
         console.warn('Gagal mengambil Firebase ID Token:', e);
       }
-      needsAuth = !cachedAccessToken;
+      if (!cachedAccessToken && !isSigningIn) {
+        needsAuth = true;
+      } else {
+        needsAuth = !cachedAccessToken;
+      }
       updateCloudStatusUI();
 
-      // Pastikan record user/admin ada di Firestore lalu jalankan auto-migrasi JSON -> Firestore bila belum ada
-      try {
-        await ensureFirestoreUserRecord(user);
-        await autoMigrateJsonDatabaseIfNeeded();
-      } catch (e) {
-        console.warn('Auto-check migrasi Firestore:', e);
+      // Pastikan record user/admin ada di Firestore lalu jalankan auto-migrasi JSON -> Firestore bila belum ada.
+      // Jika sedang dalam alur signInWithGoogle (isSigningIn === true), biarkan signInWithGoogle yang menjalankan migrasi
+      // setelah Google Drive accessToken tersedia agar PDF ikut terunggah dan tidak memicu race/reload prematur.
+      if (!isSigningIn) {
+        try {
+          await ensureFirestoreUserRecord(user);
+          await autoMigrateJsonDatabaseIfNeeded();
+        } catch (e) {
+          console.warn('Auto-check migrasi Firestore:', e);
+        }
       }
     });
 
@@ -185,37 +198,98 @@ export function isFirebaseAuthenticated() {
 // ============================================================================
 // 4. GOOGLE SIGN-IN & OAUTH DRIVE SCOPE (POPUP FLOW)
 // ============================================================================
-export async function signInWithGoogle(options = {}) {
-  await initFirebase();
-  const provider = new GoogleAuthProvider();
-  SCOPES.forEach((scope) => provider.addScope(scope));
-  provider.setCustomParameters({ prompt: 'consent' });
+function formatGoogleAuthError(err) {
+  const code = (err && err.code) || '';
+  const msg = (err && err.message) || String(err || '');
+  if (code === 'auth/popup-closed-by-user' || msg.includes('auth/popup-closed-by-user')) {
+    return 'Jendela popup Google ditutup sebelum persetujuan selesai (atau dibatasi browser). Pastikan pop-up diizinkan lalu klik Sign in with Google kembali.';
+  }
+  if (code === 'auth/cancelled-popup-request' || msg.includes('auth/cancelled-popup-request')) {
+    return 'Permintaan popup Google sebelumnya masih berjalan. Silakan tunggu sebentar dan coba klik sekali lagi.';
+  }
+  if (code === 'auth/popup-blocked' || msg.includes('auth/popup-blocked')) {
+    return 'Popup login Google diblokir oleh browser. Izinkan pop-up untuk halaman ini lalu coba kembali.';
+  }
+  if (code === 'auth/unauthorized-domain' || msg.includes('auth/unauthorized-domain')) {
+    return 'Domain aplikasi belum diotorisasi pada Firebase Authentication.';
+  }
+  return msg;
+}
 
-  const result = await signInWithPopup(auth, provider);
-  const credential = GoogleAuthProvider.credentialFromResult(result);
-  cachedAccessToken = credential ? credential.accessToken : null;
-  cachedIdToken = await result.user.getIdToken();
-  needsAuth = !cachedAccessToken;
-  updateCloudStatusUI();
-
-  await ensureFirestoreUserRecord(result.user);
-
-  // Jalankan migrasi otomatis seluruh data JSON & PDF ke Firebase Firestore + Google Drive
-  try {
-    await migrateJsonDatabaseToFirebase({ uploadPdfsToDrive: !!cachedAccessToken, silentIfAlreadyMigrated: !options.forceMigrate });
-  } catch (e) {
-    console.warn('Migrasi otomatis setelah login Google:', e);
+export function signInWithGoogle(options = {}) {
+  if (activeSignInPromise) {
+    return activeSignInPromise;
   }
 
-  if (options.loginToApp) {
-    await completeAppLoginWithGoogle(result.user);
-  }
+  const runAfterInit = () => {
+    const provider = new GoogleAuthProvider();
+    SCOPES.forEach((scope) => provider.addScope(scope));
+    const customParams = { prompt: 'consent' };
+    if (!options.loginToApp && auth && auth.currentUser && auth.currentUser.email) {
+      customParams.login_hint = auth.currentUser.email;
+    } else if (options.loginToApp) {
+      customParams.prompt = 'select_account consent';
+    }
+    provider.setCustomParameters(customParams);
 
-  return {
-    user: result.user,
-    accessToken: cachedAccessToken,
-    idToken: cachedIdToken
+    isSigningIn = true;
+    // Panggil signInWithPopup langsung agar tetap terikat user gesture klik
+    const popupPromise = signInWithPopup(auth, provider);
+
+    activeSignInPromise = popupPromise
+      .then(async (result) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        cachedAccessToken = credential ? credential.accessToken : null;
+        cachedIdToken = await result.user.getIdToken();
+        needsAuth = !cachedAccessToken;
+        updateCloudStatusUI();
+
+        await ensureFirestoreUserRecord(result.user);
+
+        // Jalankan migrasi otomatis seluruh data JSON & PDF ke Firebase Firestore + Google Drive
+        // Tunggu sampai benar-benar selesai SEBELUM reload login aplikasi!
+        try {
+          await migrateJsonDatabaseToFirebase({
+            uploadPdfsToDrive: !!cachedAccessToken,
+            silentIfAlreadyMigrated: !options.forceMigrate,
+            skipIfAlreadyPresent: !options.forceMigrate
+          });
+        } catch (e) {
+          lastMigrationError = (e && e.message) || String(e);
+          console.warn('Migrasi otomatis setelah login Google:', e);
+          if (!options.loginToApp) {
+            throw e;
+          }
+        }
+
+        if (options.loginToApp) {
+          await completeAppLoginWithGoogle(result.user);
+        }
+
+        return {
+          user: result.user,
+          accessToken: cachedAccessToken,
+          idToken: cachedIdToken
+        };
+      })
+      .catch((err) => {
+        const friendly = new Error(formatGoogleAuthError(err));
+        friendly.code = err && err.code;
+        friendly.originalError = err;
+        throw friendly;
+      })
+      .finally(() => {
+        isSigningIn = false;
+        activeSignInPromise = null;
+      });
+
+    return activeSignInPromise;
   };
+
+  if (isInitialized && auth) {
+    return runAfterInit();
+  }
+  return initFirebase().then(() => runAfterInit());
 }
 
 export async function ensureGoogleDriveToken() {
@@ -274,12 +348,27 @@ function safeId(raw) {
   return s || 'doc_' + Date.now();
 }
 
+function stripUndefinedDeep(val) {
+  if (val === undefined) return undefined;
+  if (val === null || typeof val !== 'object') return val;
+  if (Array.isArray(val)) {
+    return val.map(stripUndefinedDeep).filter((v) => v !== undefined);
+  }
+  const out = {};
+  for (const [k, v] of Object.entries(val)) {
+    const cleaned = stripUndefinedDeep(v);
+    if (cleaned !== undefined) out[k] = cleaned;
+  }
+  return out;
+}
+
 function cleanMap(obj, maxKeys = 20) {
   if (!obj || typeof obj !== 'object' || Array.isArray(obj)) return {};
   const out = {};
   const keys = Object.keys(obj).slice(0, maxKeys);
   for (const k of keys) {
-    if (obj[k] !== undefined) out[k] = obj[k];
+    const cleaned = stripUndefinedDeep(obj[k]);
+    if (cleaned !== undefined) out[k] = cleaned;
   }
   return out;
 }
@@ -289,8 +378,9 @@ function arrayToBoundedMap(arr, maxItems = 500) {
   if (!Array.isArray(arr)) return out;
   const slice = arr.slice(0, maxItems);
   for (let i = 0; i < slice.length; i++) {
-    if (slice[i] !== undefined) {
-      out[String(i)] = slice[i];
+    const cleaned = stripUndefinedDeep(slice[i]);
+    if (cleaned !== undefined) {
+      out[String(i)] = cleaned;
     }
   }
   return out;
@@ -710,8 +800,20 @@ function hydrateAnggaranFromFirestoreDoc(d) {
   };
 }
 
+async function isJsonAlreadyMigratedToFirestore() {
+  if (!db || !auth || !auth.currentUser) return false;
+  const [sSnap, uSnap, mSnap, aSnap] = await Promise.all([
+    getDoc(doc(db, 'schools', '1')),
+    getDoc(doc(db, 'users', 'user_admin')),
+    getDoc(doc(db, 'monthly_reports', '2026_1_Jan')),
+    getDoc(doc(db, 'anggaran_records', '2026_62_induk_reguler'))
+  ]);
+  return sSnap.exists() && uSnap.exists() && mSnap.exists() && aSnap.exists();
+}
+
 export async function autoMigrateJsonDatabaseIfNeeded() {
-  if (isSigningOut || isMigrating) return;
+  if (isSigningOut || isSigningIn) return;
+  if (activeMigrationPromise) return activeMigrationPromise;
   await initFirebase();
   if (!db || !auth || !auth.currentUser) return;
   const isBootAdmin =
@@ -720,14 +822,30 @@ export async function autoMigrateJsonDatabaseIfNeeded() {
   if (!isBootAdmin) return;
 
   try {
-    const checkSnap = await getDoc(doc(db, 'monthly_reports', '2026_1_Jan'));
-    const checkAngSnap = await getDoc(doc(db, 'anggaran_records', '2026_62_induk_reguler'));
-    if (checkSnap.exists() && checkAngSnap.exists()) {
-      return; // Seluruh database JSON sudah dimigrasikan ke Firestore
+    const alreadyDone = await isJsonAlreadyMigratedToFirestore();
+    if (alreadyDone) {
+      if (!lastMigrationSummary) {
+        lastMigrationSummary = { status: 'synced' };
+        updateCloudStatusUI();
+      }
+      return;
     }
-    await migrateJsonDatabaseToFirebase({ uploadPdfsToDrive: !!cachedAccessToken, silentIfAlreadyMigrated: true });
+    const res = await migrateJsonDatabaseToFirebase({
+      uploadPdfsToDrive: !!cachedAccessToken,
+      silentIfAlreadyMigrated: true
+    });
+    if (res && res.status === 'success') {
+      try { window.dispatchEvent(new CustomEvent('sigap-firebase-ready', { detail: res })); } catch (_) {}
+      if (typeof window.loadFromGoogleSheets === 'function') {
+        await window.loadFromGoogleSheets();
+        if (typeof window.updateActiveMonthData === 'function') window.updateActiveMonthData();
+        if (typeof window.renderBerandaArkas === 'function') window.renderBerandaArkas();
+      }
+    }
   } catch (e) {
+    lastMigrationError = (e && e.message) || String(e);
     console.warn('Auto-migrate check error:', e);
+    updateCloudStatusUI();
   }
 }
 
@@ -736,179 +854,203 @@ export async function migrateJsonDatabaseToFirebase(options = {}) {
   if (!db || !auth || !auth.currentUser) {
     throw new Error('Silakan login dengan akun Google (Firebase) terlebih dahulu untuk menjalankan migrasi database.');
   }
-  if (isMigrating) return { status: 'busy' };
+  if (activeMigrationPromise) {
+    return activeMigrationPromise;
+  }
+
+  if (options.skipIfAlreadyPresent) {
+    try {
+      const done = await isJsonAlreadyMigratedToFirestore();
+      if (done) {
+        lastMigrationSummary = { status: 'synced' };
+        updateCloudStatusUI();
+        return { status: 'already_migrated' };
+      }
+    } catch (_) {}
+  }
 
   isMigrating = true;
+  lastMigrationError = '';
   const setProgress = (txt) => {
     migrationProgressText = txt;
     updateCloudStatusUI();
     if (typeof options.onProgress === 'function') options.onProgress(txt);
   };
 
-  try {
-    setProgress('Membaca seluruh file JSON & PDF lokal dari server…');
-    const includePdfs = !!(options.uploadPdfsToDrive || cachedAccessToken);
-    const resp = await fetch(`/api/migration/json-bundle?includePdfs=${includePdfs ? '1' : '0'}`, {
-      cache: 'no-store',
-      credentials: 'include'
-    });
-    if (!resp.ok) {
-      throw new Error(`Gagal mengambil paket migrasi JSON (HTTP ${resp.status})`);
-    }
-    const bundle = await resp.json();
-    const uid = auth.currentUser.uid;
-    const ops = [];
-
-    // 1. Siapkan migrasi 137 Sekolah (data/schools.json)
-    const schools = Array.isArray(bundle.schools) ? bundle.schools : [];
-    for (const s of schools) {
-      if (!s || !s.no) continue;
-      const schoolId = String(Number(s.no));
-      ops.push({
-        ref: doc(db, 'schools', schoolId),
-        data: buildSchoolFirestorePayload(s, uid),
-        path: `schools/${schoolId}`
+  activeMigrationPromise = (async () => {
+    try {
+      setProgress('Membaca seluruh file JSON & PDF lokal dari server…');
+      const includePdfs = !!(options.uploadPdfsToDrive || cachedAccessToken);
+      const resp = await fetch(`/api/migration/json-bundle?includePdfs=${includePdfs ? '1' : '0'}`, {
+        cache: 'no-store',
+        credentials: 'include'
       });
-    }
-
-    // 2. Siapkan migrasi Users (data/users.json)
-    const users = Array.isArray(bundle.users) ? bundle.users : [];
-    for (const u of users) {
-      if (!u || !u.username) continue;
-      const docId = safeId(`user_${u.username.toLowerCase()}`);
-      const role = ['Operator Sekolah', 'Admin Dinas', 'BUD'].includes(u.role) ? u.role : 'Operator Sekolah';
-      const status = ['Pending', 'Aktif', 'Ditolak'].includes(u.status) ? u.status : 'Aktif';
-      const userData = {
-        uid: docId,
-        username: cleanStr(u.username, 80),
-        name: cleanStr(u.name || u.username, 140),
-        ...(u.email ? { email: cleanStr(u.email, 160) } : {}),
-        ...(u.whatsapp ? { whatsapp: cleanStr(u.whatsapp, 30) } : {}),
-        ...(u.passwordHash ? { passwordHash: cleanStr(u.passwordHash, 120) } : {}),
-        role,
-        schoolNo: Math.max(0, Math.min(10000, Number(u.schoolNo) || 0)),
-        ...(u.npsn ? { npsn: cleanStr(u.npsn, 20) } : {}),
-        status,
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp()
-      };
-      ops.push({
-        ref: doc(db, 'users', docId),
-        data: userData,
-        path: `users/${docId}`
-      });
-    }
-
-    // 3. Siapkan migrasi Monthly Realization Reports (data/monthly_2026.json, dll.)
-    let monthlyCount = 0;
-    const monthlyByYear = bundle.monthlyByYear || {};
-    for (const [yearStr, schoolsMap] of Object.entries(monthlyByYear)) {
-      const year = Number(yearStr);
-      if (!Number.isFinite(year) || year < 2020 || year > 2100) continue;
-      for (const [schoolNoRaw, monthsObj] of Object.entries(schoolsMap || {})) {
-        const schoolNo = Number(schoolNoRaw);
-        if (!Number.isFinite(schoolNo) || schoolNo < 1 || schoolNo > 10000) continue;
-        for (const [monthKey, mData] of Object.entries(monthsObj || {})) {
-          if (!VALID_MONTHS.includes(monthKey) || !mData || typeof mData !== 'object') continue;
-          const reportId = `${year}_${schoolNo}_${monthKey}`;
-          ops.push({
-            ref: doc(db, 'monthly_reports', reportId),
-            data: buildMonthlyReportFirestorePayload(year, schoolNo, monthKey, mData, uid),
-            path: `monthly_reports/${reportId}`
-          });
-          monthlyCount++;
-        }
+      if (!resp.ok) {
+        throw new Error(`Gagal mengambil paket migrasi JSON (HTTP ${resp.status})`);
       }
-    }
+      const bundle = await resp.json();
+      const uid = auth.currentUser.uid;
+      const ops = [];
 
-    // 4. Siapkan migrasi RKAS Penganggaran + Unggah PDF lokal ke Google Drive bila token tersedia
-    const anggaranList = Array.isArray(bundle.anggaranList) ? bundle.anggaranList : [];
-    let driveUploadedCount = 0;
-    for (let i = 0; i < anggaranList.length; i++) {
-      const rec = { ...anggaranList[i] };
-      const recordId = `${rec.year}_${rec.schoolNo}_${rec.tahap}_${rec.sumber}`;
+      // 1. Siapkan migrasi 137 Sekolah (data/schools.json)
+      const schools = Array.isArray(bundle.schools) ? bundle.schools : [];
+      for (const s of schools) {
+        if (!s || !s.no) continue;
+        const schoolId = String(Number(s.no));
+        ops.push({
+          ref: doc(db, 'schools', schoolId),
+          data: buildSchoolFirestorePayload(s, uid),
+          path: `schools/${schoolId}`
+        });
+      }
 
-      // Jika ada file PDF lokal (pdfBase64) dan token Google Drive aktif, unggah ke Google Drive
-      if (rec.pdfBase64 && cachedAccessToken && (!rec.driveFileId || !String(rec.fileUrl || '').includes('drive.google.com'))) {
-        try {
-          setProgress(`Mengunggah PDF RKAS (${i + 1}/${anggaranList.length}) ${rec.fileName} ke Google Drive…`);
-          const gdriveRes = await uploadPdfToGoogleDrive(rec.pdfBase64, {
-            schoolNo: rec.schoolNo,
-            schoolName: rec.schoolName || `Sekolah_${rec.schoolNo}`,
-            npsn: rec.npsn || '',
-            periodKey: `anggaran-${rec.tahap}`,
-            year: rec.year,
-            docType: `rkas_${rec.tahap}_${rec.sumber}`,
-            fileName: rec.fileName || 'rkas.pdf',
-            skipConfirmReplace: true
-          });
-          if (gdriveRes && gdriveRes.fileUrl) {
-            rec.fileUrl = gdriveRes.fileUrl;
-            rec.driveFileId = gdriveRes.driveFileId;
-            driveUploadedCount++;
+      // 2. Siapkan migrasi Users (data/users.json)
+      const users = Array.isArray(bundle.users) ? bundle.users : [];
+      for (const u of users) {
+        if (!u || !u.username) continue;
+        const docId = safeId(`user_${u.username.toLowerCase()}`);
+        const role = ['Operator Sekolah', 'Admin Dinas', 'BUD'].includes(u.role) ? u.role : 'Operator Sekolah';
+        const status = ['Pending', 'Aktif', 'Ditolak'].includes(u.status) ? u.status : 'Aktif';
+        const userData = {
+          uid: docId,
+          username: cleanStr(u.username, 80),
+          name: cleanStr(u.name || u.username, 140),
+          ...(u.email ? { email: cleanStr(u.email, 160) } : {}),
+          ...(u.whatsapp ? { whatsapp: cleanStr(u.whatsapp, 30) } : {}),
+          ...(u.passwordHash ? { passwordHash: cleanStr(u.passwordHash, 120) } : {}),
+          role,
+          schoolNo: Math.max(0, Math.min(10000, Number(u.schoolNo) || 0)),
+          ...(u.npsn ? { npsn: cleanStr(u.npsn, 20) } : {}),
+          status,
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        };
+        ops.push({
+          ref: doc(db, 'users', docId),
+          data: userData,
+          path: `users/${docId}`
+        });
+      }
+
+      // 3. Siapkan migrasi Monthly Realization Reports (data/monthly_2026.json, dll.)
+      let monthlyCount = 0;
+      const monthlyByYear = bundle.monthlyByYear || {};
+      for (const [yearStr, schoolsMap] of Object.entries(monthlyByYear)) {
+        const year = Number(yearStr);
+        if (!Number.isFinite(year) || year < 2020 || year > 2100) continue;
+        for (const [schoolNoRaw, monthsObj] of Object.entries(schoolsMap || {})) {
+          const schoolNo = Number(schoolNoRaw);
+          if (!Number.isFinite(schoolNo) || schoolNo < 1 || schoolNo > 10000) continue;
+          for (const [monthKey, mData] of Object.entries(monthsObj || {})) {
+            if (!VALID_MONTHS.includes(monthKey) || !mData || typeof mData !== 'object') continue;
+            const reportId = `${year}_${schoolNo}_${monthKey}`;
+            ops.push({
+              ref: doc(db, 'monthly_reports', reportId),
+              data: buildMonthlyReportFirestorePayload(year, schoolNo, monthKey, mData, uid),
+              path: `monthly_reports/${reportId}`
+            });
+            monthlyCount++;
           }
-        } catch (driveErr) {
-          console.warn('Gagal unggah PDF migrasi ke Drive, lanjut simpan metadata ke Firestore:', driveErr);
         }
       }
-      delete rec.pdfBase64;
 
-      ops.push({
-        ref: doc(db, 'anggaran_records', recordId),
-        data: buildAnggaranFirestorePayload(rec, uid),
-        path: `anggaran_records/${recordId}`
-      });
-    }
+      // 4. Siapkan migrasi RKAS Penganggaran + Unggah PDF lokal ke Google Drive bila token tersedia
+      const anggaranList = Array.isArray(bundle.anggaranList) ? bundle.anggaranList : [];
+      let driveUploadedCount = 0;
+      for (let i = 0; i < anggaranList.length; i++) {
+        const rec = { ...anggaranList[i] };
+        const recordId = `${rec.year}_${rec.schoolNo}_${rec.tahap}_${rec.sumber}`;
 
-    // 5. Commit seluruh operasi ke Cloud Firestore menggunakan writeBatch (maks 350 dokumen per batch)
-    const BATCH_SIZE = 350;
-    for (let start = 0; start < ops.length; start += BATCH_SIZE) {
-      const chunk = ops.slice(start, start + BATCH_SIZE);
-      setProgress(`Menyimpan ke Cloud Firestore (${Math.min(start + chunk.length, ops.length)}/${ops.length} dokumen)…`);
-      const batch = writeBatch(db);
-      for (const item of chunk) {
-        batch.set(item.ref, item.data);
+        // Jika ada file PDF lokal (pdfBase64) dan token Google Drive aktif, unggah ke Google Drive
+        if (rec.pdfBase64 && cachedAccessToken && (!rec.driveFileId || !String(rec.fileUrl || '').includes('drive.google.com'))) {
+          try {
+            setProgress(`Mengunggah PDF RKAS (${i + 1}/${anggaranList.length}) ${rec.fileName} ke Google Drive…`);
+            const gdriveRes = await uploadPdfToGoogleDrive(rec.pdfBase64, {
+              schoolNo: rec.schoolNo,
+              schoolName: rec.schoolName || `Sekolah_${rec.schoolNo}`,
+              npsn: rec.npsn || '',
+              periodKey: `anggaran-${rec.tahap}`,
+              year: rec.year,
+              docType: `rkas_${rec.tahap}_${rec.sumber}`,
+              fileName: rec.fileName || 'rkas.pdf',
+              skipConfirmReplace: true
+            });
+            if (gdriveRes && gdriveRes.fileUrl) {
+              rec.fileUrl = gdriveRes.fileUrl;
+              rec.driveFileId = gdriveRes.driveFileId;
+              driveUploadedCount++;
+            }
+          } catch (driveErr) {
+            console.warn('Gagal unggah PDF migrasi ke Drive, lanjut simpan metadata ke Firestore:', driveErr);
+          }
+        }
+        delete rec.pdfBase64;
+
+        ops.push({
+          ref: doc(db, 'anggaran_records', recordId),
+          data: buildAnggaranFirestorePayload(rec, uid),
+          path: `anggaran_records/${recordId}`
+        });
       }
-      try {
-        await batch.commit();
-      } catch (err) {
-        handleFirestoreError(err, OperationType.WRITE, chunk[0] ? chunk[0].path : 'batch_migration');
-      }
-    }
 
-    await logAuditToFirestore(
-      'migrate_json_to_firebase',
-      {
+      // 5. Commit seluruh operasi ke Cloud Firestore menggunakan writeBatch (maks 300 dokumen per batch)
+      const BATCH_SIZE = 300;
+      for (let start = 0; start < ops.length; start += BATCH_SIZE) {
+        const chunk = ops.slice(start, start + BATCH_SIZE);
+        setProgress(`Menyimpan ke Cloud Firestore (${Math.min(start + chunk.length, ops.length)}/${ops.length} dokumen)…`);
+        const batch = writeBatch(db);
+        for (const item of chunk) {
+          batch.set(item.ref, item.data);
+        }
+        try {
+          await batch.commit();
+        } catch (err) {
+          handleFirestoreError(err, OperationType.WRITE, chunk[0] ? chunk[0].path : 'batch_migration');
+        }
+      }
+
+      await logAuditToFirestore(
+        'migrate_json_to_firebase',
+        {
+          schools: schools.length,
+          users: users.length,
+          monthlyReports: monthlyCount,
+          anggaranRecords: anggaranList.length,
+          driveUploadedCount
+        },
+        { username: auth.currentUser.email || 'admin', role: 'Admin Dinas' }
+      );
+
+      const summary = {
+        status: 'success',
         schools: schools.length,
         users: users.length,
         monthlyReports: monthlyCount,
         anggaranRecords: anggaranList.length,
         driveUploadedCount
-      },
-      { username: auth.currentUser.email || 'admin', role: 'Admin Dinas' }
-    );
+      };
+      lastMigrationSummary = summary;
+      lastMigrationError = '';
 
-    const summary = {
-      status: 'success',
-      schools: schools.length,
-      users: users.length,
-      monthlyReports: monthlyCount,
-      anggaranRecords: anggaranList.length,
-      driveUploadedCount
-    };
-
-    if (!options.silentIfAlreadyMigrated && typeof window.rkToast === 'function') {
-      window.rkToast(
-        `Migrasi Selesai! ${schools.length} sekolah, ${users.length} akun, ${monthlyCount} realisasi bulanan, dan ${anggaranList.length} RKAS tersimpan di Firebase Firestore${driveUploadedCount ? ` & ${driveUploadedCount} PDF di Google Drive` : ''}.`,
-        'ok'
-      );
+      if (!options.silentIfAlreadyMigrated && typeof window.rkToast === 'function') {
+        window.rkToast(
+          `Migrasi Selesai! ${schools.length} sekolah, ${users.length} akun, ${monthlyCount} realisasi bulanan, dan ${anggaranList.length} RKAS tersimpan di Firebase Firestore${driveUploadedCount ? ` & ${driveUploadedCount} PDF di Google Drive` : ''}.`,
+          'ok'
+        );
+      }
+      return summary;
+    } catch (err) {
+      lastMigrationError = (err && err.message) || String(err);
+      throw err;
+    } finally {
+      isMigrating = false;
+      migrationProgressText = '';
+      activeMigrationPromise = null;
+      updateCloudStatusUI();
     }
-    return summary;
-  } finally {
-    isMigrating = false;
-    migrationProgressText = '';
-    updateCloudStatusUI();
-  }
+  })();
+
+  return activeMigrationPromise;
 }
 
 // ============================================================================
@@ -1614,15 +1756,19 @@ function injectGoogleLoginButton() {
 
   const btn = document.getElementById('btnGoogleSignInModal');
   if (btn) {
-    btn.addEventListener('click', async () => {
+    btn.addEventListener('click', () => {
       btn.disabled = true;
-      try {
-        await signInWithGoogle({ loginToApp: true });
-      } catch (err) {
-        alert('Login Google dibatalkan atau gagal: ' + (err.message || err));
-      } finally {
-        btn.disabled = false;
-      }
+      const lbl = btn.querySelector('.gsi-material-button-contents');
+      const origLbl = lbl ? lbl.textContent : '';
+      if (lbl) lbl.textContent = 'Menghubungkan & Memigrasikan ke Firebase…';
+      signInWithGoogle({ loginToApp: true, forceMigrate: false })
+        .catch((err) => {
+          alert('Login Google gagal: ' + ((err && err.message) || err));
+        })
+        .finally(() => {
+          btn.disabled = false;
+          if (lbl) lbl.textContent = origLbl;
+        });
     });
   }
 }
@@ -1661,13 +1807,21 @@ export function updateCloudStatusUI() {
     return;
   }
 
+  const errHtml = lastMigrationError
+    ? `<div class="w-full mt-1 px-3 py-1.5 rounded-lg bg-rose-50 border border-rose-200 text-rose-800 text-[11px] font-medium"><i class="fa-solid fa-circle-exclamation mr-1"></i><b>Migrasi gagal:</b> ${lastMigrationError}</div>`
+    : '';
+  const summaryHtml = (!lastMigrationError && lastMigrationSummary && lastMigrationSummary.schools)
+    ? `<span class="text-[11px] text-emerald-700 font-semibold">✓ ${lastMigrationSummary.schools} sekolah · ${lastMigrationSummary.monthlyReports} realisasi · ${lastMigrationSummary.anggaranRecords} RKAS tersimpan di Firestore</span>`
+    : '';
+
   if (driveReady) {
     bar.innerHTML = `
       <div class="flex items-center gap-2.5 text-xs flex-wrap">
         <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold">
           <i class="fa-solid fa-cloud-check text-emerald-600"></i> Firebase Firestore &amp; Google Drive Aktif
         </span>
-        <span class="text-slate-600">Terhubung sebagai <b>${fbUser.email || fbUser.displayName}</b> — Seluruh baca &amp; inputan langsung ke Firebase &amp; Google Drive.</span>
+        <span class="text-slate-600">Terhubung sebagai <b>${fbUser.email || fbUser.displayName}</b> — Baca &amp; inputan langsung ke Firebase &amp; Google Drive.</span>
+        ${summaryHtml}
       </div>
       <div class="flex items-center gap-2 flex-wrap">
         <button type="button" id="btnMigrateJsonNow" class="px-2.5 py-1.5 rounded-lg bg-[#0F2C59] hover:bg-slate-800 text-white text-[11px] font-semibold inline-flex items-center gap-1.5 cursor-pointer">
@@ -1677,6 +1831,7 @@ export function updateCloudStatusUI() {
           <i class="fa-brands fa-google-drive mr-1"></i>Buka Google Drive
         </a>
       </div>
+      ${errHtml}
     `;
   } else if (fbUser && !cachedAccessToken) {
     bar.innerHTML = `
@@ -1685,6 +1840,7 @@ export function updateCloudStatusUI() {
           <i class="fa-solid fa-database text-amber-600"></i> Firebase Firestore Aktif (${fbUser.email}) · Aktifkan Token Google Drive
         </span>
         <span class="text-slate-600">Database langsung ke Firestore. Klik tombol di samping untuk mengaktifkan unggah PDF ke Google Drive.</span>
+        ${summaryHtml}
       </div>
       <div class="flex items-center gap-2 flex-wrap">
         <button type="button" id="btnMigrateJsonNow" class="px-2.5 py-1.5 rounded-lg bg-[#0F2C59] hover:bg-slate-800 text-white text-[11px] font-semibold inline-flex items-center gap-1.5 cursor-pointer">
@@ -1696,6 +1852,7 @@ export function updateCloudStatusUI() {
           </button>
         </div>
       </div>
+      ${errHtml}
     `;
   } else {
     bar.innerHTML = `
@@ -1715,19 +1872,22 @@ export function updateCloudStatusUI() {
 
   const btnConnect = document.getElementById('btnConnectDriveTop');
   if (btnConnect) {
-    btnConnect.addEventListener('click', async () => {
+    btnConnect.addEventListener('click', () => {
       btnConnect.disabled = true;
-      try {
-        await signInWithGoogle({ loginToApp: false, forceMigrate: true });
-        if (typeof window.loadFromGoogleSheets === 'function') {
-          await window.loadFromGoogleSheets();
-          if (typeof window.updateActiveMonthData === 'function') window.updateActiveMonthData();
-        }
-      } catch (err) {
-        alert('Gagal menghubungkan Google Drive: ' + (err.message || err));
-      } finally {
-        btnConnect.disabled = false;
-      }
+      signInWithGoogle({ loginToApp: false, forceMigrate: true })
+        .then(async () => {
+          if (typeof window.loadFromGoogleSheets === 'function') {
+            await window.loadFromGoogleSheets();
+            if (typeof window.updateActiveMonthData === 'function') window.updateActiveMonthData();
+          }
+        })
+        .catch((err) => {
+          const msg = (err && err.message) || String(err);
+          alert('Gagal menghubungkan Google Drive: ' + msg);
+        })
+        .finally(() => {
+          btnConnect.disabled = false;
+        });
     });
   }
 
