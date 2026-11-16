@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0F2C59">
+    <title>Penganggaran RKAS — Minahasa Tenggara</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>if (window.tailwind) tailwind.config = { theme: { extend: { fontFamily: { sans: ["Plus Jakarta Sans", "system-ui", "sans-serif"] } } } };</script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/sidebar.css?v=1.6.0">
+    <style>
+        body { font-family: "Plus Jakarta Sans", system-ui, sans-serif; background: #f1f5f9; color: #1e293b; }
+        .tab-btn { padding: 10px 16px; font-size: 13px; font-weight: 700; color: #64748b; border-bottom: 3px solid transparent; white-space: nowrap; cursor: pointer; }
+        .tab-btn:hover { color: #0F2C59; }
+        .tab-btn.on { color: #0F2C59; border-bottom-color: #C5A059; }
+        .card { background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; }
+        .lbl { display: block; font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: .03em; margin-bottom: 4px; }
+        .inp { width: 100%; padding: 9px 12px; border: 1px solid #cbd5e1; border-radius: 10px; background: #fff; font-size: 13px; }
+        .inp:focus { outline: 2px solid #C5A059; outline-offset: -1px; }
+        .seg { display: inline-flex; border: 1px solid #cbd5e1; border-radius: 10px; overflow: hidden; background: #fff; }
+        .seg button { padding: 8px 16px; font-size: 12px; font-weight: 700; color: #475569; }
+        .seg button.on { background: #0F2C59; color: #fff; }
+        .src-card { border: 2px solid #e2e8f0; border-radius: 12px; padding: 10px 12px; cursor: pointer; background: #fff; text-align: left; transition: .15s; }
+        .src-card:hover { border-color: #94a3b8; }
+        .src-card.on { border-color: #0F2C59; background: #eff6ff; box-shadow: 0 0 0 3px rgba(15,44,89,.12); }
+        .btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: 10px; font-size: 12px; font-weight: 700; color: #fff; }
+        .btn:disabled { opacity: .45; cursor: not-allowed; }
+        .btn-navy { background: #0F2C59; } .btn-navy:hover:not(:disabled) { background: #1e3a8a; }
+        .btn-green { background: #059669; } .btn-green:hover:not(:disabled) { background: #047857; }
+        .btn-red { background: #e11d48; } .btn-red:hover:not(:disabled) { background: #be123c; }
+        .btn-amber { background: #d97706; } .btn-amber:hover:not(:disabled) { background: #b45309; }
+        .btn-gold { background: #C5A059; } .btn-gold:hover:not(:disabled) { background: #a98440; }
+        .btn-line { background: #fff; color: #334155; border: 1px solid #cbd5e1; } .btn-line:hover:not(:disabled) { background: #f8fafc; }
+        .tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
+        .tbl th { background: #f1f5f9; color: #334155; font-weight: 700; text-align: left; padding: 8px 10px; white-space: nowrap; border-bottom: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 1; }
+        .tbl td { padding: 7px 10px; border-bottom: 1px solid #eef2f7; vertical-align: top; }
+        .tbl tr.click:hover { background: #f8fafc; cursor: pointer; }
+        .r { text-align: right; font-variant-numeric: tabular-nums; }
+        .opt { padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f1f5f9; }
+        .opt:hover, .opt.hl { background: #eff6ff; }
+        .drop { position: absolute; z-index: 40; left: 0; right: 0; top: 100%; margin-top: 4px; background: #fff; border: 1px solid #cbd5e1; border-radius: 12px; box-shadow: 0 12px 30px rgba(15,23,42,.18); max-height: 300px; overflow-y: auto; }
+        .rk-wrap { overflow-x: auto; }
+        .rk { font-family: Arial, Helvetica, sans-serif; font-size: 11px; color: #000; background: #fff; }
+        .rk .hd { text-align: center; margin-bottom: 8px; line-height: 1.4; }
+        .rk .hd b { font-size: 13px; }
+        .rk table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+        .rk th, .rk td { border: 1px solid #000; padding: 3px 5px; font-size: 10.5px; }
+        .rk th { background: #e5e7eb; text-align: center; }
+        .rk td.n { text-align: right; white-space: nowrap; }
+        .rk tr.grp td { background: #f1f5f9; font-weight: bold; }
+        .rk tr.sub td { background: #f8fafc; font-weight: bold; }
+        .rk tr.tot td { background: #e5e7eb; font-weight: bold; }
+        .rk .note { font-size: 9.5px; color: #333; margin-top: 4px; }
+        .rk .sign { display: flex; justify-content: flex-end; margin-top: 18px; font-size: 11px; }
+        .rk .sign div { text-align: center; min-width: 240px; }
+        .rk .sign.two { justify-content: space-between; padding: 0 40px; }
+    </style>
+</head>
+<body>
+    <div id="mainAppContainer">
+    <div class="app-content-wrap">
+    <header class="bg-[#0F2C59] text-white">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center gap-3">
+            <div class="flex items-center gap-3 mr-auto pl-12">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:rgba(197,160,89,.22)"><i class="fa-solid fa-coins" style="color:#f5d78e"></i></div>
+                <div>
+                    <div class="font-extrabold text-base leading-tight">Penganggaran RKAS</div>
+                    <div class="text-[11px] opacity-80">Kabupaten Minahasa Tenggara · Tahun Anggaran <select id="yearSel" class="text-slate-800 rounded px-1 py-0.5 text-[11px] font-bold ml-1"></select></div>
+                </div>
+            </div>
+            <div class="text-right text-[11px] leading-tight hidden sm:block">
+                <div id="hdUser" class="font-bold text-sm">—</div>
+                <div id="hdRole" class="opacity-80">—</div>
+            </div>
+            <button id="btnLogout" class="btn btn-line" style="background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.3)"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
+        </div>
+        <div class="max-w-7xl mx-auto px-4"><nav id="tabs" class="flex overflow-x-auto" style="background:#fff;border-radius:12px 12px 0 0"></nav></div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-5">
+        <div id="view"><p class="text-center text-slate-500 py-16"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Memuat…</p></div>
+    </main>
+    </div><!-- /.app-content-wrap -->
+    </div><!-- /#mainAppContainer -->
+
+    <!-- Modal rincian / tinjau -->
+    <div id="detailModal" class="fixed inset-0 bg-slate-900/60 hidden z-50 flex items-center justify-center p-3">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-6xl w-full overflow-hidden max-h-[94vh] flex flex-col"><div id="detailBody" class="flex flex-col min-h-0"></div></div>
+    </div>
+
+    <script src="/nav-menu.js?v=1.6.0"></script>
+    <script src="/penganggaran.js?v=1.6.0"></script>
+</body>
+</html>

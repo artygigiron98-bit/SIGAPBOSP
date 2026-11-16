@@ -1,0 +1,1231 @@
+[
+  {
+    "name": "Administrator Dinas",
+    "username": "admin",
+    "password": "$2a$12$9Xg6IVGPGDGAvHTV04RcVOfmvJKCynkNmkrVdnHE9niUwkYR.6GZ.",
+    "role": "Admin Dinas",
+    "schoolNo": null,
+    "npsn": "",
+    "status": "Aktif"
+  },
+  {
+    "name": "Admin Dinas (david)",
+    "username": "david",
+    "password": "$2a$12$iYI97Wro2PWX8nQiPuAbKOGAqNDnt9ujkw0v/BvJUZkVXoOMHFGFi",
+    "role": "Admin Dinas",
+    "schoolNo": null,
+    "npsn": "",
+    "whatsapp": "6285256458845",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD NEGERI KECIL BANGA",
+    "username": "juan",
+    "password": "$2a$12$It3KovGi5fxRWkQ3MnIJnOpKNJ23An112BUja91e/SFCH6enOW8nO",
+    "role": "Operator Sekolah",
+    "schoolNo": 62,
+    "npsn": "40101860",
+    "whatsapp": "6281354414942",
+    "status": "Aktif"
+  },
+  {
+    "name": "Admin Dinas (rangga)",
+    "username": "rangga",
+    "password": "$2a$12$EliMLXWCRxYV025YUoeZyeCnmSXYclPIBnKVUTvzX9WajVwl6rDVG",
+    "role": "Admin Dinas",
+    "schoolNo": null,
+    "npsn": "",
+    "whatsapp": "6285173430604",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP NEGERI 5 BELANG",
+    "username": "smpn5belang",
+    "password": "$2a$12$YTZ2dTlF0hZDdahi.cQxZOgjp9r1ytM2o/mSnPIvPnCIWDW83a4Um",
+    "role": "Operator Sekolah",
+    "schoolNo": 137,
+    "npsn": "40103655",
+    "whatsapp": "62895806572167",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD GMIM WINORANGIAN TOMBATU",
+    "username": "Citra",
+    "password": "$2a$12$SJ0yC/801EuuhYLJQZ68H.gKWFOzYw25vgk.hPE1B8SrFywG2Iq2a",
+    "role": "Operator Sekolah",
+    "schoolNo": 88,
+    "npsn": "40102282",
+    "whatsapp": "6282190682812",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP NEGERI 4 TOULUAAN",
+    "username": "SMPN4TOULUAAN",
+    "password": "$2a$12$i28GW5rzIdWKPIgYAY3KJe8yfWcAlsOiyYMcrAULnfCKznhjbnJA6",
+    "role": "Operator Sekolah",
+    "schoolNo": 122,
+    "npsn": "40101974",
+    "whatsapp": "6285651449121",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP KRISTEN RATATOTOK",
+    "username": "smpkristenratatotok",
+    "password": "$2a$12$AwxrdX1Z9roNjaAB0rkPvOLmo0GZiBy2Jnmnl5R4dDE3L.O8vXjrq",
+    "role": "Operator Sekolah",
+    "schoolNo": 127,
+    "npsn": "40102045",
+    "whatsapp": "6285298941020",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD NEGERI I MUNDUNG",
+    "username": "sucen legi",
+    "password": "$2a$12$GzBu9OrQYTpvPl2HxfYr7e/bJG.jO/1z7KWBAQUDSbiT6GI9E5grq",
+    "role": "Operator Sekolah",
+    "schoolNo": 14,
+    "npsn": "40102230",
+    "whatsapp": "6282399919507",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD GMIM TAMBELANG",
+    "username": "SD GMIM TAMBELANG",
+    "password": "$2a$12$LOgiN2GSCwCdET3rxXdmi.cFSJUdEhBh.I2BbcRxLT3oSmW.YVHr6",
+    "role": "Operator Sekolah",
+    "schoolNo": 51,
+    "npsn": "40102117",
+    "whatsapp": "6281343989022",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SDN INPRES LIWUTUNG II",
+    "username": "suriyationsu@gmail.com",
+    "password": "$2a$12$NTtht/b9hYhDgM27BrjtQOS75U161w9u4QbCgkxAkGod9Cl7Lx1y2",
+    "role": "Operator Sekolah",
+    "schoolNo": 30,
+    "npsn": "40101919",
+    "whatsapp": "62895397230234",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP NEGERI 4 BELANG",
+    "username": "SMPN4BELANG",
+    "password": "$2a$12$2MkG0QXobUWeM.YZDVpZc.3BUrT5OyXJSD9Ur2k8zqQO.u6pdjWsK",
+    "role": "Operator Sekolah",
+    "schoolNo": 131,
+    "npsn": "40103656",
+    "whatsapp": "6289611376487",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD NEGERI MINANGA",
+    "username": "SDN MINANGA",
+    "password": "$2a$12$ybUpbih8LLEfkIiRq8zVzOPajCZ7/WQixWRrfeMISCDJrlK3iRdzS",
+    "role": "Operator Sekolah",
+    "schoolNo": 65,
+    "npsn": "40101866",
+    "whatsapp": "6282194055239",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP NEGERI 3 RATAHAN",
+    "username": "SPENTIRAT",
+    "password": "$2a$12$0w90v/n2yAAvS1Z65Sv4lOcUBhNZprpzSaWaPLShaKfy.bxnBN652",
+    "role": "Operator Sekolah",
+    "schoolNo": 124,
+    "npsn": "40102025",
+    "whatsapp": "6285849603433",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD NEGERI 2 LIWUTUNG",
+    "username": "SDN 2 LIWUTUNG",
+    "password": "$2a$12$p2VqGLMyTiS0AZwsjXA8l.YoUi3PYOkwN2dq4799PcjDQhy0Te1pW",
+    "role": "Operator Sekolah",
+    "schoolNo": 87,
+    "npsn": "40102207",
+    "whatsapp": "6285343505723",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP NEGERI 7 TOULUAAN",
+    "username": "jennygolung05@gmail.com",
+    "password": "$2a$12$AnkWjSTEqmvWB4CcbEPtGOxL.Dt2nrDCXfapTdkCWXC8Fvux1dcxS",
+    "role": "Operator Sekolah",
+    "schoolNo": 119,
+    "npsn": "40103662",
+    "whatsapp": "6285337166475",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP NEGERI 1 PUSOMAEN",
+    "username": "nofriel",
+    "password": "$2a$12$e40O/3OsHXZOkm9wLPpx1OgT7vc7gUkmO8gr/EzM3BVVohEnQ8MoC",
+    "role": "Operator Sekolah",
+    "schoolNo": 112,
+    "npsn": "40103493",
+    "whatsapp": "6282187897898",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP NEGERI 6 RATAHAN",
+    "username": "smpn6ratahanrasi@gmail.com",
+    "password": "$2a$12$imaNKqBv18lZ8RVwwwrjC.jNBMzOhDP3DaihFl50ihzFqWggd9NZW",
+    "role": "Operator Sekolah",
+    "schoolNo": 106,
+    "npsn": "40103657",
+    "whatsapp": "6289697828986",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP NEGERI 4 TOMBATU",
+    "username": "SMPN4tombatu",
+    "password": "$2a$12$nbYQXb5gCLgjZh8VX3EyxeT.rGzIibVS3fmViNmfVGQUmLI4rvIwy",
+    "role": "Operator Sekolah",
+    "schoolNo": 104,
+    "npsn": "40103652",
+    "whatsapp": "6282189973591",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD INPRES RASI",
+    "username": "SDINPRESRASI",
+    "password": "$2a$12$XW6vVbnkhivCsqeYPHfGOO9XM.j/o4nM6.J1e94./k6unILP7NBT6",
+    "role": "Operator Sekolah",
+    "schoolNo": 13,
+    "npsn": "40101953",
+    "whatsapp": "6285240375778",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD GMIM KUYANGA",
+    "username": "sdgmimkuyanga@gmail.com",
+    "password": "$2a$12$Iz5UM9SL.9tIvhi04.Ie9eFqiXai9lZ3iL4Rya2.6lP2uRVFe2/de",
+    "role": "Operator Sekolah",
+    "schoolNo": 53,
+    "npsn": "40102098",
+    "whatsapp": "6282290588443",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD ADVENT WINORANGIAN",
+    "username": "Angreyni",
+    "password": "$2a$12$zO/8/FCKqlFLwLZwDM2CfOAhM4N.vlp26usuC3ym39x0yQS2Yi8NK",
+    "role": "Operator Sekolah",
+    "schoolNo": 94,
+    "npsn": "40102150",
+    "whatsapp": "6285242699339",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD GP RANOKETANG ATAS",
+    "username": "Plato",
+    "password": "$2a$12$/OUCb0oJDSKYHDITPwJO8.eE1GzWkfua0o3RWRUAryLmxUNY9i33C",
+    "role": "Operator Sekolah",
+    "schoolNo": 92,
+    "npsn": "40102266",
+    "whatsapp": "6282296504357",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP NEGERI 2 RATAHAN",
+    "username": "rengly09@gmail.com",
+    "password": "$2a$12$CbWgrvxluP9QXJgfJJ1cNu/vMKMt/fGE/rNwIG/awmH9i.4qzZz1m",
+    "role": "Operator Sekolah",
+    "schoolNo": 130,
+    "npsn": "40102065",
+    "whatsapp": "6285342392245",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD GMIM RATAHAN",
+    "username": "SD GMIM Ratahan",
+    "password": "$2a$12$XiTxTQSinxby/ez4j8BQe.6vrHBM1lAwFY6TAA1h6ml3EwsWN.A36",
+    "role": "Operator Sekolah",
+    "schoolNo": 36,
+    "npsn": "40102112",
+    "whatsapp": "6282290587507",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD INPRES MOLOMPAR",
+    "username": "SDInpresMolompar",
+    "password": "$2a$12$eUIW9031AHYIq39Fx2w5.OPK3t02ZrJWpu99yPd.yH0VRp/VQOnDO",
+    "role": "Operator Sekolah",
+    "schoolNo": 58,
+    "npsn": "40103495",
+    "whatsapp": "6285825500857",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD NEGERI 2 RATAHAN",
+    "username": "SD Negeri 2 Ratahan",
+    "password": "$2a$12$8qpuvCxjt9oMKFKWGwFiLuFK4E07KOxd5dB2zeVIbFWIEkoTih7u2",
+    "role": "Operator Sekolah",
+    "schoolNo": 79,
+    "npsn": "40102249",
+    "whatsapp": "6285340501007",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD NEGERI KECIL SUHUYON",
+    "username": "SDN KECIL SUHUYON",
+    "password": "$2a$12$88Adx220VjUvGd0RzWi90O9Wzdr5EfcYbbvs.Hd7QPSXfkvAhaD.S",
+    "role": "Operator Sekolah",
+    "schoolNo": 72,
+    "npsn": "40101856",
+    "whatsapp": "6281343989022",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD KATOLIK TOMBATU",
+    "username": "yulianalangi@gmail.com",
+    "password": "$2a$12$.sCA9LXglMNZhp8JCi3ZoOpF1OiCNgwmX4oX77TN1sM6Mr/1VHRmm",
+    "role": "Operator Sekolah",
+    "schoolNo": 96,
+    "npsn": "40103510",
+    "whatsapp": "6282199028233",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SDN INPRES TOSURAYA",
+    "username": "sdinprestosuraya@gmail.com",
+    "password": "$2a$12$TxAao8K3LqYdhwCroRbR2.htMO/y2IZ07zW/qm.tEJ3bXWYyg3amy",
+    "role": "Operator Sekolah",
+    "schoolNo": 64,
+    "npsn": "40101875",
+    "whatsapp": "6285240480546",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD NEGERI SILIAN RAYA",
+    "username": "SDNEGERISILIANRAYA",
+    "password": "$2a$12$B.Au1w9GFAGvqvUUFt3Q5.i.APMfkdLZiBfQTS7Nw0df3o/gfV4oq",
+    "role": "Operator Sekolah",
+    "schoolNo": 45,
+    "npsn": "69762653",
+    "whatsapp": "6285256373395",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP NEGERI 2 BELANG",
+    "username": "Fahrial Minggu",
+    "password": "$2a$12$/EFF.Pi0.JcocW85pY9eRO4a6ZFnscYfvLY9kfUSLcl8B/1hXfvFW",
+    "role": "Operator Sekolah",
+    "schoolNo": 116,
+    "npsn": "40102076",
+    "whatsapp": "6282293087085",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD INPRES KALI",
+    "username": "inpreskalisd@gmail.com",
+    "password": "$2a$12$ze7aBWh0zPxgAC7eD4JusO.mSFLpmqKKfoNfODORZDcNNcWJWBjEC",
+    "role": "Operator Sekolah",
+    "schoolNo": 81,
+    "npsn": "40101935",
+    "whatsapp": "6281243879887",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD NEGERI MAULIT",
+    "username": "sdnmaulit",
+    "password": "$2a$12$XygPBA8JBxBb3Q62KnvhTe7zJdyeN3NNpB01FloRaQBAYcfgarbde",
+    "role": "Operator Sekolah",
+    "schoolNo": 1,
+    "npsn": "69762652",
+    "whatsapp": "6285337157786",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP NEGERI 1 TOMBATU",
+    "username": "noviarumimpunu",
+    "password": "$2a$12$lLmqqeF369bnWdwUCXMFIOLOnUk0b0RLgopuNGyD7hUeENWnrXaje",
+    "role": "Operator Sekolah",
+    "schoolNo": 117,
+    "npsn": "40101979",
+    "whatsapp": "6282187450943",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD INPRES 1 BORGO",
+    "username": "SD INPRES 1 BORGO",
+    "password": "$2a$12$MNTvHgcpkJ0736Ej.K5QcOkpusISpblZ7csBx9.1ja4xLeZlUU0bq",
+    "role": "Operator Sekolah",
+    "schoolNo": 55,
+    "npsn": "40102309",
+    "whatsapp": "6281344320326",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP NEGERI 9 TOULUAAN SELATAN ",
+    "username": "smpn9touluaan",
+    "password": "$2a$12$4eEvxBZhEI1XM//QSbtkH.eBccl4DirxX5nKAM5ImjAcEiRdl1Ly2",
+    "role": "Operator Sekolah",
+    "schoolNo": 111,
+    "npsn": "69787891",
+    "whatsapp": "6282191530292",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP NEGERI 3 TOULUAAN",
+    "username": "smpnegeri3touluaan",
+    "password": "$2a$12$HJHVOtlypuzYU34LrUYcK.TReiPmHvg98XT.w30HUM60O6mak3y.6",
+    "role": "Operator Sekolah",
+    "schoolNo": 108,
+    "npsn": "40101973",
+    "whatsapp": "6289507664886",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD NEGERI WIOI",
+    "username": "SDNEGERIWIOI",
+    "password": "$2a$12$8fLOZpXYu8dtWeIfdSukROub9OZgHXSm/OIESbe4YD23NzfDpmIMK",
+    "role": "Operator Sekolah",
+    "schoolNo": 80,
+    "npsn": "40101895",
+    "whatsapp": "6285240375778",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD NEGERI 2 BELANG",
+    "username": "sdn2belang@gmail.com",
+    "password": "$2a$12$766Alv8TmiuYJd.WnBnbN.VkY9ZY73nMxLcNdzUIAhTOZr6wISyP2",
+    "role": "Operator Sekolah",
+    "schoolNo": 39,
+    "npsn": "40102218",
+    "whatsapp": "6289872664649",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP NEGERI 2 TOULUAAN",
+    "username": "ADMINSMPN2TOULUAAN",
+    "password": "$2a$12$I8HeQdZZ87A3fJYGAvGoRuIbRcYdiO.fQE/q7rIo50Rkj9Po/6EBu",
+    "role": "Operator Sekolah",
+    "schoolNo": 102,
+    "npsn": "40101972",
+    "whatsapp": "6281247782451",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD NEGERI 1 RATAHAN",
+    "username": "Sdn1Ratahan",
+    "password": "$2a$12$/9LlSoEfNmDe53fvEgcXB.lCHx9nhSJ7pxCkzpJXGiyxjnR77IYuu",
+    "role": "Operator Sekolah",
+    "schoolNo": 71,
+    "npsn": "40102246",
+    "whatsapp": "6281342817799",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP NEGERI 6 TOMBATU",
+    "username": "smpn6tombatu",
+    "password": "$2a$12$7lZWWQac/64VZkihNjRzhO8ygrL05Js.KkFOP8AJ3VdHNsfYauumu",
+    "role": "Operator Sekolah",
+    "schoolNo": 103,
+    "npsn": "40103653",
+    "whatsapp": "6282190099421",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP NEGERI 7 RATAHAN",
+    "username": "smpn7ratahan",
+    "password": "$2a$12$G6xBHeuANuf3BYTGh2bfbeeU9ppyi6KKzfxjvwlLK1.dJOKQb/8ki",
+    "role": "Operator Sekolah",
+    "schoolNo": 129,
+    "npsn": "40103658",
+    "whatsapp": "6282296681400",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD NEGERI 2 MUNDUNG",
+    "username": "SDN 2 MUNDUNG",
+    "password": "$2a$12$rqWnmM2.kW9Qu4Pwznn06u7v294OLFwVGBLa/iIasg3UMZynQiM2u",
+    "role": "Operator Sekolah",
+    "schoolNo": 77,
+    "npsn": "40102205",
+    "whatsapp": "6287704230567",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD GMIM PANGU",
+    "username": "sdgmimpangu",
+    "password": "$2a$12$TY13ZB5RSb3vfnftbnX/oufyIJ2rlmHJEdyaJHa.71jsni3Bck4yC",
+    "role": "Operator Sekolah",
+    "schoolNo": 52,
+    "npsn": "40102107",
+    "whatsapp": "6285396002689",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP NEGERI 1 RATAHAN",
+    "username": "SMPN1RATAHAN",
+    "password": "$2a$12$kwZ2OynsW.O.1.fpWyL8rufJl7COwuuMPF/dLK4Bzdk/H7wHxFGkK",
+    "role": "Operator Sekolah",
+    "schoolNo": 121,
+    "npsn": "40101977",
+    "whatsapp": "628981348673",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD NEGERI 2 TOMBATU",
+    "username": "SDN2Tombatu",
+    "password": "$2a$12$fhbUEb/bMzXGZFEocoJfi.dA/VG53lmQYas8WCJND6ss0rtMCZtWa",
+    "role": "Operator Sekolah",
+    "schoolNo": 43,
+    "npsn": "40102194",
+    "whatsapp": "6285256698681",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SDN INPRES WINORANGIAN",
+    "username": "nataliajuni42@gmail.com",
+    "password": "$2a$12$n6xEg3TyJt0Z.vIYLr7ar.MMoI8AouMZ6St1BeOGJbqSHNZqoSEzG",
+    "role": "Operator Sekolah",
+    "schoolNo": 4,
+    "npsn": "40101881",
+    "whatsapp": "628979500457",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD GMIM WONGKAI",
+    "username": "sdgmimwongkai02@gmail.com",
+    "password": "$2a$12$94AyupFlOGm91im9dprzYOiboX1shVkmHw.U3tE8JkaOcJcttZ7iS",
+    "role": "Operator Sekolah",
+    "schoolNo": 44,
+    "npsn": "40102283",
+    "whatsapp": "6285796180009",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP MUHAMMADIYAH RATATOTOK",
+    "username": "smpmuhratatotok",
+    "password": "$2a$12$a4V2aJGDFTxk3/7JPhNlxew4V5dsipEJ6m1CDUKc9arjDXK2xCv.K",
+    "role": "Operator Sekolah",
+    "schoolNo": 135,
+    "npsn": "40103663",
+    "whatsapp": "6285298941020",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD INPRES MUNDUNG",
+    "username": "SD INPRES MUNDUNG",
+    "password": "$2a$12$0kPGpIRttJYxcl8YByq3u.uVjsxRgBfcT5aXE6XdfM79FTfolbweC",
+    "role": "Operator Sekolah",
+    "schoolNo": 33,
+    "npsn": "40101940",
+    "whatsapp": "6285824008486",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP NEGERI 6 TOULUAAN",
+    "username": "SMPN6TOULUAAN",
+    "password": "$2a$12$94pxAq01ubVZ6k8N9P3j5uCWueprZp6jjceEb4w3iIgrSYCv80kIa",
+    "role": "Operator Sekolah",
+    "schoolNo": 132,
+    "npsn": "40103661",
+    "whatsapp": "6282192334174",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD NEGERI PONIKI",
+    "username": "Fiolen",
+    "password": "$2a$12$0baMLxagddh1fGGqAXu0yePd.U0TpdfvjjT102nsWsrGhDl8b9.y2",
+    "role": "Operator Sekolah",
+    "schoolNo": 90,
+    "npsn": "40101902",
+    "whatsapp": "6285696233882",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD GMIM RASI",
+    "username": "logorintan@gmail.com",
+    "password": "$2a$12$G0EYJP5NNDft9Qw/0fBqieiaPH0WssmAnV/Gna4bK6aOcSbQnBPXu",
+    "role": "Operator Sekolah",
+    "schoolNo": 85,
+    "npsn": "40102110",
+    "whatsapp": "628976412803",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD INPRES MOLOMPAR SATU",
+    "username": "Winny Katuche",
+    "password": "$2a$12$1dTaaE9kwL8R65opVLimyuAINgyBi3L371VPZxWTpW.9RAuPb7B.O",
+    "role": "Operator Sekolah",
+    "schoolNo": 89,
+    "npsn": "40101939",
+    "whatsapp": "628987779053",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD NEGERI SOYOWAN",
+    "username": "sdnsoyowan40101899",
+    "password": "$2a$12$Lw7/OqG6rObQvZFF/g8e8u2YHKtKHh0atPs3xoIFQFWTxd2rJd3yO",
+    "role": "Operator Sekolah",
+    "schoolNo": 95,
+    "npsn": "40101899",
+    "whatsapp": "6282189117121",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD GMIM RANOAKO",
+    "username": "SDGMIMRANOAKO",
+    "password": "$2a$12$3yvwJ41DauJOWVMIWHJEXObwDS9hfHX.nqnpr5QSqvK/a/UpSaD3q",
+    "role": "Operator Sekolah",
+    "schoolNo": 22,
+    "npsn": "40102124",
+    "whatsapp": "6285825165441",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD INPRES 1 WATULINEY",
+    "username": "SD INPRES 1 WATULINEY",
+    "password": "$2a$12$dPkqNeSlV9lfGT.b1TfAmuy8S8CAX6SOlRa0p9HGmPPnmvC/YX4/u",
+    "role": "Operator Sekolah",
+    "schoolNo": 37,
+    "npsn": "40101932",
+    "whatsapp": "6285756517701",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD INPRES BASAAN",
+    "username": "sdinpresbasaan",
+    "password": "$2a$12$GwCBv085bMq9JKKh9Du5Quh96HFqsxMTGgjhfWutyGsq5.UKcMrfW",
+    "role": "Operator Sekolah",
+    "schoolNo": 54,
+    "npsn": "40102305",
+    "whatsapp": "6282239336788",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD INPRES BUKU",
+    "username": "meivalontaan26@gmail.com",
+    "password": "$2a$12$L6Pbn/60ahbCnl5b1TlUMO2.2uzEggbzgBk2K27VCkXr1exeuP4R.",
+    "role": "Operator Sekolah",
+    "schoolNo": 23,
+    "npsn": "40102307",
+    "whatsapp": "6282290660892",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD NEGERI INPRES RANOKETANG",
+    "username": "sdinpresratas@gmail.com",
+    "password": "$2a$12$IgBFJdpJ07YpLBZczwXHHeIV39deAi2sprzT0MsMm9p9dOuPMtbra",
+    "role": "Operator Sekolah",
+    "schoolNo": 84,
+    "npsn": "40101906",
+    "whatsapp": "6282293987904",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD NEGERI MANGKIT",
+    "username": "SD NEGERI MANGKIT",
+    "password": "$2a$12$roV9rpUH/A02ICwtTSEx8O3TwYsecJ8zP8egKGmCy9t3jgayThCa2",
+    "role": "Operator Sekolah",
+    "schoolNo": 78,
+    "npsn": "40101864",
+    "whatsapp": "6282190635868",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP NEGERI 2 TOMBATU",
+    "username": "smpnegeri2tombatu",
+    "password": "$2a$12$Y.wML7JgfQk7OAA/gJOsAe30mlquqaM7kA04.7YTcN5yXO/tNJ0kS",
+    "role": "Operator Sekolah",
+    "schoolNo": 115,
+    "npsn": "40101985",
+    "whatsapp": "6281241622123",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP NEGERI 5 TOMBATU",
+    "username": "SMP Negeri 5 TOMBATU",
+    "password": "$2a$12$SC9m1SUp5fP4uA.Sf.xUR.gwnqoScbSa4EOivtzbyel9sXglQOVV2",
+    "role": "Operator Sekolah",
+    "schoolNo": 125,
+    "npsn": "40103651",
+    "whatsapp": "6282194627538",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD INPRES WIOI",
+    "username": "SD Inpres Wioi",
+    "password": "$2a$12$/0rjEcvBeMlOrTBPaeqU/eFPjhQA9ClBpu0sPBAK0TK0.87izvWCO",
+    "role": "Operator Sekolah",
+    "schoolNo": 38,
+    "npsn": "40102251",
+    "whatsapp": "6282210785873",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD NEGERI I TOMBATU",
+    "username": "Vita Manopo",
+    "password": "$2a$12$EMJSWGi0VGQPAXmAq/LwkO8Gt4c2pa3E4EOWdsPSnkSMJNgTiXwda",
+    "role": "Operator Sekolah",
+    "schoolNo": 86,
+    "npsn": "40102247",
+    "whatsapp": "6282211631673",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SDS GP TONSAWANG",
+    "username": "sdsgptonsawang",
+    "password": "$2a$12$.UsAvjWslKRbcdd1I2qyUueRnoqgjsEIqilItKLUeU2Vb9x4H4WR6",
+    "role": "Operator Sekolah",
+    "schoolNo": 56,
+    "npsn": "40102270",
+    "whatsapp": "6285352514754",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP NEGERI 2 PUSOMAEN",
+    "username": "smpn2pusomaen",
+    "password": "$2a$12$YD1FSW4QIh27fpq026auy.VVu0d6cdZw7tDE3urD266GmZtZH5Moi",
+    "role": "Operator Sekolah",
+    "schoolNo": 97,
+    "npsn": "40103494",
+    "whatsapp": "6282191530292",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD INPRES 2 BORGO",
+    "username": "SD INPRES 2 BORGO",
+    "password": "$2a$12$7F93uiYfHCMmDTxpPC43zunrzPe6R09gdV0INv6FJ9EAq5cxJIT06",
+    "role": "Operator Sekolah",
+    "schoolNo": 27,
+    "npsn": "40102311",
+    "whatsapp": "6285821369045",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD GMIM LOBU",
+    "username": "SDGMIMLOBU",
+    "password": "$2a$12$bxMPwrdIQw13nRVnltLhKOddnH2g/7WD05ckiuiSPzG54jfOLBloy",
+    "role": "Operator Sekolah",
+    "schoolNo": 76,
+    "npsn": "40102105",
+    "whatsapp": "6285256373395",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP NEGERI 1 RATATOTOK",
+    "username": "SMP N 1 Ratatotok",
+    "password": "$2a$12$kj/6Dv0GhZOC0Bf9orTJzuVY0DLhSKxE729k8WtqFb4jU2yOQpigW",
+    "role": "Operator Sekolah",
+    "schoolNo": 107,
+    "npsn": "40102071",
+    "whatsapp": "6285823770371",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD NEGERI II MOLOMPAR",
+    "username": "SDN II MOLOMPAR",
+    "password": "$2a$12$qROjFkBpeXBs5jJd7/YOpuumqABcJ4nJ3MOH8BenEYT20.0HPoh3O",
+    "role": "Operator Sekolah",
+    "schoolNo": 2,
+    "npsn": "40102206",
+    "whatsapp": "6281245375023",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD INPRES BENTENAN",
+    "username": "sdinpresbentenan40103498",
+    "password": "$2a$12$VCeBBLRSZQJmHRcfegh5pOZ0YvMl3vS5iSTGqHpIzsDEVXI530he2",
+    "role": "Operator Sekolah",
+    "schoolNo": 11,
+    "npsn": "40103498",
+    "whatsapp": "6285256106698",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD NEGERI 3 LIWUTUNG",
+    "username": "SDN3LIWUTUNG",
+    "password": "$2a$12$N6SLt0C76I1Mwm5W5r1EZ.MimxVUoOFO2ZFx6ZbnPDHUIIJqE03NC",
+    "role": "Operator Sekolah",
+    "schoolNo": 73,
+    "npsn": "40102197",
+    "whatsapp": "62895370700653",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SDN INPRES 2 WATULINEY",
+    "username": "sdninp2watuliney@gmail.com",
+    "password": "$2a$12$LOTVPx4fTiNItOkgHWeisuY2kYJcdaCOSP5eVsKcbEISb7s7q0kPu",
+    "role": "Operator Sekolah",
+    "schoolNo": 19,
+    "npsn": "40102256",
+    "whatsapp": "6285756807435",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP ADVENT RATAHAN",
+    "username": "patriciamellissagoni@gmail.com",
+    "password": "$2a$12$hlLpmVrrrT5UNFoKFy9weODEClnTD02GlzpasTRy6vgk5G9hkRToS",
+    "role": "Operator Sekolah",
+    "schoolNo": 118,
+    "npsn": "40101911",
+    "whatsapp": "6289502730184",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD COKROAMINOTO RATATOTOK",
+    "username": "Djubaeda Hanafi",
+    "password": "$2a$12$veIWFVyCYxbqEqtIvfAWOe.qU6N.L53jaEfXWZxq6fVTCH6DTUP.y",
+    "role": "Operator Sekolah",
+    "schoolNo": 16,
+    "npsn": "40103514",
+    "whatsapp": "6282293087085",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP NEGERI 3 TOMBATU",
+    "username": "smpntigatombatu",
+    "password": "$2a$12$PDxg2U/ZuTss/QwzUue2S.nzp7IdgIm3u2NBxrXCoZa.0dSv8pY.K",
+    "role": "Operator Sekolah",
+    "schoolNo": 105,
+    "npsn": "40101991",
+    "whatsapp": "6282191530292",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD GMIM KALI",
+    "username": "SDGMIMKALI",
+    "password": "$2a$12$Uinf5.kyoG8DPf7/x7w20uU.lO5SaMchmM8IYu32ZTZ3pl3io2.xe",
+    "role": "Operator Sekolah",
+    "schoolNo": 9,
+    "npsn": "40102172",
+    "whatsapp": "6285256373395",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP KRISPA SILIAN",
+    "username": "Krispasilian",
+    "password": "$2a$12$/n.eglMjIOYe9rQizp8/PuH6Arfb0Z1a75xT8KwMLhkXhxEq.ZZBK",
+    "role": "Operator Sekolah",
+    "schoolNo": 99,
+    "npsn": "40102044",
+    "whatsapp": "62895335093394",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD GMIM WATULINEY",
+    "username": "sdgmim363watuliney@gmail.com",
+    "password": "$2a$12$o6ubdUeUta32AaI6yMixCOH8gtm/h7NbroGj6JhCXeOcm2l.IxgmC",
+    "role": "Operator Sekolah",
+    "schoolNo": 63,
+    "npsn": "40102147",
+    "whatsapp": "6285143812023",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD GMIM 361TATENGESAN",
+    "username": "SD GMIM 361 TATENGESAN",
+    "password": "$2a$12$gLasD0pH/Lnse.MsLnQ5xOwTMjC4eEwYRyr4Qq5GrZ.i.BRMT/1CO",
+    "role": "Operator Sekolah",
+    "schoolNo": 3,
+    "npsn": "40102145",
+    "whatsapp": "6285240344110",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD INPRES PANGU",
+    "username": "pangusdinpres@gmail.com",
+    "password": "$2a$12$Y.sSBbaV2yLNZdGkTGyMM.GOT/Y1vaCHFPRPTkYgx2/DJm3z.cSeS",
+    "role": "Operator Sekolah",
+    "schoolNo": 49,
+    "npsn": "40102250",
+    "whatsapp": "6281242275143",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD NEGERI I MOLOMPAR",
+    "username": "SDN1MOLOMPAR",
+    "password": "$2a$12$pSu.Iqk1ZzitgrfCIj6RnOuSrOsshOYud5hySjpg3izxpPLKI3Qia",
+    "role": "Operator Sekolah",
+    "schoolNo": 7,
+    "npsn": "40102204",
+    "whatsapp": "6285299368919",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD INPRES LOWU",
+    "username": "SD INPRES LOWU",
+    "password": "$2a$12$RXYZHJ2NDOGWnUnGaX.5z.fv0zBXcrCTTdGAQnA.DkBg3o2wWWhGG",
+    "role": "Operator Sekolah",
+    "schoolNo": 40,
+    "npsn": "40101922",
+    "whatsapp": "62895803753968",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SDN I BELANG",
+    "username": "sdn1belang",
+    "password": "$2a$12$JtUmto1D2bb03rXrXy2Kcur/mzEj9.AfRQPBWDXiAcLAiWsrq.6J6",
+    "role": "Operator Sekolah",
+    "schoolNo": 5,
+    "npsn": "40102202",
+    "whatsapp": "6285238819781",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP KRISTEN BASAAN",
+    "username": "dodotunas",
+    "password": "$2a$12$HLsXvnCs5YExoDAveLTrg.iU7yEJtPcFEdx8Hg/wl6WISzvv33M/.",
+    "role": "Operator Sekolah",
+    "schoolNo": 100,
+    "npsn": "40102046",
+    "whatsapp": "6285399959869",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD GEREJA PANTEKOSTA KALI",
+    "username": "SD Gereja Pantekosta Kali",
+    "password": "$2a$12$cimZsxYU80P8WAPaTFGRGeZe3eXFzKuAb.JJ5feh9qVleaU2F3q.a",
+    "role": "Operator Sekolah",
+    "schoolNo": 82,
+    "npsn": "40102271",
+    "whatsapp": "6289609389797",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP KRISTEN TATENGESAN",
+    "username": "audyrawis@gmail.com",
+    "password": "$2a$12$VbhOINQMHb6VL0VPzzjnWO4O94trvBFTQXfQgy8t6xQSA3BUbOT/i",
+    "role": "Operator Sekolah",
+    "schoolNo": 134,
+    "npsn": "40102043",
+    "whatsapp": "6282293046939",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD GMIM 362 MINANGA",
+    "username": "sdgmim362mng@gmail.com",
+    "password": "$2a$12$3STOEpYMLq3cAlK0CpWWh.Ego31ckMgMiCPsJJkzCyX35j3HStGPu",
+    "role": "Operator Sekolah",
+    "schoolNo": 20,
+    "npsn": "40102146",
+    "whatsapp": "6281242671640",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD GMIM TONSAWANG",
+    "username": "Aurel",
+    "password": "$2a$12$PXq2d817dFF36j1c6j10s.MwfvQlYx.jNiSEjGuTzdEA4jIWVW81a",
+    "role": "Operator Sekolah",
+    "schoolNo": 34,
+    "npsn": "40103505",
+    "whatsapp": "6285823433212",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD GMIM 1 SILIAN",
+    "username": "SDGMIM1SILIAN",
+    "password": "$2a$12$cEWdv3AjYm0c2w8SGOFXFu.x4W1sgPDiSdersapbMYwjNTU96ijwW",
+    "role": "Operator Sekolah",
+    "schoolNo": 42,
+    "npsn": "40102189",
+    "whatsapp": "6285656971592",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP NEGERI 4 RATAHAN",
+    "username": "smpn4ratahan",
+    "password": "$2a$12$7bBkWRBwzVVrK1xcoK7mIuxNN.6iTJHRdX4b0/wOu0WNIVYxEgXyO",
+    "role": "Operator Sekolah",
+    "schoolNo": 113,
+    "npsn": "40103496",
+    "whatsapp": "628980058185",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD GMIM 2 TOMBATU",
+    "username": "sdgmimtombatu@gmail.com",
+    "password": "$2a$12$uuTKI3eftac.PVy9hlRGN.OaJDyVQi.nGwnoQGJ93ddUTQ.z5TZ0e",
+    "role": "Operator Sekolah",
+    "schoolNo": 6,
+    "npsn": "40102169",
+    "whatsapp": "6283835350907",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD NEGERI BASAAN",
+    "username": "sdn_basaan@yahoo.com",
+    "password": "$2a$12$hxeh3vXWE6BykF.d2ajRXO315.szzRykjd48D5ewKrwq5Fd2/k3.K",
+    "role": "Operator Sekolah",
+    "schoolNo": 61,
+    "npsn": "40102201",
+    "whatsapp": "6285351253844",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD INPRES MOREAH",
+    "username": "sdinpresmoreah@gmail.com",
+    "password": "$2a$12$6CMm7n1iQWXuEeBlYNK/.O1xhQdDy0u/71SL63TmG3.juEOMqwnBq",
+    "role": "Operator Sekolah",
+    "schoolNo": 25,
+    "npsn": "40101910",
+    "whatsapp": "6285240480546",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD GMIM BENTENAN",
+    "username": "sdgmimbentenan",
+    "password": "$2a$12$Nixxsd8G79KaNWw2FMPglOcZKGQwOJZMGkvq/lmFbzBlBrd3ZzFGu",
+    "role": "Operator Sekolah",
+    "schoolNo": 8,
+    "npsn": "40102165",
+    "whatsapp": "6282346472599",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD MUHAMMADIYAH MOLOMPAR",
+    "username": "Sdmuhammadiyah@gmail.com",
+    "password": "$2a$12$AWEgsbLwU1oGI3eAlbai0eG1uhfUKiBwyz7y949Q6dJpmrDaJ6HFy",
+    "role": "Operator Sekolah",
+    "schoolNo": 10,
+    "npsn": "40102214",
+    "whatsapp": "6285825391573",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP NEGERI 5 TOULUAAN",
+    "username": "smpn5touluaan",
+    "password": "$2a$12$5CfTAFTDr5Cee274O/xdfOwqTe.Lsf3Rv3M4Db.BNADZalg3v1KMS",
+    "role": "Operator Sekolah",
+    "schoolNo": 128,
+    "npsn": "40103660",
+    "whatsapp": "6282191530292",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD ADVENT PIONEER LOBU",
+    "username": "SDAPLOBU",
+    "password": "$2a$12$e.qb67gZJP09TuC80OcB6OjVkKO5RwzwnMyCXe9IN13E/VbWiQu/6",
+    "role": "Operator Sekolah",
+    "schoolNo": 70,
+    "npsn": "69952246",
+    "whatsapp": "6285256373395",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP NEGERI 7 TOMBATU",
+    "username": "sendrakolanus8@gmail.com",
+    "password": "$2a$12$MKfc.rTjnUyZ4w5mq9L/4uPLWBzfp/4RLUK0gqPROS3qGBdYCxOda",
+    "role": "Operator Sekolah",
+    "schoolNo": 126,
+    "npsn": "40103654",
+    "whatsapp": "6285394321135",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP NEGERI 3 BELANG",
+    "username": "SMPN3BELANG",
+    "password": "$2a$12$qqua0fdN3jBSDzUT5UHd2ujA5Z4uQS9IO53NJn4.03wZ/WX.n0iWi",
+    "role": "Operator Sekolah",
+    "schoolNo": 110,
+    "npsn": "40102061",
+    "whatsapp": "6282394610770",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD GMIM 364 RATATOTOK",
+    "username": "sdgmim364ratatotok",
+    "password": "$2a$12$rMkmf7f/H/97/kKLSmLru.9Sf/mK91n2VshNHCut6iiyxMMLM/t7q",
+    "role": "Operator Sekolah",
+    "schoolNo": 93,
+    "npsn": "40102148",
+    "whatsapp": "6285298223663",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD NEGERI 3 BELANG",
+    "username": "SDN 3 BELANG",
+    "password": "$2a$12$7RLIGqVl3KSmVMFjYoWHw.M8GTvCozNlaXfw.QaG6sXbMD0NxMyfi",
+    "role": "Operator Sekolah",
+    "schoolNo": 35,
+    "npsn": "40102196",
+    "whatsapp": "6285821369045",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD NEGERI TABABO",
+    "username": "SDN TABABO",
+    "password": "$2a$12$/wfKOYHVqK/uiod6U.HPfuzfugRvnnTvTyp60wCP//Dig2s3Mkkdq",
+    "role": "Operator Sekolah",
+    "schoolNo": 21,
+    "npsn": "40101897",
+    "whatsapp": "6285281866851",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD INPRES KUYANGA",
+    "username": "SD INPRES KUYANGA",
+    "password": "$2a$12$a2ZiyrqpfzVfYe4R8uQiyOlm4zbsVQ.OtF/5WHdBGAm.Zc.drcnWq",
+    "role": "Operator Sekolah",
+    "schoolNo": 41,
+    "npsn": "40101914",
+    "whatsapp": "6285696257439",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP NEGERI 5 RATAHAN",
+    "username": "silvana",
+    "password": "$2a$12$iYGkQ0kW5WGguNUEipZeoe44wGFWY5eveVXzd5DoVQoR/CRnL8dla",
+    "role": "Operator Sekolah",
+    "schoolNo": 136,
+    "npsn": "40103650",
+    "whatsapp": "6282152539980",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SDN  INPRES TATENGESAN",
+    "username": "sdinprestatengesan@gmail.com",
+    "password": "$2a$12$atjHAwYOUDxopMu9OsDtROgGb7qxmVAJNBW9pOqXGzryrAB1UeUte",
+    "role": "Operator Sekolah",
+    "schoolNo": 83,
+    "npsn": "40101950",
+    "whatsapp": "6285240480546",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD INPRES TOMBATU I",
+    "username": "sdinprestombatu1@gmail.com",
+    "password": "$2a$12$VtH2L8nDhmif.REw/Z5rxuOKvhRi.uHouQ08K1gPUEz5zJofWlR8a",
+    "role": "Operator Sekolah",
+    "schoolNo": 31,
+    "npsn": "40101871",
+    "whatsapp": "6285796583215",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD GMIM I TOMBATU",
+    "username": "SD GMIM 1 TOMBATU",
+    "password": "$2a$12$.12hDRCmGzq/flEHGBSt/.T9KMlt5BfomgyG1.SxZ09Bp0ni.jq6.",
+    "role": "Operator Sekolah",
+    "schoolNo": 48,
+    "npsn": "40102179",
+    "whatsapp": "6285213440991",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP NEGERI 3 PUSOMAEN",
+    "username": "Fredo",
+    "password": "$2a$12$KPX9Eqj966822mHnut4BBujPSWx7x.L2S2aikEH4DiwyAcp2RMgnK",
+    "role": "Operator Sekolah",
+    "schoolNo": 133,
+    "npsn": "40103659",
+    "whatsapp": "6282346239860",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD NEGERI WIOI TIMUR",
+    "username": "sdnwioitimur@gmail.com",
+    "password": "$2a$12$5jt.iZgTgfIziHo1FK2nEONlxx7F7YhduEhrDiFGzBwgTi7Kap.n6",
+    "role": "Operator Sekolah",
+    "schoolNo": 29,
+    "npsn": "69960341",
+    "whatsapp": "6285240480546",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD GMIM BUNAG",
+    "username": "obedakun@gmail.com",
+    "password": "$2a$12$jTOVAmALq6JrlTmOgMc92.cplpR7QN7iDNhFYAql9MzqXooc7ZEFa",
+    "role": "Operator Sekolah",
+    "schoolNo": 68,
+    "npsn": "40102183",
+    "whatsapp": "6281241574794",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD ADVENT RATAHAN",
+    "username": "engelinepasuhuk65@gmail.com",
+    "password": "$2a$12$/ypgoMxd1vzbB2Dn/WHZ0e7ykwlRukGjJ7v18ZIyTO3V9X7dZIDMG",
+    "role": "Operator Sekolah",
+    "schoolNo": 50,
+    "npsn": "40102162",
+    "whatsapp": "6281356181553",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD INPRES RATATOTOK",
+    "username": "Nikitapangemanan96@gmail.com",
+    "password": "$2a$12$MENzzu45VYrAhm5QOSOvgun2GnmYvNdz8dR.8pmb0d/G2N4uVCs5G",
+    "role": "Operator Sekolah",
+    "schoolNo": 75,
+    "npsn": "40102291",
+    "whatsapp": "6285182727909",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD NEGERI PISA",
+    "username": "bolungchann95@gmail.com",
+    "password": "$2a$12$905V8ALKtPhvJIYdVPkGguzH7/KU1RaFphBeSP8wsCbkl2NFM7.i6",
+    "role": "Operator Sekolah",
+    "schoolNo": 12,
+    "npsn": "40101858",
+    "whatsapp": "6285824417695",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP KRISTEN KALI",
+    "username": "SMPKristenkali",
+    "password": "$2a$12$22ETNWuxPeOkKlEG33SDGOZ6o7v.T4D6Eg9lx.TvjAF/sJDydMYiK",
+    "role": "Operator Sekolah",
+    "schoolNo": 123,
+    "npsn": "40102047",
+    "whatsapp": "6283178807578",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD INPRES TOMBATU 2",
+    "username": "tombatuduainpres@gmail.com",
+    "password": "$2a$12$QG3vdDm77Fou2V/e8J1oveM1wHyKoYpt7c1.eBIrudT7piZ7BvNvm",
+    "role": "Operator Sekolah",
+    "schoolNo": 66,
+    "npsn": "40101882",
+    "whatsapp": "628998098145",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SDN 1 TOUNDANOW",
+    "username": "rudygumolili4",
+    "password": "$2a$12$8BXL3cYXHaheBWzocvbqIeaRs3.m9T6Ux6mIHxp65DsEWyiRArMIa",
+    "role": "Operator Sekolah",
+    "schoolNo": 59,
+    "npsn": "40103735",
+    "whatsapp": "6282399491127",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP NEGERI 1 BELANG",
+    "username": "Smpn01blg@gmail.com",
+    "password": "$2a$12$wtMXeMeH.drxMkFwb1Icau8.XkdBrbLV7cUtt4vszvx7W9H1PnMwC",
+    "role": "Operator Sekolah",
+    "schoolNo": 114,
+    "npsn": "40101975",
+    "whatsapp": "6285756454037",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SD INPRES LOBU",
+    "username": "SD INPRES LOBU",
+    "password": "$2a$12$zaJSpS27M0FVZqq0XrJf2eqnN2VI99YACs8KAKJGbNam7xrKAzViK",
+    "role": "Operator Sekolah",
+    "schoolNo": 15,
+    "npsn": "40101920",
+    "whatsapp": "6281524110471",
+    "status": "Aktif"
+  },
+  {
+    "name": "Operator SMP NEGERI 8 TOULUAAN",
+    "username": "ferdinandsualang@gmail.com",
+    "password": "$2a$12$d6IzslsCke5unRffSWmC.uhxU521yFL1Wef8OzsF4yuLOZM5QjDNi",
+    "role": "Operator Sekolah",
+    "schoolNo": 101,
+    "npsn": "69787890",
+    "whatsapp": "6282210514703",
+    "status": "Aktif"
+  }
+]

@@ -1,0 +1,7793 @@
+{
+  "1": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 35405000,
+        "kinerja": 0,
+        "jagirMasuk": 3624,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 3624,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 44189201
+      },
+      "saldoReguler": 995701,
+      "saldoKinerja": 7788500,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 8784201,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "2": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 68385000,
+        "kinerja": 0,
+        "jagirMasuk": 5628,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 5628,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 68585020
+      },
+      "saldoReguler": 200020,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 200020,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "3": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 63535000,
+        "kinerja": 0,
+        "jagirMasuk": 7068,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 86049002
+      },
+      "saldoReguler": 22133320,
+      "saldoTunai": 373614,
+      "saldoAwalCustom": 22133320
+    }
+  },
+  "4": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 30555000,
+        "kinerja": 0,
+        "jagirMasuk": 3144,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 3144,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 38363000
+      },
+      "saldoReguler": 7808000,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 7808000,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "5": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 88755000,
+        "kinerja": 0,
+        "jagirMasuk": 7296,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 7296,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 88791760
+      },
+      "saldoReguler": 36760,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 36760,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "6": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 41225000,
+        "kinerja": 0,
+        "jagirMasuk": 3552,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 43274390
+      },
+      "saldoReguler": 1356500,
+      "saldoTunai": 689338,
+      "saldoAwalCustom": 1356500
+    }
+  },
+  "7": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 64990000,
+        "kinerja": 0,
+        "jagirMasuk": 6948,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 6948,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 84579921
+      },
+      "saldoReguler": 19589921,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 19589921,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "8": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 33465000,
+        "kinerja": 0,
+        "jagirMasuk": 2760,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 33712241
+      },
+      "saldoReguler": -100100,
+      "saldoTunai": 344581,
+      "saldoAwalCustom": -100100
+    }
+  },
+  "9": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 16005000,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 16246119
+      },
+      "saldoReguler": 124100,
+      "saldoTunai": 117019,
+      "saldoAwalCustom": 124100,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "10": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 79540000,
+        "kinerja": 0,
+        "jagirMasuk": 6576,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 80108935
+      },
+      "saldoReguler": 33370,
+      "saldoTunai": 528989,
+      "saldoAwalCustom": 33370
+    }
+  },
+  "11": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 37800000,
+        "kinerja": 0,
+        "jagirMasuk": 3096,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 3096,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 37800000
+      },
+      "saldoReguler": 0,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 0,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "12": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 19885000,
+        "kinerja": 0,
+        "jagirMasuk": 3492,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 3492,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 42573225
+      },
+      "saldoReguler": 4203225,
+      "saldoKinerja": 18485000,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 22688225,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    },
+    "Feb": {
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 0
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "/api/file/40101858_SD_NEGERI_PISA/2026-02/rekeningKoran_1793540840068_packaging.pdf",
+          "checked": false
+        },
+        "bku": {
+          "url": "",
+          "checked": false
+        },
+        "rekapanBelanja": {
+          "url": "",
+          "checked": false
+        },
+        "lra": {
+          "url": "",
+          "checked": false
+        },
+        "bukuPajak": {
+          "url": "",
+          "checked": false
+        },
+        "sptjm": {
+          "url": "",
+          "checked": false
+        }
+      },
+      "verifStatus": "Diajukan Sekolah"
+    }
+  },
+  "13": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 59170000,
+        "kinerja": 0,
+        "jagirMasuk": 4860,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 4860,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 59170000
+      },
+      "saldoReguler": 0,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 0,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "14": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 49955000,
+        "kinerja": 0,
+        "jagirMasuk": 5556,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 5556,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 67686470
+      },
+      "saldoReguler": 17731470,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 17731470,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "15": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 43165000,
+        "kinerja": 0,
+        "jagirMasuk": 4392,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 4392,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 53544300
+      },
+      "saldoReguler": 10379300,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 10379300,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "16": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 77115000,
+        "kinerja": 0,
+        "jagirMasuk": 6408,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 77976657
+      },
+      "saldoReguler": 50000,
+      "saldoTunai": 805249,
+      "saldoAwalCustom": 50000
+    }
+  },
+  "17": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 21340000,
+        "kinerja": 0,
+        "jagirMasuk": 3048,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 37151910
+      },
+      "saldoReguler": 15565428,
+      "saldoTunai": 243434,
+      "saldoAwalCustom": 15565428
+    }
+  },
+  "18": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 42680000,
+        "kinerja": 0,
+        "jagirMasuk": 3516,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 42917900
+      },
+      "saldoReguler": 237900,
+      "saldoAwalCustom": 237900,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "19": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 19885000,
+        "kinerja": 0,
+        "jagirMasuk": 2508,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 2508,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 30641700
+      },
+      "saldoReguler": 0,
+      "saldoKinerja": 10756700,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 10756700,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "20": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 43165000,
+        "kinerja": 0,
+        "jagirMasuk": 3576,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 43651368
+      },
+      "saldoReguler": 254450,
+      "saldoTunai": 228342,
+      "saldoAwalCustom": 254450
+    }
+  },
+  "21": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 78570000,
+        "kinerja": 0,
+        "jagirMasuk": 6636,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 6636,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 80796000
+      },
+      "saldoReguler": 150000,
+      "saldoKinerja": 2076000,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 2226000,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "22": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 27160000,
+        "kinerja": 0,
+        "jagirMasuk": 2628,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 32021408
+      },
+      "saldoReguler": 4812880,
+      "saldoTunai": 45900,
+      "saldoAwalCustom": 4812880
+    }
+  },
+  "23": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 72750000,
+        "kinerja": 0,
+        "jagirMasuk": 5976,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 5976,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 72774900
+      },
+      "saldoReguler": 24900,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 24900,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "24": {
+    "Jan": {
+      "saldoAwalCustom": 4793000,
+      "saldoReguler": 0,
+      "saldoKinerja": 4793000,
+      "saldoNonBOS": 0,
+      "saldoTunai": 0,
+      "pendapatan": {
+        "reguler": 63535000,
+        "kinerja": 0,
+        "jagirMasuk": 5616,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 5616,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 68328000
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "/uploads/1792881143468-24-rekeningKoran-BAST_1213.pdf",
+          "checked": false
+        },
+        "bku": {
+          "url": "",
+          "checked": false
+        },
+        "rekapanBelanja": {
+          "url": "",
+          "checked": false
+        },
+        "lra": {
+          "url": "",
+          "checked": false
+        },
+        "bukuPajak": {
+          "url": "",
+          "checked": false
+        },
+        "sptjm": {
+          "url": "",
+          "checked": false
+        }
+      },
+      "verifStatus": "Draft",
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    },
+    "Feb": {
+      "saldoAwalCustom": null,
+      "saldoReguler": null,
+      "saldoKinerja": null,
+      "saldoNonBOS": null,
+      "saldoTunai": null,
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 0
+      },
+      "documents": {},
+      "verifStatus": "Draft"
+    },
+    "Mar": {
+      "saldoAwalCustom": null,
+      "saldoReguler": null,
+      "saldoKinerja": null,
+      "saldoNonBOS": null,
+      "saldoTunai": null,
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 0
+      },
+      "documents": {},
+      "verifStatus": "Draft"
+    },
+    "Apr": {
+      "saldoAwalCustom": null,
+      "saldoReguler": null,
+      "saldoKinerja": null,
+      "saldoNonBOS": null,
+      "saldoTunai": null,
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 0
+      },
+      "documents": {},
+      "verifStatus": "Draft"
+    },
+    "Mei": {
+      "saldoAwalCustom": null,
+      "saldoReguler": null,
+      "saldoKinerja": null,
+      "saldoNonBOS": null,
+      "saldoTunai": null,
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 0
+      },
+      "documents": {},
+      "verifStatus": "Draft"
+    },
+    "Jun": {
+      "saldoAwalCustom": null,
+      "saldoReguler": null,
+      "saldoKinerja": null,
+      "saldoNonBOS": null,
+      "saldoTunai": null,
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 0
+      },
+      "documents": {},
+      "verifStatus": "Draft"
+    },
+    "Jul": {
+      "saldoAwalCustom": null,
+      "saldoReguler": null,
+      "saldoKinerja": null,
+      "saldoNonBOS": null,
+      "saldoTunai": null,
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 0
+      },
+      "documents": {},
+      "verifStatus": "Draft"
+    },
+    "Agus": {
+      "saldoAwalCustom": null,
+      "saldoReguler": null,
+      "saldoKinerja": null,
+      "saldoNonBOS": null,
+      "saldoTunai": null,
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 0
+      },
+      "documents": {},
+      "verifStatus": "Draft"
+    },
+    "Sep": {
+      "saldoAwalCustom": null,
+      "saldoReguler": null,
+      "saldoKinerja": null,
+      "saldoNonBOS": null,
+      "saldoTunai": null,
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 0
+      },
+      "documents": {},
+      "verifStatus": "Draft"
+    },
+    "Okt": {
+      "saldoAwalCustom": null,
+      "saldoReguler": null,
+      "saldoKinerja": null,
+      "saldoNonBOS": null,
+      "saldoTunai": null,
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 0
+      },
+      "documents": {},
+      "verifStatus": "Draft"
+    },
+    "Nov": {
+      "saldoAwalCustom": null,
+      "saldoReguler": null,
+      "saldoKinerja": null,
+      "saldoNonBOS": null,
+      "saldoTunai": null,
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 0
+      },
+      "documents": {},
+      "verifStatus": "Draft"
+    },
+    "Des": {
+      "saldoAwalCustom": null,
+      "saldoReguler": null,
+      "saldoKinerja": null,
+      "saldoNonBOS": null,
+      "saldoTunai": null,
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 0
+      },
+      "documents": {},
+      "verifStatus": "Draft"
+    }
+  },
+  "25": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 75175000,
+        "kinerja": 0,
+        "jagirMasuk": 7248,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 7248,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 88233370
+      },
+      "saldoReguler": 16870,
+      "saldoKinerja": 13041500,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 13058370,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "26": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 44135000,
+        "kinerja": 0,
+        "jagirMasuk": 4932,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 60074450
+      },
+      "saldoReguler": 15668500,
+      "saldoTunai": 266018,
+      "saldoAwalCustom": 15668500
+    }
+  },
+  "27": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Diverifikasi Dinas",
+      "pendapatan": {
+        "reguler": 88270000,
+        "kinerja": 0,
+        "jagirMasuk": 8088,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 8088,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 98534600
+      },
+      "saldoReguler": 10129200,
+      "saldoKinerja": 135400,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 10264600,
+      "verifiedAt": "2026-11-01T09:28:45.197Z",
+      "verifiedBy": "admin",
+      "verifiedBulk": true,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "28": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 43165000,
+        "kinerja": 0,
+        "jagirMasuk": 3828,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 46684650
+      },
+      "saldoReguler": 3177500,
+      "saldoTunai": 338322,
+      "saldoAwalCustom": 3177500
+    }
+  },
+  "29": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 10670000,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 10705800
+      },
+      "saldoReguler": 35800,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 35800,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "30": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 37345000,
+        "kinerja": 0,
+        "jagirMasuk": 3528,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 3528,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 42994360
+      },
+      "saldoReguler": 0,
+      "saldoKinerja": 5649360,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 5649360,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T04:33:47.807Z",
+      "reopenedBy": "admin"
+    },
+    "Jul": {
+      "saManual": {
+        "reg": 52000,
+        "kin": 5649360,
+        "bukan": 0,
+        "tunai": 0
+      },
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 5701360
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "",
+          "checked": false
+        },
+        "bku": {
+          "url": "/api/file/40101919_SDN_INPRES_LIWUTUNG_II/2026-07/bku_1794456088639_BUKU_KAS_BARU_JULI_TAHUN_2026.pdf",
+          "checked": false
+        },
+        "rekapanBelanja": {
+          "url": "/api/file/40101919_SDN_INPRES_LIWUTUNG_II/2026-07/rekapanBelanja_1794456097972_rekap_bulan_juli.pdf",
+          "checked": false
+        },
+        "lra": {
+          "url": "/api/file/40101919_SDN_INPRES_LIWUTUNG_II/2026-07/lra_1794456100423_LAPORAN_REALISASI_BOS_JULI_TAHUN_2025.pdf",
+          "checked": false
+        },
+        "bukuPajak": {
+          "url": "",
+          "checked": false
+        },
+        "sptjm": {
+          "url": "",
+          "checked": false
+        }
+      },
+      "verifStatus": "Diajukan Sekolah"
+    }
+  },
+  "31": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 71295000,
+        "kinerja": 0,
+        "jagirMasuk": 6624,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 6624,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 80630700
+      },
+      "saldoReguler": 0,
+      "saldoKinerja": 9335700,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 9335700,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "32": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 34920000,
+        "kinerja": 0,
+        "jagirMasuk": 4164,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 4164,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 50719800
+      },
+      "saldoReguler": 26300,
+      "saldoKinerja": 15773500,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 15799800,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "33": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 86330000,
+        "kinerja": 0,
+        "jagirMasuk": 7092,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 7092,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 86330000
+      },
+      "saldoReguler": 0,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 0,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "34": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 35890000,
+        "kinerja": 0,
+        "jagirMasuk": 3168,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 38549980
+      },
+      "saldoReguler": 2659980,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 2659980,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "35": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 24250000,
+        "kinerja": 0,
+        "jagirMasuk": 3588,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 3588,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 43731788
+      },
+      "saldoReguler": 11314508,
+      "saldoKinerja": 8167280,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 19481788,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "36": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 93959621,
+        "kinerja": 0,
+        "jagirMasuk": 7716,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 93967337
+      },
+      "saldoTunai": 839621,
+      "saldoAwalCustom": 0
+    }
+  },
+  "37": {
+    "Jan": {
+      "documents": {
+        "rekeningKoran": {
+          "url": "/api/file/40101932_SD_INPRES_1_WATULINEY/2026-01/rekeningKoran_1794456406533_RC_Bank_TW_3.pdf",
+          "checked": false
+        },
+        "bku": {
+          "url": "/api/file/40101932_SD_INPRES_1_WATULINEY/2026-01/bku_1794456407272_BKU_TW_3.pdf",
+          "checked": false
+        },
+        "rekapanBelanja": {
+          "url": "/api/file/40101932_SD_INPRES_1_WATULINEY/2026-01/rekapanBelanja_1794456407840_REKAPAN_TAHUN_2026.pdf",
+          "checked": false
+        },
+        "lra": {
+          "url": "/api/file/40101932_SD_INPRES_1_WATULINEY/2026-01/lra_1794456408420_Realisasi_TW_3_.pdf",
+          "checked": false
+        },
+        "bukuPajak": {
+          "url": "/api/file/40101932_SD_INPRES_1_WATULINEY/2026-01/bukuPajak_1794456408596_BUKU_PAJAK_TAHUN_2026.pdf",
+          "checked": false
+        },
+        "sptjm": {
+          "url": "/api/file/40101932_SD_INPRES_1_WATULINEY/2026-01/sptjm_1794456409066_SPTJM_TW_3.pdf",
+          "checked": false
+        }
+      },
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 62565000,
+        "kinerja": 0,
+        "jagirMasuk": 5136,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 5136,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 62575000
+      },
+      "saldoReguler": 10000,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 10000,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T04:33:47.807Z",
+      "reopenedBy": "admin",
+      "saldoTunai": 0
+    },
+    "Jul": {
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 62575000
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "/api/file/40101932_SD_INPRES_1_WATULINEY/2026-07/rekeningKoran_1794452678748_RC_Bank_TW_3.pdf",
+          "checked": false
+        },
+        "bku": {
+          "url": "/api/file/40101932_SD_INPRES_1_WATULINEY/2026-07/bku_1794452686540_BKU_TW_3.pdf",
+          "checked": false
+        },
+        "rekapanBelanja": {
+          "url": "",
+          "checked": false
+        },
+        "lra": {
+          "url": "",
+          "checked": false
+        },
+        "bukuPajak": {
+          "url": "/api/file/40101932_SD_INPRES_1_WATULINEY/2026-07/bukuPajak_1794453064848_BUKU_PAJAK_TAHUN_2026.pdf",
+          "checked": false
+        },
+        "sptjm": {
+          "url": "/api/file/40101932_SD_INPRES_1_WATULINEY/2026-07/sptjm_1794453068108_SPTJM_TW_3.pdf",
+          "checked": false
+        }
+      },
+      "verifStatus": "Diajukan Sekolah"
+    }
+  },
+  "38": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 48500000,
+        "kinerja": 0,
+        "jagirMasuk": 13532,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 13532,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 93546460
+      },
+      "saldoReguler": 23960,
+      "saldoKinerja": 45022500,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 45046460,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "39": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 74400000,
+        "kinerja": 0,
+        "jagirMasuk": 7236,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 7236,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 88090328
+      },
+      "saldoReguler": 13255820,
+      "saldoTunai": 413592,
+      "saldoAwalCustom": 13255820
+    }
+  },
+  "40": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 58200000,
+        "kinerja": 0,
+        "jagirMasuk": 4776,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 4776,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 58200000
+      },
+      "saldoReguler": 0,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 0,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "41": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 62080000,
+        "kinerja": 0,
+        "jagirMasuk": 5100,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 5100,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 62086360
+      },
+      "saldoReguler": 6360,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 6360,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "42": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 32495000,
+        "kinerja": 0,
+        "jagirMasuk": 2676,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 32655894
+      },
+      "saldoReguler": 65850,
+      "saldoTunai": 92368,
+      "saldoAwalCustom": 65850
+    }
+  },
+  "43": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 85360000,
+        "kinerja": 0,
+        "jagirMasuk": 7332,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 7332,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 89236898
+      },
+      "saldoReguler": 11698,
+      "saldoKinerja": 3865200,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 3876898,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T04:33:47.807Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "44": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 26190000,
+        "kinerja": 0,
+        "jagirMasuk": 2184,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 26641012
+      },
+      "saldoReguler": 300360,
+      "saldoTunai": 148468,
+      "saldoAwalCustom": 300360
+    }
+  },
+  "45": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 63535000,
+        "kinerja": 0,
+        "jagirMasuk": 5244,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 5244,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 63821950
+      },
+      "saldoReguler": 286950,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 286950,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "46": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 131920000,
+        "kinerja": 0,
+        "jagirMasuk": 43488,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 43488,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 132287722
+      },
+      "saldoReguler": 367722,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 367722,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "47": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 14550000,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 14616906
+      },
+      "saldoTunai": 66906,
+      "saldoAwalCustom": 0,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "48": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 98455000,
+        "kinerja": 0,
+        "jagirMasuk": 44704,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 125409906
+      },
+      "saldoReguler": 26297220,
+      "saldoTunai": 612982,
+      "saldoAwalCustom": 26297220
+    }
+  },
+  "49": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 106700000,
+        "kinerja": 0,
+        "jagirMasuk": 35076,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 35076,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 106700000
+      },
+      "saldoReguler": 0,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 0,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    },
+    "Nov": {
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "documents": {},
+      "verifStatus": "Draft"
+    }
+  },
+  "50": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 61110000,
+        "kinerja": 0,
+        "jagirMasuk": 5064,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 61619423
+      },
+      "saldoReguler": 50000,
+      "saldoTunai": 454359,
+      "saldoAwalCustom": 50000
+    }
+  },
+  "51": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 35890000,
+        "kinerja": 0,
+        "jagirMasuk": 10547,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 71761538
+      },
+      "saldoReguler": 35074350,
+      "saldoTunai": 786641,
+      "saldoAwalCustom": 35074350
+    }
+  },
+  "52": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 34435000,
+        "kinerja": 0,
+        "jagirMasuk": 2832,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 34458535
+      },
+      "saldoTunai": 23535,
+      "saldoAwalCustom": 0,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "53": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 41710000,
+        "kinerja": 0,
+        "jagirMasuk": 3444,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 41968261
+      },
+      "saldoReguler": 89080,
+      "saldoTunai": 165737,
+      "saldoAwalCustom": 89080
+    }
+  },
+  "54": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 115915000,
+        "kinerja": 0,
+        "jagirMasuk": 51859,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 51859,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 145893200
+      },
+      "saldoReguler": 16493000,
+      "saldoKinerja": 13485200,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 29978200,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "55": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 108640000,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 0
+      },
+      "saldoReguler": 22310000,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 22310000
+    },
+    "Jul": {
+      "saManual": {
+        "reg": 98399200,
+        "kin": 135400,
+        "bukan": 0,
+        "tunai": 0
+      },
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 0
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "",
+          "checked": false
+        },
+        "bku": {
+          "url": "/api/file/40102309_SD_INPRES_1_BORGO/2026-07/bku_1794455566408_BKU_JULI_PDF.pdf",
+          "checked": false
+        },
+        "rekapanBelanja": {
+          "url": "/api/file/40102309_SD_INPRES_1_BORGO/2026-07/rekapanBelanja_1794455566543_REKAPAN_BELANJA_JULI_PDF.pdf",
+          "checked": false
+        },
+        "lra": {
+          "url": "/api/file/40102309_SD_INPRES_1_BORGO/2026-07/lra_1794455566627_REALISASI_JULI_PDF.pdf",
+          "checked": false
+        },
+        "bukuPajak": {
+          "url": "/api/file/40102309_SD_INPRES_1_BORGO/2026-07/bukuPajak_1794455566758_BUKU_PAJAK_JULI.pdf",
+          "checked": false
+        },
+        "sptjm": {
+          "url": "",
+          "checked": false
+        }
+      },
+      "verifStatus": "Diajukan Sekolah"
+    },
+    "Agus": {
+      "saManual": {
+        "reg": 98249200,
+        "kin": 135400,
+        "bukan": 0,
+        "tunai": 0
+      },
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 0
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "/api/file/40102309_SD_INPRES_1_BORGO/2026-08/rekeningKoran_1794456119868_Daftar_Rekening_Asal_-_KASDA_V2_SEPTEMBER.pdf",
+          "checked": false
+        },
+        "bku": {
+          "url": "/api/file/40102309_SD_INPRES_1_BORGO/2026-08/bku_1794456120003_BKU_SEPTEMBER_PDF.pdf",
+          "checked": false
+        },
+        "rekapanBelanja": {
+          "url": "/api/file/40102309_SD_INPRES_1_BORGO/2026-08/rekapanBelanja_1794456120511_REKAPAN_BELANJA_SEPTEMBER_PDF.pdf",
+          "checked": false
+        },
+        "lra": {
+          "url": "/api/file/40102309_SD_INPRES_1_BORGO/2026-08/lra_1794456120593_REALISASI_SEPTEMBER_PDF.pdf",
+          "checked": false
+        },
+        "bukuPajak": {
+          "url": "/api/file/40102309_SD_INPRES_1_BORGO/2026-08/bukuPajak_1794456120832_BUKU_PAJAK.pdf",
+          "checked": false
+        },
+        "sptjm": {
+          "url": "",
+          "checked": false
+        }
+      },
+      "verifStatus": "Diajukan Sekolah"
+    },
+    "Sep": {
+      "saManual": {
+        "reg": 98249200,
+        "kin": 135400,
+        "bukan": 0,
+        "tunai": 0
+      },
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 0
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "/api/file/40102309_SD_INPRES_1_BORGO/2026-09/rekeningKoran_1794456310545_Daftar_Rekening_Asal_-_KASDA_V2_SEPTEMBER.pdf",
+          "checked": false
+        },
+        "bku": {
+          "url": "/api/file/40102309_SD_INPRES_1_BORGO/2026-09/bku_1794456310945_BKU_SEPTEMBER_PDF.pdf",
+          "checked": false
+        },
+        "rekapanBelanja": {
+          "url": "/api/file/40102309_SD_INPRES_1_BORGO/2026-09/rekapanBelanja_1794456311079_REKAPAN_BELANJA_SEPTEMBER_PDF.pdf",
+          "checked": false
+        },
+        "lra": {
+          "url": "/api/file/40102309_SD_INPRES_1_BORGO/2026-09/lra_1794456311146_REALISASI_SEPTEMBER_PDF.pdf",
+          "checked": false
+        },
+        "bukuPajak": {
+          "url": "/api/file/40102309_SD_INPRES_1_BORGO/2026-09/bukuPajak_1794456311264_BUKU_PAJAK.pdf",
+          "checked": false
+        },
+        "sptjm": {
+          "url": "",
+          "checked": false
+        }
+      },
+      "verifStatus": "Diajukan Sekolah"
+    }
+  },
+  "56": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 42195000,
+        "kinerja": 0,
+        "jagirMasuk": 4368,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 53287730
+      },
+      "saldoReguler": 10801000,
+      "saldoTunai": 287362,
+      "saldoAwalCustom": 10801000
+    }
+  },
+  "57": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 40255000,
+        "kinerja": 0,
+        "jagirMasuk": 10461,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 74012551
+      },
+      "saldoReguler": 33415500,
+      "saldoTunai": 331590,
+      "saldoAwalCustom": 33415500
+    }
+  },
+  "58": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 47400000,
+        "kinerja": 0,
+        "jagirMasuk": 3888,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 3888,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 47401000
+      },
+      "saldoReguler": 1000,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 1000,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "59": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 16490000,
+        "kinerja": 0,
+        "jagirMasuk": 3216,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 3216,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 39129820
+      },
+      "saldoReguler": 4216320,
+      "saldoKinerja": 18423500,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 22639820,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "60": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 93605000,
+        "kinerja": 0,
+        "jagirMasuk": 7716,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 7716,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 93978571
+      },
+      "saldoReguler": 373571,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 373571,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "61": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 63535000,
+        "kinerja": 0,
+        "jagirMasuk": 5232,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 5232,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 63790100
+      },
+      "saldoReguler": 255100,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 255100,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "62": {
+    "Jan": {
+      "documents": {
+        "rekeningKoran": {
+          "url": "/api/file/40101860_SD_NEGERI_KECIL_BANGA/2026-01/rekeningKoran_1793508101609_Dashboard_Rekonsiliasi_Dana_BOSP_Cetak_SP2B_-_Minahasa_Tenggara.pdf",
+          "checked": false
+        },
+        "bku": {
+          "url": "",
+          "checked": false
+        },
+        "rekapanBelanja": {
+          "url": "",
+          "checked": false
+        },
+        "lra": {
+          "url": "",
+          "checked": false
+        },
+        "bukuPajak": {
+          "url": "",
+          "checked": false
+        },
+        "sptjm": {
+          "url": "",
+          "checked": false
+        }
+      },
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 12610000,
+        "kinerja": 0,
+        "jagirMasuk": 9650,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 9650,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 53238200
+      },
+      "saldoReguler": 2425000,
+      "saldoKinerja": 38203200,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 40628200,
+      "saldoTunai": 0,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    },
+    "Feb": {
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 0
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "",
+          "checked": false
+        },
+        "bku": {
+          "url": "",
+          "checked": false
+        },
+        "rekapanBelanja": {
+          "url": "",
+          "checked": false
+        },
+        "lra": {
+          "url": "",
+          "checked": false
+        },
+        "bukuPajak": {
+          "url": "",
+          "checked": false
+        },
+        "sptjm": {
+          "url": "",
+          "checked": false
+        }
+      },
+      "verifStatus": "Diajukan Sekolah"
+    }
+  },
+  "63": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 28130000,
+        "kinerja": 0,
+        "jagirMasuk": 3372,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 41138347
+      },
+      "saldoReguler": 12844240,
+      "saldoTunai": 160735,
+      "saldoAwalCustom": 12844240
+    }
+  },
+  "64": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 51895000,
+        "kinerja": 0,
+        "jagirMasuk": 4260,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 4260,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 51896059
+      },
+      "saldoReguler": 1059,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 1059,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "65": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 48500000,
+        "kinerja": 0,
+        "jagirMasuk": 11703,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 11703,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 84900330
+      },
+      "saldoReguler": 150330,
+      "saldoKinerja": 36250000,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 36400330,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "66": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 161505000,
+        "kinerja": 0,
+        "jagirMasuk": 54324,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 54324,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 165246441
+      },
+      "saldoReguler": 76241,
+      "saldoKinerja": 3665200,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 3741441,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "67": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 52380000,
+        "kinerja": 0,
+        "jagirMasuk": 4380,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 4380,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 53430455
+      },
+      "saldoReguler": 1050455,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 1050455,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "68": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 37345000,
+        "kinerja": 0,
+        "jagirMasuk": 3072,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 37460078
+      },
+      "saldoReguler": -146000,
+      "saldoTunai": 258006,
+      "saldoAwalCustom": -146000
+    },
+    "Jul": {
+      "saManual": {
+        "reg": 12118177,
+        "kin": 0,
+        "bukan": 0,
+        "tunai": 0
+      },
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 0
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "/api/file/40102183_SD_GMIM_BUNAG/2026-07/rekeningKoran_1794455435329_REKOR_JULI_-AGUSTUS.pdf",
+          "checked": false
+        },
+        "bku": {
+          "url": "/api/file/40102183_SD_GMIM_BUNAG/2026-07/bku_1794455435527_BKU_BULAN_JULI.pdf",
+          "checked": false
+        },
+        "rekapanBelanja": {
+          "url": "/api/file/40102183_SD_GMIM_BUNAG/2026-07/rekapanBelanja_1794455435698_REKAPAN_BELANJA_BULAN_JULI.pdf",
+          "checked": false
+        },
+        "lra": {
+          "url": "/api/file/40102183_SD_GMIM_BUNAG/2026-07/lra_1794455435835_REALISASI_BULAN_JULI.pdf",
+          "checked": false
+        },
+        "bukuPajak": {
+          "url": "/api/file/40102183_SD_GMIM_BUNAG/2026-07/bukuPajak_1794455435886_BUKU_PAJAK_juli1_2026.pdf",
+          "checked": false
+        },
+        "sptjm": {
+          "url": "/api/file/40102183_SD_GMIM_BUNAG/2026-07/sptjm_1794455436159_sptjm-outputbulan_juli.pdf",
+          "checked": false
+        }
+      },
+      "verifStatus": "Diajukan Sekolah"
+    },
+    "Agus": {
+      "pendapatan": {
+        "reguler": 37345000,
+        "kinerja": 0,
+        "jagirMasuk": 318,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 3000000,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 46463495
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "/api/file/40102183_SD_GMIM_BUNAG/2026-08/rekeningKoran_1794456400368_REKOR_JULI_-AGUSTUS.pdf",
+          "checked": false
+        },
+        "bku": {
+          "url": "/api/file/40102183_SD_GMIM_BUNAG/2026-08/bku_1794456407074_BKU_BULAN_AGUSTUS.pdf",
+          "checked": false
+        },
+        "rekapanBelanja": {
+          "url": "/api/file/40102183_SD_GMIM_BUNAG/2026-08/rekapanBelanja_1794456359641_REKAPAN_BULAN_AGUSTUS.pdf",
+          "checked": false
+        },
+        "lra": {
+          "url": "/api/file/40102183_SD_GMIM_BUNAG/2026-08/lra_1794456411160_REALISASI_BULAN_AGUSTUS.pdf",
+          "checked": false
+        },
+        "bukuPajak": {
+          "url": "/api/file/40102183_SD_GMIM_BUNAG/2026-08/bukuPajak_1794456411227_BUKU_PAJAK_juli1_2026.pdf",
+          "checked": false
+        },
+        "sptjm": {
+          "url": "/api/file/40102183_SD_GMIM_BUNAG/2026-08/sptjm_1794456411652_sptjm-outputAGUSTUS.pdf",
+          "checked": false
+        }
+      },
+      "verifStatus": "Diajukan Sekolah"
+    },
+    "Sep": {
+      "saManual": {
+        "reg": 46463495,
+        "kin": 0,
+        "bukan": 0,
+        "tunai": 0
+      },
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 9540,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 46473035
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "/api/file/40102183_SD_GMIM_BUNAG/2026-09/rekeningKoran_1794460105065_REKOR_SPETEMBER_BUNAG.pdf",
+          "checked": false
+        },
+        "bku": {
+          "url": "/api/file/40102183_SD_GMIM_BUNAG/2026-09/bku_1794460105177_BKU_BULAN_SEPTEMBER.pdf",
+          "checked": false
+        },
+        "rekapanBelanja": {
+          "url": "/api/file/40102183_SD_GMIM_BUNAG/2026-09/rekapanBelanja_1794460105322_REKAPAN_BULAN_SEPTEMBER.pdf",
+          "checked": false
+        },
+        "lra": {
+          "url": "/api/file/40102183_SD_GMIM_BUNAG/2026-09/lra_1794460105431_REALISASI_BULAN_SEPTEMBER.pdf",
+          "checked": false
+        },
+        "bukuPajak": {
+          "url": "/api/file/40102183_SD_GMIM_BUNAG/2026-09/bukuPajak_1794460105530_BUKU_PAJAK_jSEPTEMBER.pdf",
+          "checked": false
+        },
+        "sptjm": {
+          "url": "/api/file/40102183_SD_GMIM_BUNAG/2026-09/sptjm_1794460105682_sptjm-outputSEPTEMBERT1.pdf",
+          "checked": false
+        }
+      },
+      "verifStatus": "Diajukan Sekolah"
+    }
+  },
+  "69": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 103305000,
+        "kinerja": 0,
+        "jagirMasuk": 38112,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 38112,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 115939560
+      },
+      "saldoReguler": 12634560,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 12634560,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "70": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 46560000,
+        "kinerja": 0,
+        "jagirMasuk": 3840,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 46790472
+      },
+      "saldoReguler": 159600,
+      "saldoTunai": 70872,
+      "saldoAwalCustom": 159600,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "71": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 62080000,
+        "kinerja": 0,
+        "jagirMasuk": 5100,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 5100,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 62080000
+      },
+      "saldoReguler": 0,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 0,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    },
+    "Jul": {
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 0
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "",
+          "checked": false
+        },
+        "bku": {
+          "url": "/api/file/40102246_SD_NEGERI_1_RATAHAN/2026-07/bku_1794452808591_BKU_JULI_2026.pdf",
+          "checked": false
+        },
+        "rekapanBelanja": {
+          "url": "/api/file/40102246_SD_NEGERI_1_RATAHAN/2026-07/rekapanBelanja_1794451453730_rekapan_belanja_juli.pdf",
+          "checked": false
+        },
+        "lra": {
+          "url": "",
+          "checked": false
+        },
+        "bukuPajak": {
+          "url": "",
+          "checked": false
+        },
+        "sptjm": {
+          "url": "",
+          "checked": false
+        }
+      },
+      "verifStatus": "Diajukan Sekolah"
+    }
+  },
+  "72": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 9700000,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 15748400
+      },
+      "saldoReguler": 0,
+      "saldoKinerja": 6048400,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 6048400,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "73": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 52865000,
+        "kinerja": 0,
+        "jagirMasuk": 4344,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 4344,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 52865000
+      },
+      "saldoReguler": 0,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 0,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "74": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 30555000,
+        "kinerja": 0,
+        "jagirMasuk": 2508,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 2508,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 30555000
+      },
+      "saldoReguler": 0,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 0,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "75": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 12125000,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 12125000
+      },
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "76": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 44620000,
+        "kinerja": 0,
+        "jagirMasuk": 3696,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 45007578
+      },
+      "saldoReguler": 295840,
+      "saldoTunai": 88042,
+      "saldoAwalCustom": 295840
+    }
+  },
+  "77": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 53350000,
+        "kinerja": 0,
+        "jagirMasuk": 4404,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 4404,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 53699319
+      },
+      "saldoReguler": 349319,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 349319,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    },
+    "Jul": {
+      "saManual": {
+        "reg": 20392469,
+        "kin": 0,
+        "bukan": 0,
+        "tunai": 0
+      },
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 20392469
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "",
+          "checked": false
+        },
+        "bku": {
+          "url": "/api/file/40102205_SD_NEGERI_2_MUNDUNG/2026-07/bku_1794459347932_BKU_2026-juli.pdf",
+          "checked": false
+        },
+        "rekapanBelanja": {
+          "url": "/api/file/40102205_SD_NEGERI_2_MUNDUNG/2026-07/rekapanBelanja_1794459348531_Rekapan_Belanja-juli.pdf",
+          "checked": false
+        },
+        "lra": {
+          "url": "/api/file/40102205_SD_NEGERI_2_MUNDUNG/2026-07/lra_1794459350771_Realisasi_Bos-juli.pdf",
+          "checked": false
+        },
+        "bukuPajak": {
+          "url": "/api/file/40102205_SD_NEGERI_2_MUNDUNG/2026-07/bukuPajak_1794459356838_BUKU_PAJAK-juli.pdf",
+          "checked": false
+        },
+        "sptjm": {
+          "url": "/api/file/40102205_SD_NEGERI_2_MUNDUNG/2026-07/sptjm_1794459358044_sptjm-juli.pdf",
+          "checked": false
+        }
+      },
+      "verifStatus": "Diajukan Sekolah"
+    }
+  },
+  "78": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 31040000,
+        "kinerja": 0,
+        "jagirMasuk": 2544,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 2544,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 31082630
+      },
+      "saldoReguler": 42630,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 42630,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "79": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 79055000,
+        "kinerja": 0,
+        "jagirMasuk": 6504,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 6504,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 79236495
+      },
+      "saldoReguler": 181495,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 181495,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "80": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 58200000,
+        "kinerja": 0,
+        "jagirMasuk": 4776,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 4776,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 58200000
+      },
+      "saldoReguler": 0,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 0,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "81": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 24250000,
+        "kinerja": 0,
+        "jagirMasuk": 14330,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 14330,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 82376900
+      },
+      "saldoReguler": 4988400,
+      "saldoKinerja": 53138500,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 58126900,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "82": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 26190000,
+        "kinerja": 0,
+        "jagirMasuk": 2208,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 26957359
+      },
+      "saldoReguler": 614360,
+      "saldoNonBOS": 0,
+      "saldoTunai": 150791,
+      "saldoAwalCustom": 614360
+    }
+  },
+  "83": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 64505000,
+        "kinerja": 0,
+        "jagirMasuk": 10605,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 10605,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 89505065
+      },
+      "saldoReguler": 2500065,
+      "saldoKinerja": 22500000,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 25000065,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "84": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 53350000,
+        "kinerja": 0,
+        "jagirMasuk": 4380,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 4380,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 53355000
+      },
+      "saldoReguler": 5000,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 5000,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "85": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 38800000,
+        "kinerja": 0,
+        "jagirMasuk": 3276,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 39992274
+      },
+      "saldoReguler": 753910,
+      "saldoKinerja": 221600,
+      "saldoTunai": 213488,
+      "saldoAwalCustom": 975510
+    }
+  },
+  "86": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 68870000,
+        "kinerja": 0,
+        "jagirMasuk": 37810,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 37810,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 101964360
+      },
+      "saldoReguler": 44360,
+      "saldoKinerja": 33050000,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 33094360,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T04:33:47.807Z",
+      "reopenedBy": "admin"
+    },
+    "Jul": {
+      "saManual": {
+        "reg": 4376495,
+        "kin": 0,
+        "bukan": 0,
+        "tunai": 0
+      },
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 4376495
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "/api/file/40102247_SD_NEGERI_I_TOMBATU/2026-07/rekeningKoran_1794453665760_Rekening_koran.pdf",
+          "checked": false
+        },
+        "bku": {
+          "url": "",
+          "checked": false
+        },
+        "rekapanBelanja": {
+          "url": "/api/file/40102247_SD_NEGERI_I_TOMBATU/2026-07/rekapanBelanja_1794453666118_FORMAT_REKAPAN_BELANJA_BOS.pdf",
+          "checked": false
+        },
+        "lra": {
+          "url": "/api/file/40102247_SD_NEGERI_I_TOMBATU/2026-07/lra_1794453668668_REALISASI_7.pdf",
+          "checked": false
+        },
+        "bukuPajak": {
+          "url": "",
+          "checked": false
+        },
+        "sptjm": {
+          "url": "",
+          "checked": false
+        }
+      },
+      "verifStatus": "Diajukan Sekolah"
+    }
+  },
+  "87": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 33465000,
+        "kinerja": 0,
+        "jagirMasuk": 2748,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 2748,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 33465000
+      },
+      "saldoReguler": 0,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 0,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    },
+    "Jul": {
+      "saManual": {
+        "reg": 8225400,
+        "kin": 0,
+        "bukan": 0,
+        "tunai": 0
+      },
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 8225400
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "",
+          "checked": false
+        },
+        "bku": {
+          "url": "/api/file/40102207_SD_NEGERI_2_LIWUTUNG/2026-07/bku_1794459608588_bku_juli_2026.pdf",
+          "checked": false
+        },
+        "rekapanBelanja": {
+          "url": "/api/file/40102207_SD_NEGERI_2_LIWUTUNG/2026-07/rekapanBelanja_1794459609698_Rekapan_Belanja-juli.pdf",
+          "checked": false
+        },
+        "lra": {
+          "url": "/api/file/40102207_SD_NEGERI_2_LIWUTUNG/2026-07/lra_1794459610323_Realisasi_BOS-juli.pdf",
+          "checked": false
+        },
+        "bukuPajak": {
+          "url": "/api/file/40102207_SD_NEGERI_2_LIWUTUNG/2026-07/bukuPajak_1794459610810_BUKU_PAJAK_2026-juli.pdf",
+          "checked": false
+        },
+        "sptjm": {
+          "url": "/api/file/40102207_SD_NEGERI_2_LIWUTUNG/2026-07/sptjm_1794459611205_sptjm-juli_2026.pdf",
+          "checked": false
+        }
+      },
+      "verifStatus": "Diajukan Sekolah"
+    }
+  },
+  "88": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 9215000,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 10924147
+      },
+      "saldoKinerja": 1486400,
+      "saldoTunai": 222747,
+      "saldoAwalCustom": 1486400
+    }
+  },
+  "89": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 39285000,
+        "kinerja": 0,
+        "jagirMasuk": 3228,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 3228,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 39311000
+      },
+      "saldoReguler": 26000,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 26000,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "90": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 30555000,
+        "kinerja": 0,
+        "jagirMasuk": 2508,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 2508,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 30555000
+      },
+      "saldoReguler": 0,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 0,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "91": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 31525000,
+        "kinerja": 0,
+        "jagirMasuk": 2676,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 32574943
+      },
+      "saldoReguler": 3104,
+      "saldoTunai": 1044163,
+      "saldoAwalCustom": 3104
+    }
+  },
+  "92": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 40740000,
+        "kinerja": 0,
+        "jagirMasuk": 42762,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 104759960
+      },
+      "saldoReguler": 10061700,
+      "saldoKinerja": 53958260,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 64019960,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "93": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 63535000,
+        "kinerja": 0,
+        "jagirMasuk": 5232,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 0
+      },
+      "saldoReguler": 102000,
+      "saldoTunai": 100592,
+      "saldoAwalCustom": 102000
+    }
+  },
+  "94": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 17945000,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 18092580
+      },
+      "saldoReguler": 147580,
+      "saldoAwalCustom": 147580,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T04:33:47.807Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "95": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 50440000,
+        "kinerja": 0,
+        "jagirMasuk": 4272,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 4272,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 51992420
+      },
+      "saldoReguler": 1552420,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 1552420,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "96": {
+    "Jan": {
+      "documents": {
+        "rekeningKoran": {
+          "url": "/api/file/40103510_SD_KATOLIK_TOMBATU/2026-01/rekeningKoran_1794453025488_Daftar_Rekening_Asal_-_Januari.pdf",
+          "checked": false
+        },
+        "bku": {
+          "url": "/api/file/40103510_SD_KATOLIK_TOMBATU/2026-01/bku_1794453029932_BKU_Januari.pdf",
+          "checked": false
+        },
+        "rekapanBelanja": {
+          "url": "/api/file/40103510_SD_KATOLIK_TOMBATU/2026-01/rekapanBelanja_1794453031349_REKAPAN_JANUARI.pdf",
+          "checked": false
+        },
+        "lra": {
+          "url": "/api/file/40103510_SD_KATOLIK_TOMBATU/2026-01/lra_1794453032485_REALISASI_JANUARI.pdf",
+          "checked": false
+        },
+        "bukuPajak": {
+          "url": "",
+          "checked": false
+        },
+        "sptjm": {
+          "url": "",
+          "checked": false
+        }
+      },
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 77115000,
+        "kinerja": 0,
+        "jagirMasuk": 6408,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 77976657
+      },
+      "saldoReguler": 855249,
+      "saldoTunai": 0,
+      "saldoAwalCustom": 855249,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T04:33:47.807Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "97": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 61800000,
+        "kinerja": 0,
+        "jagirMasuk": 6516,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 6516,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 79282790
+      },
+      "saldoReguler": 17482790,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 17482790,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "98": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 4800000,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 21468850
+      },
+      "saldoReguler": 990000,
+      "saldoKinerja": 15678850,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 16668850,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "99": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 97200000,
+        "kinerja": 0,
+        "jagirMasuk": 48036,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 132311111
+      },
+      "saldoReguler": 103600,
+      "saldoKinerja": 31590000,
+      "saldoTunai": 3369475,
+      "saldoAwalCustom": 31693600
+    }
+  },
+  "100": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 64200000,
+        "kinerja": 0,
+        "jagirMasuk": 5316,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 64810373
+      },
+      "saldoReguler": 83000,
+      "saldoTunai": 522057,
+      "saldoAwalCustom": 83000
+    }
+  },
+  "101": {
+    "Jan": {
+      "documents": {
+        "rekeningKoran": {
+          "url": "",
+          "checked": false
+        },
+        "bku": {
+          "url": "",
+          "checked": false
+        },
+        "rekapanBelanja": {
+          "url": "",
+          "checked": false
+        },
+        "lra": {
+          "url": "",
+          "checked": false
+        },
+        "bukuPajak": {
+          "url": "",
+          "checked": false
+        },
+        "sptjm": {
+          "url": "",
+          "checked": false
+        }
+      },
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 11400000,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 24802700
+      },
+      "saldoReguler": 266500,
+      "saldoKinerja": 13136200,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 13402700,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T04:33:47.807Z",
+      "reopenedBy": "admin",
+      "saldoTunai": 0
+    },
+    "Jul": {
+      "saManual": {
+        "reg": 4866500,
+        "kin": 13136200,
+        "bukan": 0,
+        "tunai": 0
+      },
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 35000000,
+        "jagirMasuk": 10527,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 10527,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 53002700
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "",
+          "checked": false
+        },
+        "bku": {
+          "url": "",
+          "checked": false
+        },
+        "rekapanBelanja": {
+          "url": "",
+          "checked": false
+        },
+        "lra": {
+          "url": "",
+          "checked": false
+        },
+        "bukuPajak": {
+          "url": "",
+          "checked": false
+        },
+        "sptjm": {
+          "url": "",
+          "checked": false
+        }
+      },
+      "verifStatus": "Diajukan Sekolah"
+    },
+    "Sep": {
+      "saManual": {
+        "reg": 4866500,
+        "kin": 48136200,
+        "bukan": 0,
+        "tunai": 0
+      },
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 10890,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 10890,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 53002700
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "",
+          "checked": false
+        },
+        "bku": {
+          "url": "",
+          "checked": false
+        },
+        "rekapanBelanja": {
+          "url": "",
+          "checked": false
+        },
+        "lra": {
+          "url": "",
+          "checked": false
+        },
+        "bukuPajak": {
+          "url": "",
+          "checked": false
+        },
+        "sptjm": {
+          "url": "",
+          "checked": false
+        }
+      },
+      "verifStatus": "Diajukan Sekolah"
+    },
+    "Okt": {
+      "pendapatan": {
+        "reguler": 11133500,
+        "kinerja": 0,
+        "jagirMasuk": 12458,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 2204812,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 12458,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 61931388
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "",
+          "checked": false
+        },
+        "bku": {
+          "url": "",
+          "checked": false
+        },
+        "rekapanBelanja": {
+          "url": "",
+          "checked": false
+        },
+        "lra": {
+          "url": "",
+          "checked": false
+        },
+        "bukuPajak": {
+          "url": "",
+          "checked": false
+        },
+        "sptjm": {
+          "url": "",
+          "checked": false
+        }
+      },
+      "verifStatus": "Diajukan Sekolah"
+    }
+  },
+  "102": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 28200000,
+        "kinerja": 0,
+        "jagirMasuk": 3504,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 3504,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 42667900
+      },
+      "saldoReguler": 150000,
+      "saldoKinerja": 14317900,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 14467900,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "103": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 125400000,
+        "kinerja": 0,
+        "jagirMasuk": 52847,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 52847,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 150776035
+      },
+      "saldoReguler": 25376035,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 25376035,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "104": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 39000000,
+        "kinerja": 0,
+        "jagirMasuk": 3564,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 3564,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 43400225
+      },
+      "saldoReguler": 700225,
+      "saldoKinerja": 3700000,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 4400225,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "105": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 78000000,
+        "kinerja": 0,
+        "jagirMasuk": 7416,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 7416,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 90236200
+      },
+      "saldoReguler": 0,
+      "saldoKinerja": 12236200,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 12236200,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "106": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 61200000,
+        "kinerja": 0,
+        "jagirMasuk": 11066,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 11066,
+        "lebihTransferKeluar": 1794000
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 89567949
+      },
+      "saldoReguler": 30161949,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 30161949
+    },
+    "Jul": {
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 9695,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 535600,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 9695,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 45211196
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "/api/file/40103657_SMP_NEGERI_6_RATAHAN/2026-07/rekeningKoran_1794456553027_SMPN_6_Ratahan_RC_Juli.pdf",
+          "checked": false
+        },
+        "bku": {
+          "url": "/api/file/40103657_SMP_NEGERI_6_RATAHAN/2026-07/bku_1794456555406_BKU_JULI.pdf",
+          "checked": false
+        },
+        "rekapanBelanja": {
+          "url": "/api/file/40103657_SMP_NEGERI_6_RATAHAN/2026-07/rekapanBelanja_1794456557157_Rekapan_Belanja_Juli.pdf",
+          "checked": false
+        },
+        "lra": {
+          "url": "/api/file/40103657_SMP_NEGERI_6_RATAHAN/2026-07/lra_1794456559708_LRA_JULI.pdf",
+          "checked": false
+        },
+        "bukuPajak": {
+          "url": "",
+          "checked": false
+        },
+        "sptjm": {
+          "url": "",
+          "checked": false
+        }
+      },
+      "verifStatus": "Diajukan Sekolah",
+      "saManual": {
+        "reg": 45746796,
+        "kin": 0,
+        "bukan": 0,
+        "tunai": 0
+      }
+    }
+  },
+  "107": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 66000000,
+        "kinerja": 0,
+        "jagirMasuk": 5424,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 5424,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 66087300
+      },
+      "saldoReguler": 87300,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 87300,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "108": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 52800000,
+        "kinerja": 0,
+        "jagirMasuk": 4500,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 4500,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 54893000
+      },
+      "saldoReguler": 2093000,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 2093000,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "109": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 6000000,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 19379470
+      },
+      "saldoReguler": 560000,
+      "saldoKinerja": 12819470,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 13379470,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "110": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 73200000,
+        "kinerja": 0,
+        "jagirMasuk": 41102,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 41102,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 110358880
+      },
+      "saldoReguler": 34814380,
+      "saldoKinerja": 2344500,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 37158880,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "111": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 6000000,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 6000000
+      },
+      "saldoReguler": 0,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 0,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "112": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 82450000,
+        "kinerja": 0,
+        "jagirMasuk": 44260,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 44260,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 119838750
+      },
+      "saldoReguler": 37388750,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 37388750,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "113": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 51410000,
+        "kinerja": 0,
+        "jagirMasuk": 5100,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 5100,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 62188260
+      },
+      "saldoReguler": 460,
+      "saldoKinerja": 10777800,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 10778260,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "114": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 29400000,
+        "kinerja": 0,
+        "jagirMasuk": 2412,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 2412,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 29400000
+      },
+      "saldoReguler": 0,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 0,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "115": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 141000000,
+        "kinerja": 0,
+        "jagirMasuk": 47136,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 47136,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 143402600
+      },
+      "saldoReguler": 2402600,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 2402600,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "116": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 159600000,
+        "kinerja": 0,
+        "jagirMasuk": 52836,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 52836,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 160710050
+      },
+      "saldoReguler": 1110050,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 1110050,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "117": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 210600000,
+        "kinerja": 0,
+        "jagirMasuk": 89943,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 89943,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 255723229
+      },
+      "saldoReguler": 19955231,
+      "saldoKinerja": 25167998,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 45123229,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "118": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 32400000,
+        "kinerja": 0,
+        "jagirMasuk": 2736,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 33323529
+      },
+      "saldoReguler": 712000,
+      "saldoTunai": 208793,
+      "saldoAwalCustom": 712000
+    }
+  },
+  "119": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 7200000,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 7200000
+      },
+      "saldoReguler": 0,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 0,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "120": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 114600000,
+        "kinerja": 0,
+        "jagirMasuk": 51013,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 51013,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 143686000
+      },
+      "saldoReguler": 29086000,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 29086000,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "121": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 205800000,
+        "kinerja": 0,
+        "jagirMasuk": 67656,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 67656,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 205800000
+      },
+      "saldoReguler": 0,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 0,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    },
+    "Jul": {
+      "saManual": {
+        "reg": 13827042,
+        "kin": 0,
+        "bukan": 0,
+        "tunai": 0
+      },
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 6372428,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 7454614
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "/api/file/40101977_SMP_NEGERI_1_RATAHAN/2026-07/rekeningKoran_1794455082093_JULI_2026_RC_BANK.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "bku": {
+          "url": "/api/file/40101977_SMP_NEGERI_1_RATAHAN/2026-07/bku_1794455082187_BKU.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "rekapanBelanja": {
+          "url": "/api/file/40101977_SMP_NEGERI_1_RATAHAN/2026-07/rekapanBelanja_1794455082365_Rekapan_Juli.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "lra": {
+          "url": "/api/file/40101977_SMP_NEGERI_1_RATAHAN/2026-07/lra_1794455082452_Realisasi_Juli.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "bukuPajak": {
+          "url": "/api/file/40101977_SMP_NEGERI_1_RATAHAN/2026-07/bukuPajak_1794455082950_BUKU_PAJAK_JANUARI_-_SEPTEMBER_2026.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "sptjm": {
+          "url": "/api/file/40101977_SMP_NEGERI_1_RATAHAN/2026-07/sptjm_1794455083024_SPTJM_Juli.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        }
+      },
+      "verifStatus": "Diverifikasi Dinas",
+      "verifiedAt": "2026-11-16T02:36:52.930Z",
+      "verifiedBy": "admin",
+      "reconDone": true,
+      "reconDoneAt": "2026-11-16T02:37:11.211Z"
+    },
+    "Agus": {
+      "pendapatan": {
+        "reguler": 205800000,
+        "kinerja": 0,
+        "jagirMasuk": 132473,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 3000000,
+        "barjasReg": 36157950,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 34300000,
+        "atlKin": 0,
+        "jagirKeluar": 132473,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 139796664
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "/api/file/40101977_SMP_NEGERI_1_RATAHAN/2026-08/rekeningKoran_1794455887446_AGUSTUS_2026_RC_BANK.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "bku": {
+          "url": "/api/file/40101977_SMP_NEGERI_1_RATAHAN/2026-08/bku_1794455889326_BKU_Agustus.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "rekapanBelanja": {
+          "url": "/api/file/40101977_SMP_NEGERI_1_RATAHAN/2026-08/rekapanBelanja_1794455890626_Rekapan_Agustus.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "lra": {
+          "url": "/api/file/40101977_SMP_NEGERI_1_RATAHAN/2026-08/lra_1794455891005_Realisasi_Agustus.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "bukuPajak": {
+          "url": "/api/file/40101977_SMP_NEGERI_1_RATAHAN/2026-08/bukuPajak_1794455893419_BUKU_PAJAK_JANUARI_-_SEPTEMBER_2026.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "sptjm": {
+          "url": "/api/file/40101977_SMP_NEGERI_1_RATAHAN/2026-08/sptjm_1794455894525_SPTJM_Agustus.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        }
+      },
+      "verifStatus": "Diverifikasi Dinas",
+      "verifiedAt": "2026-11-16T02:49:05.069Z",
+      "verifiedBy": "admin",
+      "reconDone": true,
+      "reconDoneAt": "2026-11-16T02:49:10.891Z"
+    },
+    "Sep": {
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 70466,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 3000000,
+        "barjasReg": 30194060,
+        "barjasKin": 0,
+        "pm": 46400000,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 70466,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 60202604
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "/api/file/40101977_SMP_NEGERI_1_RATAHAN/2026-09/rekeningKoran_1794456338896_SEPTEMBER_2026_RC_BANK.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "bku": {
+          "url": "/api/file/40101977_SMP_NEGERI_1_RATAHAN/2026-09/bku_1794456339195_BKU_September.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "rekapanBelanja": {
+          "url": "/api/file/40101977_SMP_NEGERI_1_RATAHAN/2026-09/rekapanBelanja_1794456339577_Rekapan_September.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "lra": {
+          "url": "/api/file/40101977_SMP_NEGERI_1_RATAHAN/2026-09/lra_1794456339755_Realisasi_September.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "bukuPajak": {
+          "url": "/api/file/40101977_SMP_NEGERI_1_RATAHAN/2026-09/bukuPajak_1794456340577_BUKU_PAJAK_JANUARI_-_SEPTEMBER_2026.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "sptjm": {
+          "url": "/api/file/40101977_SMP_NEGERI_1_RATAHAN/2026-09/sptjm_1794456340737_SPTJM_September.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        }
+      },
+      "verifStatus": "Diverifikasi Dinas",
+      "verifiedAt": "2026-11-16T03:02:45.901Z",
+      "verifiedBy": "admin",
+      "reconDone": true,
+      "reconDoneAt": "2026-11-16T03:03:00.362Z"
+    }
+  },
+  "122": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 119400000,
+        "kinerja": 0,
+        "jagirMasuk": 39252,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 39252,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 119400000
+      },
+      "saldoReguler": 0,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 0,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "123": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 15000000,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 20219502
+      },
+      "saldoReguler": 4924150,
+      "saldoTunai": 295352,
+      "saldoAwalCustom": 4924150,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "124": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 58200000,
+        "kinerja": 0,
+        "jagirMasuk": 5244,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 5244,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 63855310
+      },
+      "saldoReguler": 2559110,
+      "saldoKinerja": 3096200,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 5655310,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    },
+    "Apr": {
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 12641,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 6150000,
+        "barjasReg": 3600000,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 12641,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 54105310
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "",
+          "checked": false
+        },
+        "bku": {
+          "url": "",
+          "checked": false
+        },
+        "rekapanBelanja": {
+          "url": "",
+          "checked": false
+        },
+        "lra": {
+          "url": "",
+          "checked": false
+        },
+        "bukuPajak": {
+          "url": "",
+          "checked": false
+        },
+        "sptjm": {
+          "url": "",
+          "checked": false
+        }
+      },
+      "verifStatus": "Diajukan Sekolah"
+    },
+    "Agus": {
+      "pendapatan": {
+        "reguler": 55640890,
+        "kinerja": 0,
+        "jagirMasuk": 12416,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 2050000,
+        "barjasReg": 3300000,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 12416,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 68548510
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "",
+          "checked": false
+        },
+        "bku": {
+          "url": "",
+          "checked": false
+        },
+        "rekapanBelanja": {
+          "url": "",
+          "checked": false
+        },
+        "lra": {
+          "url": "",
+          "checked": false
+        },
+        "bukuPajak": {
+          "url": "",
+          "checked": false
+        },
+        "sptjm": {
+          "url": "",
+          "checked": false
+        }
+      },
+      "verifStatus": "Diajukan Sekolah"
+    },
+    "Sep": {
+      "saManual": {
+        "reg": 65452310,
+        "kin": 3096200,
+        "bukan": 0,
+        "tunai": 0
+      },
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 14070,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 14070,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 68548510
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "",
+          "checked": false
+        },
+        "bku": {
+          "url": "",
+          "checked": false
+        },
+        "rekapanBelanja": {
+          "url": "",
+          "checked": false
+        },
+        "lra": {
+          "url": "",
+          "checked": false
+        },
+        "bukuPajak": {
+          "url": "",
+          "checked": false
+        },
+        "sptjm": {
+          "url": "",
+          "checked": false
+        }
+      },
+      "verifStatus": "Diajukan Sekolah"
+    },
+    "Mei": {
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 11074,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 4100000,
+        "barjasReg": 2959010,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 11074,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 47046300
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "",
+          "checked": false
+        },
+        "bku": {
+          "url": "",
+          "checked": false
+        },
+        "rekapanBelanja": {
+          "url": "",
+          "checked": false
+        },
+        "lra": {
+          "url": "",
+          "checked": false
+        },
+        "bukuPajak": {
+          "url": "",
+          "checked": false
+        },
+        "sptjm": {
+          "url": "",
+          "checked": false
+        }
+      },
+      "verifStatus": "Diajukan Sekolah"
+    },
+    "Jun": {
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 966,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 2050000,
+        "barjasReg": 9938680,
+        "barjasKin": 16800000,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 966,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 18257620
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "",
+          "checked": false
+        },
+        "bku": {
+          "url": "",
+          "checked": false
+        },
+        "rekapanBelanja": {
+          "url": "",
+          "checked": false
+        },
+        "lra": {
+          "url": "",
+          "checked": false
+        },
+        "bukuPajak": {
+          "url": "",
+          "checked": false
+        },
+        "sptjm": {
+          "url": "",
+          "checked": false
+        }
+      },
+      "verifStatus": "Diajukan Sekolah"
+    }
+  },
+  "125": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 34200000,
+        "kinerja": 0,
+        "jagirMasuk": 3504,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 3504,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 42658990
+      },
+      "saldoReguler": 29700,
+      "saldoKinerja": 8429290,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 8458990,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "126": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 51600000,
+        "kinerja": 0,
+        "jagirMasuk": 4392,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 4392,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 53527388
+      },
+      "saldoReguler": 670188,
+      "saldoKinerja": 1257200,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 1927388,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "127": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 90000000,
+        "kinerja": 0,
+        "jagirMasuk": 52542,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 140103750
+      },
+      "saldoReguler": 49710975,
+      "saldoNonBOS": 103425,
+      "saldoTunai": 443658,
+      "saldoAwalCustom": 49814400
+    }
+  },
+  "128": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 16200000,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 16204125
+      },
+      "saldoReguler": 2100,
+      "saldoKinerja": 2025,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 4125,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "129": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 15600000,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 15725207
+      },
+      "saldoReguler": 82457,
+      "saldoKinerja": 42750,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 125207,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "130": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 130200000,
+        "kinerja": 0,
+        "jagirMasuk": 78070,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 78070,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 207093102
+      },
+      "saldoReguler": 26143102,
+      "saldoKinerja": 50750000,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 76893102,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    },
+    "Jul": {
+      "saManual": {
+        "reg": 72214132,
+        "kin": 50750000,
+        "bukan": 0,
+        "tunai": 0
+      },
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 104408,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 104408,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 122964132
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "/api/file/40102065_SMP_NEGERI_2_RATAHAN/2026-07/rekeningKoran_1794819897051_4.g._Daftar_Rekening_Asal_-_KASDA_V2_JULI.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "bku": {
+          "url": "/api/file/40102065_SMP_NEGERI_2_RATAHAN/2026-07/bku_1794819897229_BKU_JULI_1.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "rekapanBelanja": {
+          "url": "/api/file/40102065_SMP_NEGERI_2_RATAHAN/2026-07/rekapanBelanja_1794819897485_REKAPAN_JULI.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "lra": {
+          "url": "/api/file/40102065_SMP_NEGERI_2_RATAHAN/2026-07/lra_1794819897777_LAPORAN_REALISASI_JULI.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "bukuPajak": {
+          "url": "/api/file/40102065_SMP_NEGERI_2_RATAHAN/2026-07/bukuPajak_1794819897982_BUKU_PAJAK.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "sptjm": {
+          "url": "/api/file/40102065_SMP_NEGERI_2_RATAHAN/2026-07/sptjm_1794819898170_SPTJM_JULI.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        }
+      },
+      "verifStatus": "Diverifikasi Dinas",
+      "verifiedAt": "2026-11-16T13:57:29.618Z",
+      "verifiedBy": "admin",
+      "reconDone": true,
+      "reconDoneAt": "2026-11-16T13:57:51.624Z"
+    },
+    "Agus": {
+      "pendapatan": {
+        "reguler": 104056898,
+        "kinerja": 0,
+        "jagirMasuk": 178534,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 178534,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 227021030
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "/api/file/40102065_SMP_NEGERI_2_RATAHAN/2026-08/rekeningKoran_1794821885059_4.i._Daftar_Rekening_Asal_-_KASDA_V2_SEPTEMBER.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "bku": {
+          "url": "/api/file/40102065_SMP_NEGERI_2_RATAHAN/2026-08/bku_1794821885217_BKU_SEPTEMBER_1.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "rekapanBelanja": {
+          "url": "/api/file/40102065_SMP_NEGERI_2_RATAHAN/2026-08/rekapanBelanja_1794821885437_REKAPAN_SEPTEMBER.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "lra": {
+          "url": "/api/file/40102065_SMP_NEGERI_2_RATAHAN/2026-08/lra_1794821885719_LAPORAN_REALISASI_SEPTEMBER.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "bukuPajak": {
+          "url": "/api/file/40102065_SMP_NEGERI_2_RATAHAN/2026-08/bukuPajak_1794821885932_BUKU_PAJAK.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "sptjm": {
+          "url": "/api/file/40102065_SMP_NEGERI_2_RATAHAN/2026-08/sptjm_1794821886146_SPTJM_SEPTEMBER.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        }
+      },
+      "verifStatus": "Diverifikasi Dinas",
+      "verifiedAt": "2026-11-16T14:00:28.338Z",
+      "verifiedBy": "admin",
+      "reconDone": true,
+      "reconDoneAt": "2026-11-16T14:00:34.888Z"
+    },
+    "Sep": {
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 186570,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 186570,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 227021030
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "/api/file/40102065_SMP_NEGERI_2_RATAHAN/2026-09/rekeningKoran_1794821829155_4.i._Daftar_Rekening_Asal_-_KASDA_V2_SEPTEMBER.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "bku": {
+          "url": "/api/file/40102065_SMP_NEGERI_2_RATAHAN/2026-09/bku_1794821829311_BKU_SEPTEMBER_1.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "rekapanBelanja": {
+          "url": "/api/file/40102065_SMP_NEGERI_2_RATAHAN/2026-09/rekapanBelanja_1794821829584_REKAPAN_SEPTEMBER.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "lra": {
+          "url": "/api/file/40102065_SMP_NEGERI_2_RATAHAN/2026-09/lra_1794821829846_LAPORAN_REALISASI_SEPTEMBER.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "bukuPajak": {
+          "url": "/api/file/40102065_SMP_NEGERI_2_RATAHAN/2026-09/bukuPajak_1794821830024_BUKU_PAJAK.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "sptjm": {
+          "url": "/api/file/40102065_SMP_NEGERI_2_RATAHAN/2026-09/sptjm_1794821830218_SPTJM_SEPTEMBER.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        }
+      },
+      "verifStatus": "Diverifikasi Dinas",
+      "verifiedAt": "2026-11-16T14:02:36.952Z",
+      "verifiedBy": "admin",
+      "reconDone": true,
+      "reconDoneAt": "2026-11-16T14:02:40.310Z"
+    }
+  },
+  "131": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 13800000,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 13803200
+      },
+      "saldoReguler": 3200,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 3200,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    },
+    "Jul": {
+      "saManual": {
+        "reg": 12125840,
+        "kin": 0,
+        "bukan": 0,
+        "tunai": 0
+      },
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 5960000,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 6165840
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "/api/file/40103656_SMP_NEGERI_4_BELANG/2026-07/rekeningKoran_1794458693296_RC_KASDA_JULI.pdf",
+          "checked": false
+        },
+        "bku": {
+          "url": "/api/file/40103656_SMP_NEGERI_4_BELANG/2026-07/bku_1794458693520_BKU_Juli.pdf",
+          "checked": false
+        },
+        "rekapanBelanja": {
+          "url": "/api/file/40103656_SMP_NEGERI_4_BELANG/2026-07/rekapanBelanja_1794458693674_Rekapan_Juli.pdf",
+          "checked": false
+        },
+        "lra": {
+          "url": "/api/file/40103656_SMP_NEGERI_4_BELANG/2026-07/lra_1794458693779_LRA_Juli.pdf",
+          "checked": false
+        },
+        "bukuPajak": {
+          "url": "/api/file/40103656_SMP_NEGERI_4_BELANG/2026-07/bukuPajak_1794458693920_BUKU_PAJAK_2026.pdf",
+          "checked": false
+        },
+        "sptjm": {
+          "url": "/api/file/40103656_SMP_NEGERI_4_BELANG/2026-07/sptjm_1794458694080_SPTJM_TW_3.pdf",
+          "checked": false
+        }
+      },
+      "verifStatus": "Diajukan Sekolah"
+    },
+    "Agus": {
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 6165840
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "/api/file/40103656_SMP_NEGERI_4_BELANG/2026-08/rekeningKoran_1794459532732_Daftar_Rekening_Asal_-_KASDA_V2_JUL-NOV.pdf",
+          "checked": false
+        },
+        "bku": {
+          "url": "/api/file/40103656_SMP_NEGERI_4_BELANG/2026-08/bku_1794459533340_BKU_Agusus.pdf",
+          "checked": false
+        },
+        "rekapanBelanja": {
+          "url": "/api/file/40103656_SMP_NEGERI_4_BELANG/2026-08/rekapanBelanja_1794459534110_Rekapan_Agustus.pdf",
+          "checked": false
+        },
+        "lra": {
+          "url": "/api/file/40103656_SMP_NEGERI_4_BELANG/2026-08/lra_1794459534673_LRA_Agustus.pdf",
+          "checked": false
+        },
+        "bukuPajak": {
+          "url": "/api/file/40103656_SMP_NEGERI_4_BELANG/2026-08/bukuPajak_1794459535050_BUKU_PAJAK_2026.pdf",
+          "checked": false
+        },
+        "sptjm": {
+          "url": "/api/file/40103656_SMP_NEGERI_4_BELANG/2026-08/sptjm_1794459537289_SPTJM_TW_3.pdf",
+          "checked": false
+        }
+      },
+      "verifStatus": "Diajukan Sekolah"
+    },
+    "Sep": {
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 6165840
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "/api/file/40103656_SMP_NEGERI_4_BELANG/2026-09/rekeningKoran_1794463715531_Daftar_Rekening_Asal_-_KASDA_V2_JUL-NOV.pdf",
+          "checked": false
+        },
+        "bku": {
+          "url": "/api/file/40103656_SMP_NEGERI_4_BELANG/2026-09/bku_1794463715622_BKU_Sept.pdf",
+          "checked": false
+        },
+        "rekapanBelanja": {
+          "url": "/api/file/40103656_SMP_NEGERI_4_BELANG/2026-09/rekapanBelanja_1794463715817_Rekapan_Sept.pdf",
+          "checked": false
+        },
+        "lra": {
+          "url": "/api/file/40103656_SMP_NEGERI_4_BELANG/2026-09/lra_1794463715893_LRA_Sept.pdf",
+          "checked": false
+        },
+        "bukuPajak": {
+          "url": "/api/file/40103656_SMP_NEGERI_4_BELANG/2026-09/bukuPajak_1794463716062_BUKU_PAJAK_2026.pdf",
+          "checked": false
+        },
+        "sptjm": {
+          "url": "/api/file/40103656_SMP_NEGERI_4_BELANG/2026-09/sptjm_1794463716203_SPTJM_TW_3.pdf",
+          "checked": false
+        }
+      },
+      "verifStatus": "Diajukan Sekolah"
+    }
+  },
+  "132": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 6600000,
+        "kinerja": 0,
+        "jagirMasuk": 2340,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 2340,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 28525450
+      },
+      "saldoReguler": 0,
+      "saldoKinerja": 21925450,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 21925450,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    },
+    "Jul": {
+      "saManual": {
+        "reg": 2836650,
+        "kin": 0,
+        "bukan": 0,
+        "tunai": 0
+      },
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 2836650
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "bku": {
+          "url": "/api/file/40103661_SMP_NEGERI_6_TOULUAAN/2026-07/bku_1794459984682_BKU_Juli.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "rekapanBelanja": {
+          "url": "/api/file/40103661_SMP_NEGERI_6_TOULUAAN/2026-07/rekapanBelanja_1794459984932_Rekapan_Juli.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "lra": {
+          "url": "/api/file/40103661_SMP_NEGERI_6_TOULUAAN/2026-07/lra_1794459985266_Realisasi_Juli.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "bukuPajak": {
+          "url": "/api/file/40103661_SMP_NEGERI_6_TOULUAAN/2026-07/bukuPajak_1794459985947_BKU_PAJAK_TW_3.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "sptjm": {
+          "url": "/api/file/40103661_SMP_NEGERI_6_TOULUAAN/2026-07/sptjm_1794459986227_SPTJM_Juli.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        }
+      },
+      "verifStatus": "Diverifikasi Dinas",
+      "verifiedAt": "2026-11-16T04:14:35.458Z",
+      "verifiedBy": "admin",
+      "reconDone": true,
+      "reconDoneAt": "2026-11-16T04:14:38.782Z"
+    },
+    "Agus": {
+      "pendapatan": {
+        "reguler": 7200000,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 2160000,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 7876650
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "/api/file/40103661_SMP_NEGERI_6_TOULUAAN/2026-08/rekeningKoran_1794801038468_agustus.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "bku": {
+          "url": "/api/file/40103661_SMP_NEGERI_6_TOULUAAN/2026-08/bku_1794801038543_BKU_Agustus-1.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "rekapanBelanja": {
+          "url": "/api/file/40103661_SMP_NEGERI_6_TOULUAAN/2026-08/rekapanBelanja_1794801038692_Rekapan_Agustus-1.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "lra": {
+          "url": "/api/file/40103661_SMP_NEGERI_6_TOULUAAN/2026-08/lra_1794801038779_Realisasi_Agustus-1.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "bukuPajak": {
+          "url": "/api/file/40103661_SMP_NEGERI_6_TOULUAAN/2026-08/bukuPajak_1794801038869_BKU_PAJAK_TW_3.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "sptjm": {
+          "url": "/api/file/40103661_SMP_NEGERI_6_TOULUAAN/2026-08/sptjm_1794801038959_SPTJM_Agustus-1.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        }
+      },
+      "verifStatus": "Diverifikasi Dinas",
+      "verifiedAt": "2026-11-16T04:15:21.627Z",
+      "verifiedBy": "admin",
+      "reconDone": true,
+      "reconDoneAt": "2026-11-16T04:15:26.068Z"
+    },
+    "Sep": {
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 7876650
+      },
+      "documents": {
+        "rekeningKoran": {
+          "url": "/api/file/40103661_SMP_NEGERI_6_TOULUAAN/2026-09/rekeningKoran_1794801271672_agustus.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "bku": {
+          "url": "/api/file/40103661_SMP_NEGERI_6_TOULUAAN/2026-09/bku_1794801271735_BKU_September-1.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "rekapanBelanja": {
+          "url": "/api/file/40103661_SMP_NEGERI_6_TOULUAAN/2026-09/rekapanBelanja_1794801271867_Rekapan_September-1.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "lra": {
+          "url": "/api/file/40103661_SMP_NEGERI_6_TOULUAAN/2026-09/lra_1794801271985_Realisasi_September-1.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "bukuPajak": {
+          "url": "/api/file/40103661_SMP_NEGERI_6_TOULUAAN/2026-09/bukuPajak_1794801272091_BKU_PAJAK_TW_3.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        },
+        "sptjm": {
+          "url": "/api/file/40103661_SMP_NEGERI_6_TOULUAAN/2026-09/sptjm_1794801272188_SPTJM_September-1.pdf",
+          "checked": true,
+          "needsFix": false,
+          "reuploaded": false,
+          "note": ""
+        }
+      },
+      "verifStatus": "Diverifikasi Dinas",
+      "verifiedAt": "2026-11-16T04:15:45.107Z",
+      "verifiedBy": "admin",
+      "reconDone": true,
+      "reconDoneAt": "2026-11-16T04:15:48.119Z"
+    }
+  },
+  "133": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 47400000,
+        "kinerja": 0,
+        "jagirMasuk": 44008,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 44008,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 109383100
+      },
+      "saldoReguler": 11233100,
+      "saldoKinerja": 50750000,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 61983100,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "134": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 61800000,
+        "kinerja": 0,
+        "jagirMasuk": 6276,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 76439000
+      },
+      "saldoReguler": 14639000,
+      "saldoAwalCustom": 14639000,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "135": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 51000000,
+        "kinerja": 0,
+        "jagirMasuk": 4212,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 51358750
+      },
+      "saldoReguler": 358750,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 358750,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  },
+  "136": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 90695000,
+        "kinerja": 0,
+        "jagirMasuk": 37560,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 37560,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 114301383
+      },
+      "saldoReguler": 23092110,
+      "saldoTunai": 476713,
+      "saldoAwalCustom": 23092110
+    }
+  },
+  "137": {
+    "Jan": {
+      "documents": {},
+      "verifStatus": "Draft",
+      "pendapatan": {
+        "reguler": 31800000,
+        "kinerja": 0,
+        "jagirMasuk": 3444,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 3444,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 41905600
+      },
+      "saldoReguler": 3244400,
+      "saldoKinerja": 6861200,
+      "saldoNonBOS": 0,
+      "saldoAwalCustom": 10105600,
+      "verifiedAt": null,
+      "verifiedBy": null,
+      "verifiedBulk": false,
+      "reopenedAt": "2026-11-12T03:34:14.679Z",
+      "reopenedBy": "admin"
+    }
+  }
+}

@@ -1,0 +1,2627 @@
+[
+  {
+    "no": 1,
+    "npsn": "69762652",
+    "name": "SD NEGERI MAULIT",
+    "alamat": "MAULIT",
+    "status": "NEGERI",
+    "kecamatan": "KEC. PASAN",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Jane Selfie Kawulusan, S.Pd",
+      "nip": "197906202014112001",
+      "pangkat": "Penata (III/c)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Vanny Vivi Tiwa, S.Pd.K",
+      "nip": "198302282023212009",
+      "pangkat": "",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "sdnmaulit",
+      "waktu": "2026-11-12T02:40:29.014Z"
+    }
+  },
+  {
+    "no": 2,
+    "npsn": "40102206",
+    "name": "SD NEGERI II MOLOMPAR",
+    "alamat": "Molompar Dua",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU TIMUR",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Telmi N. Wawointana, M.Pd.K",
+      "nip": "196910091994032007",
+      "pangkat": "Pembina Tk.I (IV/b)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Yunitha Manoppo,S.Pd.K",
+      "nip": "198606072025212028",
+      "pangkat": "IX",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "SDN II MOLOMPAR",
+      "waktu": "2026-11-12T02:38:29.915Z"
+    }
+  },
+  {
+    "no": 3,
+    "npsn": "40102145",
+    "name": "SD GMIM 361TATENGESAN",
+    "alamat": "Tatengesan Jaga II",
+    "status": "SWASTA",
+    "kecamatan": "KEC. PUSOMAEN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 4,
+    "npsn": "40101881",
+    "name": "SDN INPRES WINORANGIAN",
+    "alamat": "Winorangian",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU UTARA",
+    "jenjang": "SD"
+  },
+  {
+    "no": 5,
+    "npsn": "40102202",
+    "name": "SDN I BELANG",
+    "alamat": "BELANG",
+    "status": "NEGERI",
+    "kecamatan": "KEC. BELANG",
+    "jenjang": "SD"
+  },
+  {
+    "no": 6,
+    "npsn": "40102169",
+    "name": "SD GMIM 2 TOMBATU",
+    "alamat": "Jaga 4",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOMBATU UTARA",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Katrien O Tampinongkol, S.Pd",
+      "nip": "196710301988012002",
+      "pangkat": "Pembina Utama Muda (IV/c)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Alfionita Manopo, S.Pd",
+      "nip": "000000000000000000",
+      "pangkat": "-",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "sdgmimtombatu@gmail.com",
+      "waktu": "2026-11-12T02:39:35.735Z"
+    }
+  },
+  {
+    "no": 7,
+    "npsn": "40102204",
+    "name": "SD NEGERI I MOLOMPAR",
+    "alamat": "Jl. Pendidikan Desa Molompar Dua Jaga II Kec. Tombatu Timur",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU TIMUR",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Meyke Ochotan S.Pd, M.Pd",
+      "nip": "197105032006042027",
+      "pangkat": "Pembina Tk.I (IV/b)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Santi Agustien Mamahit, S.Pd.K",
+      "nip": "198608302019032003",
+      "pangkat": "Penata Muda Tk.I (III/b)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "SDN1MOLOMPAR",
+      "waktu": "2026-11-12T02:38:44.163Z"
+    }
+  },
+  {
+    "no": 8,
+    "npsn": "40102165",
+    "name": "SD GMIM BENTENAN",
+    "alamat": "Bentenan ",
+    "status": "SWASTA",
+    "kecamatan": "KEC. PUSOMAEN",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Greisye L Lengkey, S.Pd",
+      "nip": "196705141988022004",
+      "pangkat": "Pembina Utama Muda (IV/c)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "fendi f tamandatu",
+      "nip": "000000000000000000",
+      "pangkat": "-",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "sdgmimbentenan",
+      "waktu": "2026-11-12T02:38:59.091Z"
+    }
+  },
+  {
+    "no": 9,
+    "npsn": "40102172",
+    "name": "SD GMIM KALI",
+    "alamat": "Jaga I",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOMBATU",
+    "jenjang": "SD"
+  },
+  {
+    "no": 10,
+    "npsn": "40102214",
+    "name": "SD MUHAMMADIYAH MOLOMPAR",
+    "alamat": "Jln. Puskesmas Jaga 4 Desa Molompar",
+    "status": "SWASTA",
+    "kecamatan": "KEC. BELANG",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "widyawati linda muslim,spd",
+      "nip": "000000000000000000",
+      "pangkat": "Penata (III/c)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Natalia Gabriella Umboh,spd",
+      "nip": "000000000000000000",
+      "pangkat": "-",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "Sdmuhammadiyah@gmail.com",
+      "waktu": "2026-11-12T03:31:00.763Z"
+    }
+  },
+  {
+    "no": 11,
+    "npsn": "40103498",
+    "name": "SD INPRES BENTENAN",
+    "alamat": "Bentenan",
+    "status": "NEGERI",
+    "kecamatan": "KEC. PUSOMAEN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 12,
+    "npsn": "40101858",
+    "name": "SD NEGERI PISA",
+    "alamat": "Jalan Trans Pisa",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Glenie Devie Tangel, S.Pd",
+      "nip": "19740830 200604 1008",
+      "pangkat": "Penata Tk.I (III/d)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Noflin Tumbelaka, S.Pd",
+      "nip": "198111232025212037",
+      "pangkat": "00",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "bolungchann95@gmail.com",
+      "waktu": "2026-11-12T02:46:28.026Z"
+    }
+  },
+  {
+    "no": 13,
+    "npsn": "40101953",
+    "name": "SD INPRES RASI",
+    "alamat": "Rasi Satu, Jaga 2",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATAHAN",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Lenda.M. Tulung,SPd",
+      "nip": "196912192003122007",
+      "pangkat": "Pembina Utama Muda (IV/c)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Astria Timbulus, SPd",
+      "nip": "199004232019032004",
+      "pangkat": "Penata Muda Tk.I (III/b)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "SDINPRESRASI",
+      "waktu": "2026-11-12T02:12:22.676Z"
+    }
+  },
+  {
+    "no": 14,
+    "npsn": "40102230",
+    "name": "SD NEGERI I MUNDUNG",
+    "alamat": "Jaga IV",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU TIMUR",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Elvie Jenny Angginaloy, S.Pd",
+      "nip": "197006271994032002",
+      "pangkat": "Pembina Tk.I (IV/b)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Sarah Faliana Wulandari Naray, S.Pd",
+      "nip": "199210032020122013",
+      "pangkat": "Penata Muda Tk.I (III/b)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "sucen legi",
+      "waktu": "2026-11-12T02:42:39.381Z"
+    }
+  },
+  {
+    "no": 15,
+    "npsn": "40101920",
+    "name": "SD INPRES LOBU",
+    "alamat": "LOBU",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOULUAAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 16,
+    "npsn": "40103514",
+    "name": "SD COKROAMINOTO RATATOTOK",
+    "alamat": "Jl. Ratuwalangon",
+    "status": "SWASTA",
+    "kecamatan": "KEC. RATATOTOK",
+    "jenjang": "SD"
+  },
+  {
+    "no": 17,
+    "npsn": "40102093",
+    "name": "SD GMIM LOWATAG",
+    "alamat": "Jaga I",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOULUAAN SELATAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 18,
+    "npsn": "40102171",
+    "name": "SD GMIM KALAIT",
+    "alamat": "Kalait",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOULUAAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 19,
+    "npsn": "40102256",
+    "name": "SDN INPRES 2 WATULINEY",
+    "alamat": "JAGA I",
+    "status": "NEGERI",
+    "kecamatan": "KEC. BELANG",
+    "jenjang": "SD"
+  },
+  {
+    "no": 20,
+    "npsn": "40102146",
+    "name": "SD GMIM 362 MINANGA",
+    "alamat": "Minanga Dua, Jaga 1",
+    "status": "SWASTA",
+    "kecamatan": "KEC. PUSOMAEN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 21,
+    "npsn": "40101897",
+    "name": "SD NEGERI TABABO",
+    "alamat": "Tababo",
+    "status": "NEGERI",
+    "kecamatan": "KEC. BELANG",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Gryssye Meva Pontororing,S.Pd",
+      "nip": "197311082002122001",
+      "pangkat": "Pembina Tk.I (IV/b)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Irma Malingkas,S.Pd",
+      "nip": "197101212014112001",
+      "pangkat": "Pembina (IV/a)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "SDN TABABO",
+      "waktu": "2026-11-12T02:37:39.333Z"
+    }
+  },
+  {
+    "no": 22,
+    "npsn": "40102124",
+    "name": "SD GMIM RANOAKO",
+    "alamat": "RANOAKO",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOULUAAN SELATAN",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "FRIETJE KAREL MASILIH AGOW,S.Pd",
+      "nip": "197102231996061002",
+      "pangkat": "Pembina Tk.I (IV/b)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "FEYBE F. SALANGKA,S.Pd",
+      "nip": "197502022009022002",
+      "pangkat": "Penata Muda Tk.I (III/b)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "SDGMIMRANOAKO",
+      "waktu": "2026-11-12T02:37:54.809Z"
+    }
+  },
+  {
+    "no": 23,
+    "npsn": "40102307",
+    "name": "SD INPRES BUKU",
+    "alamat": "Jl Manunggal",
+    "status": "NEGERI",
+    "kecamatan": "KEC. BELANG",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Jumiati Busa, S.Pd.I",
+      "nip": "197106061994032009",
+      "pangkat": "Pembina Tk.I (IV/b)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "NURDJAYA",
+      "nip": "197002201993032010",
+      "pangkat": "Penata Tk.I (III/d)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "meivalontaan26@gmail.com",
+      "waktu": "2026-11-12T02:47:55.666Z"
+    }
+  },
+  {
+    "no": 24,
+    "npsn": "40101918",
+    "name": "SD INPRES LIWUTUNG I",
+    "alamat": "Jl. Molingkawok Jaga 4",
+    "status": "NEGERI",
+    "kecamatan": "KEC. PASAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 25,
+    "npsn": "40101910",
+    "name": "SD INPRES MOREAH",
+    "alamat": "Moreah",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATATOTOK",
+    "jenjang": "SD"
+  },
+  {
+    "no": 26,
+    "npsn": "40105018",
+    "name": "SD GMIM SOLAFIDE LOBU",
+    "alamat": "LOBU DUA",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOULUAAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 27,
+    "npsn": "40102311",
+    "name": "SD INPRES 2 BORGO",
+    "alamat": "Borgo",
+    "status": "NEGERI",
+    "kecamatan": "KEC. BELANG",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "ALNI ADRI TULANDI, S.Pd",
+      "nip": "197108062006041021",
+      "pangkat": "Penata Tk.I (III/d)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "EDEN TUNAS, S.Pd",
+      "nip": "199311212020121005",
+      "pangkat": "Penata Muda Tk.I (III/b)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "SD INPRES 2 BORGO",
+      "waktu": "2026-11-12T02:35:21.878Z"
+    }
+  },
+  {
+    "no": 28,
+    "npsn": "40102121",
+    "name": "SD GMIM RANOKETANG",
+    "alamat": "Toundanouw",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOULUAAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 29,
+    "npsn": "69960341",
+    "name": "SD NEGERI WIOI TIMUR",
+    "alamat": "Wioi Timur (Nasaret)",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATAHAN TIMUR",
+    "jenjang": "SD"
+  },
+  {
+    "no": 30,
+    "npsn": "40101919",
+    "name": "SDN INPRES LIWUTUNG II",
+    "alamat": "Towuntu Timur Jaga II",
+    "status": "NEGERI",
+    "kecamatan": "KEC. PASAN",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Yunita Rambi,S.Pd",
+      "nip": "197806282009022001",
+      "pangkat": "Penata Muda Tk.I (III/b)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Indra Dekri Rolangon,S.Pd",
+      "nip": "199012282025211027",
+      "pangkat": "",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "suriyationsu@gmail.com",
+      "waktu": "2026-11-12T02:46:49.831Z"
+    }
+  },
+  {
+    "no": 31,
+    "npsn": "40101871",
+    "name": "SD INPRES TOMBATU I",
+    "alamat": "Jln. Siswa Jaga 3",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Lisa Alain Ratulangi, S.Pd",
+      "nip": "197608262010012004",
+      "pangkat": "Pembina (IV/a)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Alce Rambembuoch, S.Pd",
+      "nip": "198404262019032007",
+      "pangkat": "Penata Muda Tk.I (III/b)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "sdinprestombatu1@gmail.com",
+      "waktu": "2026-11-12T02:35:16.849Z"
+    }
+  },
+  {
+    "no": 32,
+    "npsn": "40102203",
+    "name": "SD NEGERI 1 LIWUTUNG",
+    "alamat": "Liwutung",
+    "status": "NEGERI",
+    "kecamatan": "KEC. PASAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 33,
+    "npsn": "40101940",
+    "name": "SD INPRES MUNDUNG",
+    "alamat": "Jaga IV",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU TIMUR",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "DELIE DETIE KOMANSILAN, S.Pd., M.Pd.",
+      "nip": "197012131992082001",
+      "pangkat": "Pembina Utama Muda (IV/c)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "NORI GERTJE LUMINTANG, S.Pd.",
+      "nip": "196911291994032004",
+      "pangkat": "Pembina Tk.I (IV/b)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "SD INPRES MUNDUNG",
+      "waktu": "2026-11-12T02:14:24.188Z"
+    }
+  },
+  {
+    "no": 34,
+    "npsn": "40103505",
+    "name": "SD GMIM TONSAWANG",
+    "alamat": "TONSAWANG 1",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOMBATU",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Pebe Debora Femy Walintukan, S.Pd",
+      "nip": "197102252006042019",
+      "pangkat": "Penata Tk.I (III/d)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Maria Kaunde, S.Pd",
+      "nip": "000000000000000000",
+      "pangkat": "",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "Aurel",
+      "waktu": "2026-11-12T02:40:28.227Z"
+    }
+  },
+  {
+    "no": 35,
+    "npsn": "40102196",
+    "name": "SD NEGERI 3 BELANG",
+    "alamat": "Beringin",
+    "status": "NEGERI",
+    "kecamatan": "KEC. BELANG",
+    "jenjang": "SD"
+  },
+  {
+    "no": 36,
+    "npsn": "40102112",
+    "name": "SD GMIM RATAHAN",
+    "alamat": "Jln. Lorong SD GMIM Ratahan Lingkungan III Kelurahan Lowu Dua",
+    "status": "SWASTA",
+    "kecamatan": "KEC. RATAHAN",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Olfie Onna Tulandi,S.PAK",
+      "nip": "196710241992032006",
+      "pangkat": "Pembina Utama Muda (IV/c)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Junnita Carolina Assa,S.Pd",
+      "nip": "000000000000000000",
+      "pangkat": "0",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "SD GMIM Ratahan",
+      "waktu": "2026-11-12T02:07:09.719Z"
+    }
+  },
+  {
+    "no": 37,
+    "npsn": "40101932",
+    "name": "SD INPRES 1 WATULINEY",
+    "alamat": "Jl Sparta Hangkang, Jaga IV",
+    "status": "NEGERI",
+    "kecamatan": "KEC. BELANG",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "DINNA THOBIAS, S.Pd",
+      "nip": "197006251993022001",
+      "pangkat": "Pembina Tk.I (IV/b)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "NOVITA STENY WORANG, S.Pd",
+      "nip": "198311192023212007",
+      "pangkat": "Ahli Pertama/IX",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "SD INPRES 1 WATULINEY",
+      "waktu": "2026-11-12T02:34:49.445Z"
+    }
+  },
+  {
+    "no": 38,
+    "npsn": "40102251",
+    "name": "SD INPRES WIOI",
+    "alamat": "Wioi Tiga",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATAHAN TIMUR",
+    "jenjang": "SD"
+  },
+  {
+    "no": 39,
+    "npsn": "40102218",
+    "name": "SD NEGERI 2 BELANG",
+    "alamat": "Buku",
+    "status": "NEGERI",
+    "kecamatan": "KEC. BELANG",
+    "jenjang": "SD"
+  },
+  {
+    "no": 40,
+    "npsn": "40101922",
+    "name": "SD INPRES LOWU",
+    "alamat": "Jl. Pondol",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATAHAN",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Deasy Natalia Wondal,S.Pd",
+      "nip": "198212132014112002",
+      "pangkat": "Penata Tk.I (III/d)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Selfy Sendra Mandolang,S.Pd",
+      "nip": "197209272014112001",
+      "pangkat": "Pengatur Muda Tk.I (II/b)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "SD INPRES LOWU",
+      "waktu": "2026-11-12T02:41:56.941Z"
+    }
+  },
+  {
+    "no": 41,
+    "npsn": "40101914",
+    "name": "SD INPRES KUYANGA",
+    "alamat": "Jln Masikolah Jaga IV Desa Kuyanga",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU UTARA",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Conny Juultje Borang, S.Pd",
+      "nip": "197207232011022001",
+      "pangkat": "Penata (III/c)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Feys Wiske Legi, S.Pd",
+      "nip": "198603062020122004",
+      "pangkat": "Penata Muda Tk.I (III/b)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "SD INPRES KUYANGA",
+      "waktu": "2026-11-12T03:05:55.997Z"
+    }
+  },
+  {
+    "no": 42,
+    "npsn": "40102189",
+    "name": "SD GMIM 1 SILIAN",
+    "alamat": "Jaga 1 Lorong Pendidikan",
+    "status": "SWASTA",
+    "kecamatan": "KEC. SILIAN RAYA",
+    "jenjang": "SD"
+  },
+  {
+    "no": 43,
+    "npsn": "40102194",
+    "name": "SD NEGERI 2 TOMBATU",
+    "alamat": "Desa Tombatu Tiga Selatan Jaga I",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Zonny R. Manengal, S.Pd",
+      "nip": "19730611 200604 1 016",
+      "pangkat": "Pembina Tk.I (IV/b)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Stella R. Legi, S.Pd",
+      "nip": "19890117 202012 2 012",
+      "pangkat": "Penata Muda Tk.I (III/b)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "SDN2Tombatu",
+      "waktu": "2026-11-12T02:34:24.269Z"
+    }
+  },
+  {
+    "no": 44,
+    "npsn": "40102283",
+    "name": "SD GMIM WONGKAI",
+    "alamat": "Wongkai",
+    "status": "SWASTA",
+    "kecamatan": "KEC. RATAHAN TIMUR",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Indrianie Yessi Stione Sajow, S.Pd",
+      "nip": "198506012011022001",
+      "pangkat": "Penata (III/c)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Frangki Rafli Maringka, S.Th",
+      "nip": "000000000000000000",
+      "pangkat": "-",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "sdgmimwongkai02@gmail.com",
+      "waktu": "2026-11-12T02:47:00.356Z"
+    }
+  },
+  {
+    "no": 45,
+    "npsn": "69762653",
+    "name": "SD NEGERI SILIAN RAYA",
+    "alamat": "SILIAN",
+    "status": "NEGERI",
+    "kecamatan": "KEC. SILIAN RAYA",
+    "jenjang": "SD"
+  },
+  {
+    "no": 46,
+    "npsn": "40101944",
+    "name": "SD NEGERI INPRES SILIAN DUA",
+    "alamat": "Silian Dua",
+    "status": "NEGERI",
+    "kecamatan": "KEC. SILIAN RAYA",
+    "jenjang": "SD"
+  },
+  {
+    "no": 47,
+    "npsn": "69962187",
+    "name": "SD GMIM LOWU UTARA",
+    "alamat": "Desa Kalatin",
+    "status": "SWASTA",
+    "kecamatan": "KEC. RATAHAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 48,
+    "npsn": "40102179",
+    "name": "SD GMIM I TOMBATU",
+    "alamat": "Jaga 3",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOMBATU",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Jantje Assa, S.Pd",
+      "nip": "197001031993041001",
+      "pangkat": "Pembina Utama Muda (IV/c)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Delin Y Dalos, S.Pd",
+      "nip": "000000000000000000",
+      "pangkat": "-",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "SD GMIM 1 TOMBATU",
+      "waktu": "2026-11-12T02:40:12.215Z"
+    }
+  },
+  {
+    "no": 49,
+    "npsn": "40102250",
+    "name": "SD INPRES PANGU",
+    "alamat": "Jaga 1 Pangu Satu",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATAHAN TIMUR",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Novrita V. Kosakoy, S.Pd.,M.Pd",
+      "nip": "198008062011022001",
+      "pangkat": "Pembina Tk.I (IV/b)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Asti L. N. Sualang, S.Pd",
+      "nip": "19831106 201903 2 003",
+      "pangkat": "Penata Muda Tk.I (III/b)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "pangusdinpres@gmail.com",
+      "waktu": "2026-11-12T02:12:30.767Z"
+    }
+  },
+  {
+    "no": 50,
+    "npsn": "40102162",
+    "name": "SD ADVENT RATAHAN",
+    "alamat": "JL. Pendidikan, lingkungan 3",
+    "status": "SWASTA",
+    "kecamatan": "KEC. RATAHAN",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Elsje Sakul, S. Pd",
+      "nip": "000000000000000000",
+      "pangkat": "-",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Janice Engeline Pasuhuk, S. E.",
+      "nip": "000000000000000000",
+      "pangkat": "-",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "engelinepasuhuk65@gmail.com",
+      "waktu": "2026-11-12T02:39:35.745Z"
+    }
+  },
+  {
+    "no": 51,
+    "npsn": "40102117",
+    "name": "SD GMIM TAMBELANG",
+    "alamat": "Tambelang",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOULUAAN SELATAN",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "OLFIE TIOW,S.Pd",
+      "nip": "197210121994032001",
+      "pangkat": "Pembina Tk.I (IV/b)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Novita Gosal,Ama.,Pd",
+      "nip": "198211152009022003",
+      "pangkat": "Pengatur Tk.I (II/d)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "SD GMIM TAMBELANG",
+      "waktu": "2026-11-12T02:34:40.858Z"
+    }
+  },
+  {
+    "no": 52,
+    "npsn": "40102107",
+    "name": "SD GMIM PANGU",
+    "alamat": "Pangu 2 Jaga 4",
+    "status": "SWASTA",
+    "kecamatan": "KEC. RATAHAN TIMUR",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "MARTHA SENGKEY, S.Pd",
+      "nip": "197705302014112001",
+      "pangkat": "Penata Muda Tk.I (III/b)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "RANI KARTER RAU, S.Pd",
+      "nip": "197810232011021001",
+      "pangkat": "Pengatur (II/c)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "sdgmimpangu",
+      "waktu": "2026-11-12T02:44:46.831Z"
+    }
+  },
+  {
+    "no": 53,
+    "npsn": "40102098",
+    "name": "SD GMIM KUYANGA",
+    "alamat": "Kuyanga",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOMBATU UTARA",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "JULTJE L. AGOW, S.Pd",
+      "nip": "196707101994031011",
+      "pangkat": "Pembina Tk.I (IV/b)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "YATI TUMEWAN, S.Pd",
+      "nip": "000000000000000000",
+      "pangkat": "Juru Muda (I/a)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "sdgmimkuyanga@gmail.com",
+      "waktu": "2026-11-12T02:40:43.176Z"
+    }
+  },
+  {
+    "no": 54,
+    "npsn": "40102305",
+    "name": "SD INPRES BASAAN",
+    "alamat": "Basaan Satu",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATATOTOK",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "AMERLIEN G. KAWENGIAN, S.Pd",
+      "nip": "197410302006042004",
+      "pangkat": "Penata Tk.I (III/d)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "HENRY F. SUPIT, S.Pd",
+      "nip": "198908112016031004",
+      "pangkat": "Penata Muda Tk.I (III/b)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "sdinpresbasaan",
+      "waktu": "2026-11-12T02:09:54.166Z"
+    }
+  },
+  {
+    "no": 55,
+    "npsn": "40102309",
+    "name": "SD INPRES 1 BORGO",
+    "alamat": "Jl. Binuang Jaga 4 ",
+    "status": "NEGERI",
+    "kecamatan": "KEC. BELANG",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "MEIDA HARBIN S.Pd",
+      "nip": "197005022009022001",
+      "pangkat": "Penata (III/c)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "HERCE KAUNANG S.Pd",
+      "nip": "197503172014112001",
+      "pangkat": "Penata (III/c)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "SD INPRES 1 BORGO",
+      "waktu": "2026-11-12T02:34:27.075Z"
+    }
+  },
+  {
+    "no": 56,
+    "npsn": "40102270",
+    "name": "SDS GP TONSAWANG",
+    "alamat": "TONSAWANG",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOMBATU",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "VIVI OLGA RATU,S.Pd",
+      "nip": "197502072014112001",
+      "pangkat": "Penata Muda (III/a)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "HEIN MOKOSOLANG,S.Pd.K",
+      "nip": "000000000000000000",
+      "pangkat": "Juru Muda (I/a)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "sdsgptonsawang",
+      "waktu": "2026-11-12T02:12:15.067Z"
+    }
+  },
+  {
+    "no": 57,
+    "npsn": "40102142",
+    "name": "SD GMIM 2 SILIAN",
+    "alamat": "SILIAN TENGAH",
+    "status": "SWASTA",
+    "kecamatan": "KEC. SILIAN RAYA",
+    "jenjang": "SD"
+  },
+  {
+    "no": 58,
+    "npsn": "40103495",
+    "name": "SD INPRES MOLOMPAR",
+    "alamat": "Jln. Pendidikan Jaga 3 Desa Molompar Kecamatan Tombatu Timur",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU TIMUR",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "ANNEKE AN TODAR, S.Pd.",
+      "nip": "198110252014112001",
+      "pangkat": "Penata Tk.I (III/d)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "LEYDIA MONDOLANG, SPd",
+      "nip": "198604102025212062",
+      "pangkat": "",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "SDInpresMolompar",
+      "waktu": "2026-11-12T02:13:26.982Z"
+    }
+  },
+  {
+    "no": 59,
+    "npsn": "40103735",
+    "name": "SDN 1 TOUNDANOW",
+    "alamat": "TOUNDANOW",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOULUAAN",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Orleen Sandra Mamesah, S.Pd.",
+      "nip": "197010222008012017",
+      "pangkat": "Penata Tk.I (III/d)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Valke V.W.W. Tampongangoy, S.Pd.",
+      "nip": "197502192014112001",
+      "pangkat": "Penata Muda Tk.I (III/b)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "rudygumolili4",
+      "waktu": "2026-11-12T04:00:22.063Z"
+    }
+  },
+  {
+    "no": 60,
+    "npsn": "40101943",
+    "name": "SD INPRES SILIAN SATU",
+    "alamat": "Silian Utara",
+    "status": "NEGERI",
+    "kecamatan": "KEC. SILIAN RAYA",
+    "jenjang": "SD"
+  },
+  {
+    "no": 61,
+    "npsn": "40102201",
+    "name": "SD NEGERI BASAAN",
+    "alamat": "Jaga 3 Basaan",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATATOTOK",
+    "jenjang": "SD"
+  },
+  {
+    "no": 62,
+    "npsn": "40101860",
+    "name": "SD NEGERI KECIL BANGA",
+    "alamat": "Banga",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOULUAAN SELATAN",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Darwis Usuman M.Pd",
+      "nip": "000000000000000000",
+      "pangkat": "-",
+      "jabatan": "Menteri Peternakan"
+    },
+    "bendahara": {
+      "nama": "Yosep Tompunu, S.T.Ler",
+      "nip": "000000000000000000",
+      "pangkat": "-",
+      "jabatan": "Wamen Peternakan"
+    },
+    "profilDiubah": {
+      "oleh": "juan",
+      "waktu": "2026-11-12T02:39:48.626Z"
+    }
+  },
+  {
+    "no": 63,
+    "npsn": "40102147",
+    "name": "SD GMIM WATULINEY",
+    "alamat": "Jaga I",
+    "status": "SWASTA",
+    "kecamatan": "KEC. BELANG",
+    "jenjang": "SD"
+  },
+  {
+    "no": 64,
+    "npsn": "40101875",
+    "name": "SDN INPRES TOSURAYA",
+    "alamat": "Jalan Ruata",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATAHAN",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Dince Golung, S.Pd",
+      "nip": "196611161988022001",
+      "pangkat": "Pembina Tk.I (IV/b)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Olivia Silom",
+      "nip": "198510282009022007",
+      "pangkat": "Penata (III/c)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "sdinprestosuraya@gmail.com",
+      "waktu": "2026-11-12T03:02:11.444Z"
+    }
+  },
+  {
+    "no": 65,
+    "npsn": "40101866",
+    "name": "SD NEGERI MINANGA",
+    "alamat": "Jaga   III  Minanga",
+    "status": "NEGERI",
+    "kecamatan": "KEC. PUSOMAEN",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "DJELI NARAY S.Pd",
+      "nip": "197106021991032004",
+      "pangkat": "Pembina Tk.I (IV/b)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "MEISKE SAMBOW S.Pd",
+      "nip": "197005181991012001",
+      "pangkat": "Pembina (IV/a)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "SDN MINANGA",
+      "waktu": "2026-11-12T02:39:42.226Z"
+    }
+  },
+  {
+    "no": 66,
+    "npsn": "40101882",
+    "name": "SD INPRES TOMBATU 2",
+    "alamat": "Jl. Siswa Jg. 2 Desa Tombatu Dua Tengah ",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU UTARA",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Jeane C. Rondonuwu, S.Pd",
+      "nip": "196803021987032001",
+      "pangkat": "Pembina Utama Muda (IV/c)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Rivaldo R. M. Gosal, S.Pd",
+      "nip": "199507272020121014",
+      "pangkat": "Penata Muda Tk.I (III/b)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "tombatuduainpres@gmail.com",
+      "waktu": "2026-11-12T02:38:10.253Z"
+    }
+  },
+  {
+    "no": 67,
+    "npsn": "40101934",
+    "name": "SD INPRES KALAIT",
+    "alamat": "Kalait Jaga 5",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOULUAAN SELATAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 68,
+    "npsn": "40102183",
+    "name": "SD GMIM BUNAG",
+    "alamat": "BUNAG",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOULUAAN SELATAN",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "SILVA T.Y. BINANGGAL,M.Pd",
+      "nip": "197908032012012001",
+      "pangkat": "Penata Tk.I (III/d)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "FRENLY M. E. SOMBA",
+      "nip": "",
+      "pangkat": "",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "obedakun@gmail.com",
+      "waktu": "2026-11-12T02:42:39.754Z"
+    }
+  },
+  {
+    "no": 69,
+    "npsn": "40103490",
+    "name": "SD NEGERI TUMBAK",
+    "alamat": "Tumbak",
+    "status": "NEGERI",
+    "kecamatan": "KEC. PUSOMAEN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 70,
+    "npsn": "69952246",
+    "name": "SD ADVENT PIONEER LOBU",
+    "alamat": "Jaga III",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOULUAAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 71,
+    "npsn": "40102246",
+    "name": "SD NEGERI 1 RATAHAN",
+    "alamat": "Wawali Pasan",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATAHAN",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Dortje Luisa Komalig, S.Pd.k",
+      "nip": "197212042009022001",
+      "pangkat": "Penata Tk.I (III/d)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Silvana Y. H. Paendong, S.Pd",
+      "nip": "198108312009022001",
+      "pangkat": "Penata (III/c)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "Sdn1Ratahan",
+      "waktu": "2026-11-12T02:09:11.516Z"
+    }
+  },
+  {
+    "no": 72,
+    "npsn": "40101856",
+    "name": "SD NEGERI KECIL SUHUYON",
+    "alamat": "Suhuyon",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOULUAAN SELATAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 73,
+    "npsn": "40102197",
+    "name": "SD NEGERI 3 LIWUTUNG",
+    "alamat": "Jln. Ratahan-Tombatu, Towuntu Barat, Jaga I",
+    "status": "NEGERI",
+    "kecamatan": "KEC. PASAN",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "AGUSTINA MARINGKA, S.Pd, MM",
+      "nip": "197408271999082001",
+      "pangkat": "Penata Tk.I (III/d)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "ALLEN NURIYANI KOUNTUR, S.Pd.K",
+      "nip": "197404212007012035",
+      "pangkat": "Penata (III/c)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "SDN3LIWUTUNG",
+      "waktu": "2026-11-12T02:39:57.377Z"
+    }
+  },
+  {
+    "no": 74,
+    "npsn": "40102252",
+    "name": "SD INPRES WONGKAI",
+    "alamat": "Wongkai",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATAHAN TIMUR",
+    "jenjang": "SD"
+  },
+  {
+    "no": 75,
+    "npsn": "40102291",
+    "name": "SD INPRES RATATOTOK",
+    "alamat": "Jl. Z.s Najoan Jaga Iii",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATATOTOK",
+    "jenjang": "SD"
+  },
+  {
+    "no": 76,
+    "npsn": "40102105",
+    "name": "SD GMIM LOBU",
+    "alamat": "Lobu Satu",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOULUAAN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 77,
+    "npsn": "40102205",
+    "name": "SD NEGERI 2 MUNDUNG",
+    "alamat": "Jaga 4",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU TIMUR",
+    "jenjang": "SD"
+  },
+  {
+    "no": 78,
+    "npsn": "40101864",
+    "name": "SD NEGERI MANGKIT",
+    "alamat": "JALAN SISWA, JAGA 2",
+    "status": "NEGERI",
+    "kecamatan": "KEC. BELANG",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "MARGO SAWOTONG, S.Pd",
+      "nip": "197205302006042013",
+      "pangkat": "Pembina (IV/a)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "JUNINI MAITULUNG, S.Pd",
+      "nip": "198606022011022001",
+      "pangkat": "Penata Tk.I (III/d)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "SD NEGERI MANGKIT",
+      "waktu": "2026-11-12T02:33:59.252Z"
+    }
+  },
+  {
+    "no": 79,
+    "npsn": "40102249",
+    "name": "SD NEGERI 2 RATAHAN",
+    "alamat": "Jl. Ompi Tosuraya Lingkungan 3",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATAHAN",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Mariani Lumopa, S.Pd",
+      "nip": "198203202010012005",
+      "pangkat": "Penata Tk.I (III/d)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Cilvia Monde, S.Pd",
+      "nip": "198610192011022001",
+      "pangkat": "Penata (III/c)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "SD Negeri 2 Ratahan",
+      "waktu": "2026-11-12T02:35:03.003Z"
+    }
+  },
+  {
+    "no": 80,
+    "npsn": "40101895",
+    "name": "SD NEGERI WIOI",
+    "alamat": "Desa Wioi Satu ",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATAHAN TIMUR",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Vera L. Sualang, S.Pd",
+      "nip": "197307171996062001",
+      "pangkat": "Pembina Utama Muda (IV/c)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Joice A. W. Untu, S.Pd",
+      "nip": "197208212003122003",
+      "pangkat": "Pembina Utama Muda (IV/c)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "SDNEGERIWIOI",
+      "waktu": "2026-11-12T02:13:28.629Z"
+    }
+  },
+  {
+    "no": 81,
+    "npsn": "40101935",
+    "name": "SD INPRES KALI",
+    "alamat": "Jaga II",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Jimmy Oke Watania, S.Pd",
+      "nip": "197410152008031002",
+      "pangkat": "Penata Tk.I (III/d)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Aprilia Laurina Legi, S.Pd",
+      "nip": "199804032020122010",
+      "pangkat": "Penata Muda (III/a)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "inpreskalisd@gmail.com",
+      "waktu": "2026-11-12T02:11:37.716Z"
+    }
+  },
+  {
+    "no": 82,
+    "npsn": "40102271",
+    "name": "SD GEREJA PANTEKOSTA KALI",
+    "alamat": "Desa Kali Lingkungan 1",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOMBATU",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Jeine Jeclin Akay, M.Pd",
+      "nip": "197606022008012018",
+      "pangkat": "Penata Tk.I (III/d)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Resi Meri Pondaag, S.Pd",
+      "nip": "",
+      "pangkat": "",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "SD Gereja Pantekosta Kali",
+      "waktu": "2026-11-12T02:35:28.405Z"
+    }
+  },
+  {
+    "no": 83,
+    "npsn": "40101950",
+    "name": "SDN  INPRES TATENGESAN",
+    "alamat": "Jaga  I  Tatengesan ",
+    "status": "NEGERI",
+    "kecamatan": "KEC. PUSOMAEN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 84,
+    "npsn": "40101906",
+    "name": "SD NEGERI INPRES RANOKETANG",
+    "alamat": "JL. Lorong SD Inpres, Jaga III",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOULUAAN",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Marthina Laorina Batubuaya, S.Pd",
+      "nip": "196805071988122001",
+      "pangkat": "Pembina Tk.I (IV/b)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Novel Deflin Punuindoong, S.Pd",
+      "nip": "198511082025212028",
+      "pangkat": "Penata Muda (III/a)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "sdinpresratas@gmail.com",
+      "waktu": "2026-11-12T02:15:45.013Z"
+    }
+  },
+  {
+    "no": 85,
+    "npsn": "40102110",
+    "name": "SD GMIM RASI",
+    "alamat": "Jl. Lamit Jaga 2 Rasi Satu",
+    "status": "SWASTA",
+    "kecamatan": "KEC. RATAHAN",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Johana Umboh,S.Pd,M.M",
+      "nip": "197001121993022002",
+      "pangkat": "Pembina Utama Muda (IV/c)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Intan Aranmala Logor,S.Si",
+      "nip": "000000000000000000",
+      "pangkat": "-",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "logorintan@gmail.com",
+      "waktu": "2026-11-12T02:37:31.850Z"
+    }
+  },
+  {
+    "no": 86,
+    "npsn": "40102247",
+    "name": "SD NEGERI I TOMBATU",
+    "alamat": "Jaga V Desa Betelen",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Adolfin Rantung, S.Pd",
+      "nip": "198008142011022001",
+      "pangkat": "Pembina (IV/a)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Lefina Manengal, S.Pd",
+      "nip": "197210312014112001",
+      "pangkat": "Penata Muda (III/a)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "Vita Manopo",
+      "waktu": "2026-11-12T02:37:40.597Z"
+    }
+  },
+  {
+    "no": 87,
+    "npsn": "40102207",
+    "name": "SD NEGERI 2 LIWUTUNG",
+    "alamat": "Tolombukan Barat",
+    "status": "NEGERI",
+    "kecamatan": "KEC. PASAN",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Telly S. B Damopolii, S.Pd, M.Pd",
+      "nip": "196610051992032015",
+      "pangkat": "Pembina Tk.I (IV/b)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Selvi P. Tolu, S.Pd",
+      "nip": "198509082014112001",
+      "pangkat": "Penata Tk.I (III/d)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "SDN 2 LIWUTUNG",
+      "waktu": "2026-11-12T02:40:21.066Z"
+    }
+  },
+  {
+    "no": 88,
+    "npsn": "40102282",
+    "name": "SD GMIM WINORANGIAN TOMBATU",
+    "alamat": "Jaga 2",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOMBATU UTARA",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "MARNI APENA, M.Pd.K",
+      "nip": "196803101992082002",
+      "pangkat": "Pembina Tk.I (IV/b)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "FONNY MOKORIMBAN, S.Pd",
+      "nip": "000000000000000000",
+      "pangkat": "-",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "Citra",
+      "waktu": "2026-11-12T02:40:48.994Z"
+    }
+  },
+  {
+    "no": 89,
+    "npsn": "40101939",
+    "name": "SD INPRES MOLOMPAR SATU",
+    "alamat": "Jaga 04",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU TIMUR",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Corneles Marniexs Frans, M.Pd",
+      "nip": "197603112014111001",
+      "pangkat": "Penata Tk.I (III/d)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Wiske Ermie Mitje Wawointana, S.Pd",
+      "nip": "197109251994032003",
+      "pangkat": "Pembina (IV/a)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "Winny Katuche",
+      "waktu": "2026-11-12T02:43:42.537Z"
+    }
+  },
+  {
+    "no": 90,
+    "npsn": "40101902",
+    "name": "SD NEGERI PONIKI",
+    "alamat": "PONIKI",
+    "status": "NEGERI",
+    "kecamatan": "KEC. PASAN",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Resly Feinny Sumaraw, S.Pd",
+      "nip": "198602212009021001",
+      "pangkat": "-",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Gim Arina Zala, S.Pd",
+      "nip": "199510022020122025",
+      "pangkat": "-",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "Fiolen",
+      "waktu": "2026-11-12T02:35:07.151Z"
+    }
+  },
+  {
+    "no": 91,
+    "npsn": "40102281",
+    "name": "SD GMIM WIAU",
+    "alamat": "Wiau Jaga III",
+    "status": "SWASTA",
+    "kecamatan": "KEC. PUSOMAEN",
+    "jenjang": "SD"
+  },
+  {
+    "no": 92,
+    "npsn": "40102266",
+    "name": "SD GP RANOKETANG ATAS",
+    "alamat": "Toundanouw Atas",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOULUAAN",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Elsje Damongilala, S.Pd",
+      "nip": "19691028 199101 2 001",
+      "pangkat": "Pembina (IV/a)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Meyke Reyti Kosegeran, S.Pd",
+      "nip": "197505022008012022",
+      "pangkat": "Penata Tk.I (III/d)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "Plato",
+      "waktu": "2026-11-12T02:37:54.355Z"
+    }
+  },
+  {
+    "no": 93,
+    "npsn": "40102148",
+    "name": "SD GMIM 364 RATATOTOK",
+    "alamat": "Jl. Ratuwalangon",
+    "status": "SWASTA",
+    "kecamatan": "KEC. RATATOTOK",
+    "jenjang": "SD"
+  },
+  {
+    "no": 94,
+    "npsn": "40102150",
+    "name": "SD ADVENT WINORANGIAN",
+    "alamat": "Winorangian",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOMBATU UTARA",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "LINDA FRIDA AGUSTIN MUNAISECHE, S.Pd",
+      "nip": "000000000000000000",
+      "pangkat": "-",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "SANTI JEANE MONAREH, S.Pd",
+      "nip": "000000000000000000",
+      "pangkat": "-",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "Angreyni",
+      "waktu": "2026-11-12T02:35:44.681Z"
+    }
+  },
+  {
+    "no": 95,
+    "npsn": "40101899",
+    "name": "SD NEGERI SOYOWAN",
+    "alamat": "Soyowan",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATATOTOK",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "INGE O. WOKAS, S.Pd",
+      "nip": "",
+      "pangkat": "Penata (III/c)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "CIA MERUNTU, S.Pd",
+      "nip": "",
+      "pangkat": "",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "sdnsoyowan40101899",
+      "waktu": "2026-11-12T03:09:48.210Z"
+    }
+  },
+  {
+    "no": 96,
+    "npsn": "40103510",
+    "name": "SD KATOLIK TOMBATU",
+    "alamat": "Betelen",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOMBATU",
+    "jenjang": "SD",
+    "kepalaSekolah": {
+      "nama": "Megy Fransisca Pakasi, S.Pd",
+      "nip": "197103311998082001",
+      "pangkat": "Penata Tk.I (III/d)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Yuliana Yuwita Langi, S.Pd",
+      "nip": "000000000000000000",
+      "pangkat": "",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "yulianalangi@gmail.com",
+      "waktu": "2026-11-12T02:39:06.466Z"
+    }
+  },
+  {
+    "no": 97,
+    "npsn": "40103494",
+    "name": "SMP NEGERI 2 PUSOMAEN",
+    "alamat": "Tumbak Madani Kec. Pusomaen",
+    "status": "NEGERI",
+    "kecamatan": "KEC. PUSOMAEN",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 98,
+    "npsn": "69759086",
+    "name": "SMP NEGERI 4 PUSOMAEN",
+    "alamat": "PUSOMAEN",
+    "status": "NEGERI",
+    "kecamatan": "KEC. PUSOMAEN",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 99,
+    "npsn": "40102044",
+    "name": "SMP KRISPA SILIAN",
+    "alamat": "SILIAN",
+    "status": "SWASTA",
+    "kecamatan": "KEC. SILIAN RAYA",
+    "jenjang": "SMP",
+    "kepalaSekolah": {
+      "nama": "Wanda Maria Magdalena Pelealu, S.Pd., M.Pd",
+      "nip": "197605012014112003",
+      "pangkat": "Penata (III/c)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Leonora Jolanda Pandaleke, S.Pd",
+      "nip": "197108032006042022",
+      "pangkat": "Penata (III/c)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "Krispasilian",
+      "waktu": "2026-11-12T02:36:24.851Z"
+    }
+  },
+  {
+    "no": 100,
+    "npsn": "40102046",
+    "name": "SMP KRISTEN BASAAN",
+    "alamat": "RATATOTOK",
+    "status": "SWASTA",
+    "kecamatan": "KEC. RATATOTOK",
+    "jenjang": "SMP",
+    "kepalaSekolah": {
+      "nama": "Inggrid Karepowan, S,Pd",
+      "nip": "197405182008032001",
+      "pangkat": "Pembina (IV/a)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Mikhael N. Tunas, S.Pd",
+      "nip": "198811272011021001",
+      "pangkat": "Penata Muda Tk.I (III/b)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "dodotunas",
+      "waktu": "2026-11-12T02:13:00.210Z"
+    }
+  },
+  {
+    "no": 101,
+    "npsn": "69787890",
+    "name": "SMP NEGERI 8 TOULUAAN",
+    "alamat": "TOULUAAN SELATAN",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOULUAAN SELATAN",
+    "jenjang": "SMP",
+    "kepalaSekolah": {
+      "nama": "Kalfin Stefy Manopo, S.Pd., M.Pd.",
+      "nip": "198409142009021002",
+      "pangkat": "Pembina (IV/a)",
+      "jabatan": "Kepala Satuan Pendidikan"
+    },
+    "bendahara": {
+      "nama": "Ireine Yulisabeth Rokot, S.Pd.",
+      "nip": "000000000000000000",
+      "pangkat": "",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "ferdinandsualang@gmail.com",
+      "waktu": "2026-11-12T03:16:28.367Z"
+    }
+  },
+  {
+    "no": 102,
+    "npsn": "40101972",
+    "name": "SMP NEGERI 2 TOULUAAN",
+    "alamat": "TOULUAAN",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOULUAAN SELATAN",
+    "jenjang": "SMP",
+    "kepalaSekolah": {
+      "nama": "MEYGEVER ONSU,S.Pd.,M.Pd",
+      "nip": "199205132019031006",
+      "pangkat": "Penata (III/c)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "ROMARIO RURU,S.Pd",
+      "nip": "198910152019031006",
+      "pangkat": "Penata Muda Tk.I (III/b)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "ADMINSMPN2TOULUAAN",
+      "waktu": "2026-11-12T02:39:39.997Z"
+    }
+  },
+  {
+    "no": 103,
+    "npsn": "40103653",
+    "name": "SMP NEGERI 6 TOMBATU",
+    "alamat": "Jl. Siswa Kuyanga",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU UTARA",
+    "jenjang": "SMP",
+    "kepalaSekolah": {
+      "nama": "Djeiske H. Tolandang, S.Pd",
+      "nip": "197106262010012003",
+      "pangkat": "Pembina (IV/a)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Winda Liwan, S.Pd",
+      "nip": "199210082025212036",
+      "pangkat": "-",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "smpn6tombatu",
+      "waktu": "2026-11-12T02:35:49.928Z"
+    }
+  },
+  {
+    "no": 104,
+    "npsn": "40103652",
+    "name": "SMP NEGERI 4 TOMBATU",
+    "alamat": "Tombatu Dua Barat",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU UTARA",
+    "jenjang": "SMP",
+    "kepalaSekolah": {
+      "nama": "Andrina Janny Watania, S.Pd",
+      "nip": "197101162008012012",
+      "pangkat": "Pembina Tk.I (IV/b)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Shintya Jelly Pontoh, S.Pd",
+      "nip": "100104102019032100",
+      "pangkat": "Penata Muda Tk.I (III/b)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "SMPN4tombatu",
+      "waktu": "2026-11-12T02:34:06.320Z"
+    }
+  },
+  {
+    "no": 105,
+    "npsn": "40101991",
+    "name": "SMP NEGERI 3 TOMBATU",
+    "alamat": "Jaga 1",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU TIMUR",
+    "jenjang": "SMP",
+    "kepalaSekolah": {
+      "nama": "Syukriadi Paputungan, S.Pd",
+      "nip": "198301162008031002",
+      "pangkat": "Pembina Tk.I (IV/b)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Silvia Kondoahi, S.Pd",
+      "nip": "199409082019032007",
+      "pangkat": "Penata Muda Tk.I (III/b)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "smpntigatombatu",
+      "waktu": "2026-11-12T02:33:55.140Z"
+    }
+  },
+  {
+    "no": 106,
+    "npsn": "40103657",
+    "name": "SMP NEGERI 6 RATAHAN",
+    "alamat": "RASI",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATAHAN",
+    "jenjang": "SMP",
+    "kepalaSekolah": {
+      "nama": "Anita Ango, S.Pd",
+      "nip": "197708262010012005",
+      "pangkat": "Pembina Tk.I (IV/b)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Telly Timbulus, S.Pd",
+      "nip": "197309242014112001",
+      "pangkat": "Penata Tk.I (III/d)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "smpn6ratahanrasi@gmail.com",
+      "waktu": "2026-11-12T02:38:21.731Z"
+    }
+  },
+  {
+    "no": 107,
+    "npsn": "40102071",
+    "name": "SMP NEGERI 1 RATATOTOK",
+    "alamat": "RATATOTOK",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATATOTOK",
+    "jenjang": "SMP",
+    "kepalaSekolah": {
+      "nama": "Sarlen Marlen Wolei, S.Pd",
+      "nip": "197308302007012009",
+      "pangkat": "Pembina Tk.I (IV/b)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Franny Franklin Mongula, S.Pd",
+      "nip": "198201042009021002",
+      "pangkat": "Penata Tk.I (III/d)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "SMP N 1 Ratatotok",
+      "waktu": "2026-11-12T02:10:30.759Z"
+    }
+  },
+  {
+    "no": 108,
+    "npsn": "40101973",
+    "name": "SMP NEGERI 3 TOULUAAN",
+    "alamat": "TOULUAAN",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOULUAAN SELATAN",
+    "jenjang": "SMP",
+    "kepalaSekolah": {
+      "nama": "Eightjan Eighttree Somba, S.Si",
+      "nip": "198301082009022002",
+      "pangkat": "Pembina (IV/a)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Falen Randa Ratu, S.Pd",
+      "nip": "199205062019032015",
+      "pangkat": "Penata Muda Tk.I (III/b)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "smpnegeri3touluaan",
+      "waktu": "2026-11-12T05:08:05.658Z"
+    }
+  },
+  {
+    "no": 109,
+    "npsn": "69857940",
+    "name": "SMP NEGERI 10 TOULUAAN",
+    "alamat": "DESA BANGA",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOULUAAN SELATAN",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 110,
+    "npsn": "40102061",
+    "name": "SMP NEGERI 3 BELANG",
+    "alamat": "Jalan Siswa, Jaga  1",
+    "status": "NEGERI",
+    "kecamatan": "KEC. BELANG",
+    "jenjang": "SMP",
+    "kepalaSekolah": {
+      "nama": "Olivia Helen Adrian, S.Pd",
+      "nip": "198210052011022002",
+      "pangkat": "Pembina (IV/a)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "YANI RIVO WOYONGAN",
+      "nip": "19870604 202521 1030",
+      "pangkat": "",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "SMPN3BELANG",
+      "waktu": "2026-11-12T02:17:03.707Z"
+    }
+  },
+  {
+    "no": 111,
+    "npsn": "69787891",
+    "name": "SMP NEGERI 9 TOULUAAN SELATAN ",
+    "alamat": "LOWATAG",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOULUAAN SELATAN",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 112,
+    "npsn": "40103493",
+    "name": "SMP NEGERI 1 PUSOMAEN",
+    "alamat": "PUSOMAEN",
+    "status": "NEGERI",
+    "kecamatan": "KEC. PUSOMAEN",
+    "jenjang": "SMP",
+    "kepalaSekolah": {
+      "nama": "Jans Nonvy Imbang, S.Pd",
+      "nip": "196911172009022001",
+      "pangkat": "Pembina (IV/a)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Citalya V. Wojongan, S.Pd",
+      "nip": "199302072019032012",
+      "pangkat": "Penata Muda Tk.I (III/b)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "nofriel",
+      "waktu": "2026-11-12T02:12:45.988Z"
+    }
+  },
+  {
+    "no": 113,
+    "npsn": "40103496",
+    "name": "SMP NEGERI 4 RATAHAN",
+    "alamat": "Jaga I Desa Pangu Satu",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATAHAN TIMUR",
+    "jenjang": "SMP",
+    "kepalaSekolah": {
+      "nama": "Ismail M. Wanta, S.Pd, M.Pd",
+      "nip": "197003091997021002",
+      "pangkat": "Pembina Tk.I (IV/b)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Karlien M. Sajow, S.Pd",
+      "nip": "197911242008032003",
+      "pangkat": "Pembina (IV/a)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "smpn4ratahan",
+      "waktu": "2026-11-12T02:46:46.332Z"
+    }
+  },
+  {
+    "no": 114,
+    "npsn": "40101975",
+    "name": "SMP NEGERI 1 BELANG",
+    "alamat": "Jalan Ponosakan Jaga II",
+    "status": "NEGERI",
+    "kecamatan": "KEC. BELANG",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 115,
+    "npsn": "40101985",
+    "name": "SMP NEGERI 2 TOMBATU",
+    "alamat": "Jln. Pendidikan",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU TIMUR",
+    "jenjang": "SMP",
+    "kepalaSekolah": {
+      "nama": "Selvie P.R. Manoppo,S.Pd",
+      "nip": "197409172003122007",
+      "pangkat": "Pembina Utama Muda (IV/c)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Elmy Nansy Golung,S.Pd",
+      "nip": "198309192023212020",
+      "pangkat": "Ahli Pertama / IX",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "smpnegeri2tombatu",
+      "waktu": "2026-11-12T02:38:23.996Z"
+    }
+  },
+  {
+    "no": 116,
+    "npsn": "40102076",
+    "name": "SMP NEGERI 2 BELANG",
+    "alamat": "BELANG",
+    "status": "NEGERI",
+    "kecamatan": "KEC. BELANG",
+    "jenjang": "SMP",
+    "kepalaSekolah": {
+      "nama": "Metty Astuti, S.Pd",
+      "nip": "196905281994122004",
+      "pangkat": "Pembina Utama Muda (IV/c)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Cliff V. Pondaag, S.Pd",
+      "nip": "199407012023211009",
+      "pangkat": "-",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "Fahrial Minggu",
+      "waktu": "2026-11-12T02:34:12.084Z"
+    }
+  },
+  {
+    "no": 117,
+    "npsn": "40101979",
+    "name": "SMP NEGERI 1 TOMBATU",
+    "alamat": "Jalan Wolter Monginsidi Jaga 4 Desa Tombatu Tiga Timur Kec. Tombatu",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU",
+    "jenjang": "SMP",
+    "kepalaSekolah": {
+      "nama": "FEYBE MANENGAL, S.Pd, M.Pd",
+      "nip": "198310022008032001",
+      "pangkat": "Pembina Tk.I (IV/b)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "NOVIA MAGDALENA RUMIMPUNU, S.Pd",
+      "nip": "",
+      "pangkat": "",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "noviarumimpunu",
+      "waktu": "2026-11-12T02:44:41.205Z"
+    }
+  },
+  {
+    "no": 118,
+    "npsn": "40101911",
+    "name": "SMP ADVENT RATAHAN",
+    "alamat": "Jl. Siswa Lingkungan 3",
+    "status": "SWASTA",
+    "kecamatan": "KEC. RATAHAN",
+    "jenjang": "SMP",
+    "kepalaSekolah": {
+      "nama": "Charles Kapahang, MAEd",
+      "nip": "000000000000000000",
+      "pangkat": "0",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Patricia Mellissa Goni, SE",
+      "nip": "000000000000000000",
+      "pangkat": "0",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "patriciamellissagoni@gmail.com",
+      "waktu": "2026-11-12T02:38:01.044Z"
+    }
+  },
+  {
+    "no": 119,
+    "npsn": "40103662",
+    "name": "SMP NEGERI 7 TOULUAAN",
+    "alamat": "TOULUAAN",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOULUAAN",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 120,
+    "npsn": "40102058",
+    "name": "SMP NEGERI 1 TOULUAAN",
+    "alamat": "Jalan raya amurang lobu Dua",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOULUAAN",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 121,
+    "npsn": "40101977",
+    "name": "SMP NEGERI 1 RATAHAN",
+    "alamat": "Jl. Ompi Lingkungan III",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATAHAN",
+    "jenjang": "SMP",
+    "kepalaSekolah": {
+      "nama": "Ferry Amos Slat, S.Pd., MM.",
+      "nip": "197504192009021003",
+      "pangkat": "Pembina Tk.I (IV/b)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Diana Maria Kapahang, S.Pd",
+      "nip": "197812272008012016",
+      "pangkat": "Penata Tk.I (III/d)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "SMPN1RATAHAN",
+      "waktu": "2026-11-12T02:33:26.187Z"
+    }
+  },
+  {
+    "no": 122,
+    "npsn": "40101974",
+    "name": "SMP NEGERI 4 TOULUAAN",
+    "alamat": "Jl. Silian Dua",
+    "status": "NEGERI",
+    "kecamatan": "KEC. SILIAN RAYA",
+    "jenjang": "SMP",
+    "kepalaSekolah": {
+      "nama": "Ninie N. Kindangen, S.Pd",
+      "nip": "197712032008032001",
+      "pangkat": "Pembina Tk.I (IV/b)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Delviana J. Sandag, S.Pd",
+      "nip": "199310172019032010",
+      "pangkat": "Penata Muda Tk.I (III/b)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "SMPN4TOULUAAN",
+      "waktu": "2026-11-12T02:37:31.846Z"
+    }
+  },
+  {
+    "no": 123,
+    "npsn": "40102047",
+    "name": "SMP KRISTEN KALI",
+    "alamat": "KALI",
+    "status": "SWASTA",
+    "kecamatan": "KEC. TOMBATU",
+    "jenjang": "SMP",
+    "kepalaSekolah": {
+      "nama": "MEYDI HEYDI PELEALU, S.Pd",
+      "nip": "196905301994022002",
+      "pangkat": "Pembina Utama Muda (IV/c)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Meriska Natalia Margareth Pondaag,S.Pd",
+      "nip": "000000000000000000",
+      "pangkat": "",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "SMPKristenkali",
+      "waktu": "2026-11-12T02:46:01.335Z"
+    }
+  },
+  {
+    "no": 124,
+    "npsn": "40102025",
+    "name": "SMP NEGERI 3 RATAHAN",
+    "alamat": "Jl. Bpu Jaga 1 Desa Wioi Kec. Ratahan Timur",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATAHAN TIMUR",
+    "jenjang": "SMP",
+    "kepalaSekolah": {
+      "nama": "Sherly Christine Waas, S.Pd., M.M.",
+      "nip": "197109061999032007",
+      "pangkat": "Pembina Utama Muda (IV/c)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Krisnia F. Kumendong, S.Pd.",
+      "nip": "199701082019032003",
+      "pangkat": "Penata Muda Tk.I (III/b)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "SPENTIRAT",
+      "waktu": "2026-11-12T02:34:47.463Z"
+    }
+  },
+  {
+    "no": 125,
+    "npsn": "40103651",
+    "name": "SMP NEGERI 5 TOMBATU",
+    "alamat": "JAGA 4 DESA TONSAWANG SATU KEC. TOMBATU",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 126,
+    "npsn": "40103654",
+    "name": "SMP NEGERI 7 TOMBATU",
+    "alamat": "WINORANGIAN",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU UTARA",
+    "jenjang": "SMP",
+    "kepalaSekolah": {
+      "nama": "SELFANNA DAMOPOLII.S.Pd",
+      "nip": "197009012010012001",
+      "pangkat": "Penata Tk.I (III/d)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "SELVI DALITA",
+      "nip": "197809142023212009",
+      "pangkat": "0",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "sendrakolanus8@gmail.com",
+      "waktu": "2026-11-12T02:37:31.023Z"
+    }
+  },
+  {
+    "no": 127,
+    "npsn": "40102045",
+    "name": "SMP KRISTEN RATATOTOK",
+    "alamat": "RATATOTOK",
+    "status": "SWASTA",
+    "kecamatan": "KEC. RATATOTOK",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 128,
+    "npsn": "40103660",
+    "name": "SMP NEGERI 5 TOULUAAN",
+    "alamat": "JALAN TRANS",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOMBATU",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 129,
+    "npsn": "40103658",
+    "name": "SMP NEGERI 7 RATAHAN",
+    "alamat": "WONGKAI",
+    "status": "NEGERI",
+    "kecamatan": "KEC. RATAHAN TIMUR",
+    "jenjang": "SMP",
+    "kepalaSekolah": {
+      "nama": "Martheli Agustina Antou, S.Pd",
+      "nip": "197003302000122003",
+      "pangkat": "Pembina Utama Muda (IV/c)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Martina,S.Pd",
+      "nip": "198306062011022001",
+      "pangkat": "Pembina (IV/a)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "smpn7ratahan",
+      "waktu": "2026-11-12T02:08:50.935Z"
+    }
+  },
+  {
+    "no": 130,
+    "npsn": "40102065",
+    "name": "SMP NEGERI 2 RATAHAN",
+    "alamat": "Liwutung",
+    "status": "NEGERI",
+    "kecamatan": "KEC. PASAN",
+    "jenjang": "SMP",
+    "kepalaSekolah": {
+      "nama": "Jelly Maria Lembong, S.Pd.,M.Pd.",
+      "nip": "197907312009022001",
+      "pangkat": "Pembina Tk.I (IV/b)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Mardiana Sumolang, S.Pd",
+      "nip": "198403162010012010",
+      "pangkat": "Penata Tk.I (III/d)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "rengly09@gmail.com",
+      "waktu": "2026-11-12T02:35:14.626Z"
+    }
+  },
+  {
+    "no": 131,
+    "npsn": "40103656",
+    "name": "SMP NEGERI 4 BELANG",
+    "alamat": "BELANG",
+    "status": "NEGERI",
+    "kecamatan": "KEC. BELANG",
+    "jenjang": "SMP",
+    "kepalaSekolah": {
+      "nama": "MARLINA MARINGKA, M.Pd.",
+      "nip": "198803182011022002",
+      "pangkat": "Penata Tk.I (III/d)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "HERWIN Y. ROTTI, S.Pd.",
+      "nip": "199407242019031002",
+      "pangkat": "Penata Muda Tk.I (III/b)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "SMPN4BELANG",
+      "waktu": "2026-11-12T02:34:10.175Z"
+    }
+  },
+  {
+    "no": 132,
+    "npsn": "40103661",
+    "name": "SMP NEGERI 6 TOULUAAN",
+    "alamat": "SUHUYON",
+    "status": "NEGERI",
+    "kecamatan": "KEC. TOULUAAN SELATAN",
+    "jenjang": "SMP",
+    "kepalaSekolah": {
+      "nama": "Nasto P. A. Lolowang, S.Sos",
+      "nip": "197008022014111001",
+      "pangkat": "Penata (III/c)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Yanny Karundeng, S.Pd",
+      "nip": "198901292019031005",
+      "pangkat": "Penata Muda (III/a)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "SMPN6TOULUAAN",
+      "waktu": "2026-11-12T02:33:05.060Z"
+    }
+  },
+  {
+    "no": 133,
+    "npsn": "40103659",
+    "name": "SMP NEGERI 3 PUSOMAEN",
+    "alamat": "PUSOMAEN",
+    "status": "NEGERI",
+    "kecamatan": "KEC. PUSOMAEN",
+    "jenjang": "SMP",
+    "kepalaSekolah": {
+      "nama": "Junistry Punusingon, S.S.,M.Pd",
+      "nip": "198106022010012010",
+      "pangkat": "Pembina Tk.I (IV/b)",
+      "jabatan": "Kepala Satuan Sekolah"
+    },
+    "bendahara": {
+      "nama": "",
+      "nip": "",
+      "pangkat": "",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "Fredo",
+      "waktu": "2026-11-12T05:35:13.216Z"
+    }
+  },
+  {
+    "no": 134,
+    "npsn": "40102043",
+    "name": "SMP KRISTEN TATENGESAN",
+    "alamat": "PUSOMAEN",
+    "status": "SWASTA",
+    "kecamatan": "KEC. PUSOMAEN",
+    "jenjang": "SMP",
+    "kepalaSekolah": {
+      "nama": "Heri Arke Goni, S.Pd",
+      "nip": "198304202010011007",
+      "pangkat": "Pembina (IV/a)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Audy Ralfy Rawis, S.Th, M.Pd.K",
+      "nip": "198104242010011007",
+      "pangkat": "Pembina (IV/a)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "audyrawis@gmail.com",
+      "waktu": "2026-11-12T02:52:55.822Z"
+    }
+  },
+  {
+    "no": 135,
+    "npsn": "40103663",
+    "name": "SMP MUHAMMADIYAH RATATOTOK",
+    "alamat": "Jl. Pelabuhan Nusantara",
+    "status": "SWASTA",
+    "kecamatan": "KEC. RATATOTOK",
+    "jenjang": "SMP"
+  },
+  {
+    "no": 136,
+    "npsn": "40103650",
+    "name": "SMP NEGERI 5 RATAHAN",
+    "alamat": "Jalan Raya Poniki Belang Desa Poniki Kecamatan Pasan",
+    "status": "NEGERI",
+    "kecamatan": "KEC. PASAN",
+    "jenjang": "SMP",
+    "kepalaSekolah": {
+      "nama": "Benie Robert Ngalo, S.Pd",
+      "nip": "197010102009021001",
+      "pangkat": "Pembina Tk.I (IV/b)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Alinda Lele, S.Pd",
+      "nip": "198004152009022003",
+      "pangkat": "Pembina (IV/a)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "silvana",
+      "waktu": "2026-11-12T02:38:12.857Z"
+    }
+  },
+  {
+    "no": 137,
+    "npsn": "40103655",
+    "name": "SMP NEGERI 5 BELANG",
+    "alamat": "Jaga IV",
+    "status": "NEGERI",
+    "kecamatan": "KEC. BELANG",
+    "jenjang": "SMP",
+    "kepalaSekolah": {
+      "nama": "Fiane Friska Logor, S.Pd",
+      "nip": "197803032014112001",
+      "pangkat": "Penata (III/c)",
+      "jabatan": "Kepala Sekolah"
+    },
+    "bendahara": {
+      "nama": "Victoria Paula Tambaani, S.Pd",
+      "nip": "199610082019032005",
+      "pangkat": "Penata Muda Tk.I (III/b)",
+      "jabatan": "Bendahara BOSP"
+    },
+    "profilDiubah": {
+      "oleh": "smpn5belang",
+      "waktu": "2026-11-12T02:04:05.150Z"
+    }
+  }
+]

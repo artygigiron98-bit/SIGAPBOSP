@@ -1,0 +1,176 @@
+/* Sidebar navigasi bersama (index, realisasi, penganggaran) */
+:root{--safe-t:env(safe-area-inset-top,0px)}
+/* ===== LEFT SIDEBAR NAV (collapsible) ===== */
+        #mainAppContainer { display: flex; flex-direction: column; min-height: 100vh; }
+        /* Pastikan class hidden menang (navbar/sidebar tidak muncul saat logout) */
+        #mainAppContainer.hidden { display: none !important; }
+        #mainAppContainer.app-with-sidebar { flex-direction: row; align-items: stretch; }
+        #mainAppContainer.hidden .app-sidebar,
+        #mainAppContainer.hidden .sb-toggle,
+        #mainAppContainer.hidden .sb-backdrop {
+            display: none !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+        /* Sembunyikan navbar atas — navigasi hanya di sidebar kiri */
+        #mainAppContainer.app-with-sidebar .app-hd { display: none !important; }
+        .app-sidebar {
+            position: fixed; top: 0; left: 0; bottom: 0; z-index: 50;
+            width: 280px; max-width: 88vw;
+            background: linear-gradient(180deg, #0a1f42 0%, #0F2C59 55%, #12356b 100%);
+            color: #fff; display: flex; flex-direction: column;
+            box-shadow: 8px 0 28px -12px rgba(10,31,66,.55);
+            transform: translateX(0); transition: transform .28s ease, width .28s ease;
+            padding-top: var(--safe-t, 0px);
+        }
+        .app-sidebar.collapsed { transform: translateX(-100%); }
+        .app-sidebar .sb-brand {
+            display: flex; align-items: center; gap: 12px;
+            padding: 18px 16px 14px; border-bottom: 1px solid rgba(255,255,255,.1);
+        }
+        .app-sidebar .sb-brand .lp-logo {
+            width: 48px; height: 48px; flex-shrink: 0;
+            border-radius: 12px; overflow: hidden;
+            background: #fff; border: 1px solid rgba(255,255,255,.2);
+            display: grid; place-items: center;
+            box-shadow: 0 6px 16px -6px rgba(0,0,0,.35);
+        }
+        .app-sidebar .sb-brand .lp-logo img {
+            width: 100%; height: 100%; object-fit: contain; display: block;
+            background: #fff;
+        }
+        .app-sidebar .sb-brand b { font-size: 14px; font-weight: 800; letter-spacing: .04em; line-height: 1.2; color: #fff; }
+        .app-sidebar .sb-brand small { display: block; font-size: 11px; color: rgba(255,255,255,.65); margin-top: 3px; }
+        .app-sidebar .sb-user {
+            padding: 12px 16px; font-size: 11.5px; color: rgba(255,255,255,.75);
+            border-bottom: 1px solid rgba(255,255,255,.08); background: rgba(0,0,0,.12);
+        }
+        .app-sidebar .sb-user strong { color: #f5d78e; display: block; font-size: 12.5px; }
+        .app-sidebar .sb-scroll {
+            flex: 1 1 auto; min-height: 0;
+            overflow-y: auto; overflow-x: hidden;
+            padding: 10px 6px 16px 10px;
+            overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+            /* Firefox: scrollbar tipis, tersembunyi sampai sidebar di-hover */
+            scrollbar-width: thin; scrollbar-color: transparent transparent;
+            /* efek pudar halus di tepi atas & bawah area scroll */
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 12px, #000 calc(100% - 14px), transparent 100%);
+            mask-image: linear-gradient(to bottom, transparent 0, #000 12px, #000 calc(100% - 14px), transparent 100%);
+        }
+        .app-sidebar:hover .sb-scroll,
+        .app-sidebar .sb-scroll:focus-within,
+        .app-sidebar .sb-scroll:active { scrollbar-color: rgba(245,215,142,.45) transparent; }
+        /* Chrome / Edge / Safari */
+        .app-sidebar .sb-scroll::-webkit-scrollbar { width: 8px; }
+        .app-sidebar .sb-scroll::-webkit-scrollbar-track { background: transparent; margin: 10px 0; }
+        .app-sidebar .sb-scroll::-webkit-scrollbar-thumb {
+            background-color: transparent; border-radius: 99px;
+            border: 2px solid transparent; background-clip: padding-box;
+            transition: background-color .25s ease;
+        }
+        .app-sidebar:hover .sb-scroll::-webkit-scrollbar-thumb,
+        .app-sidebar .sb-scroll:active::-webkit-scrollbar-thumb { background-color: rgba(255,255,255,.22); }
+        .app-sidebar .sb-scroll::-webkit-scrollbar-thumb:hover { background-color: rgba(245,215,142,.7); }
+        .app-sidebar .sb-scroll::-webkit-scrollbar-corner { background: transparent; }
+        .app-sidebar .sb-item { overflow: hidden; text-overflow: ellipsis; }
+        .app-sidebar .sb-group { margin-bottom: 14px; }
+        .app-sidebar .sb-group-title {
+            font-size: 10px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+            color: rgba(245,215,142,.75); padding: 6px 10px 4px;
+        }
+        .app-sidebar .sb-item {
+            display: flex; align-items: center; gap: 11px; width: 100%;
+            text-align: left; padding: 10px 12px; border-radius: 10px;
+            font-size: 13px; font-weight: 600; color: rgba(255,255,255,.9);
+            background: transparent; border: none; cursor: pointer;
+            transition: background .15s, color .15s, transform .12s;
+        }
+        .app-sidebar .sb-item i { width: 22px; text-align: center; font-size: 14px; opacity: .95; flex-shrink: 0; }
+        .app-sidebar .sb-item:hover { background: rgba(255,255,255,.12); color: #fff; }
+        .app-sidebar .sb-item:active { transform: scale(0.98); }
+        .app-sidebar .sb-item.danger { color: #fecaca; }
+        .app-sidebar .sb-item.danger:hover { background: rgba(244,63,94,.2); color: #fff; }
+        .app-sidebar .sb-item.gold { color: #f5d78e; }
+        .app-sidebar .sb-foot {
+            padding: 10px; border-top: 1px solid rgba(255,255,255,.1);
+        }
+        .sb-toggle {
+            position: fixed; top: calc(12px + var(--safe-t, 0px)); left: 12px; z-index: 55;
+            width: 42px; height: 42px; border-radius: 12px;
+            background: linear-gradient(135deg, #0F2C59, #17407e); color: #fff;
+            border: 1px solid rgba(255,255,255,.15); box-shadow: 0 8px 20px -8px rgba(10,31,66,.6);
+            display: none; align-items: center; justify-content: center; cursor: pointer;
+        }
+        .sb-toggle i { font-size: 16px; }
+        #mainAppContainer.app-with-sidebar .sb-toggle { display: flex; }
+        #mainAppContainer.app-with-sidebar .sb-toggle.shifted { left: 292px; }
+        .app-content-wrap {
+            flex: 1; min-width: 0; display: flex; flex-direction: column;
+            margin-left: 0; transition: margin-left .28s ease;
+            padding-top: 8px;
+        }
+        #mainAppContainer.app-with-sidebar .app-main {
+            padding-top: 8px;
+        }
+        #mainAppContainer.app-with-sidebar:not(.sidebar-collapsed) .app-content-wrap {
+            margin-left: 280px;
+        }
+        #mainAppContainer.app-with-sidebar .bnav { display: none !important; }
+        .sb-backdrop {
+            display: none; position: fixed; inset: 0; z-index: 49;
+            background: rgba(15,23,42,.45);
+        }
+        #mainAppContainer.app-with-sidebar.sidebar-open-mobile .sb-backdrop { display: block; }
+        @media (max-width: 900px) {
+            #mainAppContainer.app-with-sidebar:not(.sidebar-collapsed) .app-content-wrap { margin-left: 0; }
+            #mainAppContainer.app-with-sidebar .sb-toggle.shifted { left: 12px; }
+            .app-sidebar { box-shadow: 12px 0 40px rgba(0,0,0,.35); }
+        }
+        @media print {
+            .app-sidebar, .sb-toggle, .sb-backdrop { display: none !important; }
+            #mainAppContainer.app-with-sidebar:not(.sidebar-collapsed) .app-content-wrap { margin-left: 0 !important; }
+        }
+        
+/* Item menu berupa tautan halaman + penanda halaman aktif */
+.app-sidebar a.sb-item { text-decoration: none; }
+.app-sidebar .sb-item.active { background: rgba(255,255,255,.16); color: #fff; box-shadow: inset 3px 0 0 #f5d78e; }
+.app-sidebar .sb-item.gold.active { color: #f5d78e; }
+
+/* ===== Menu dropdown (accordion) pada sidebar ===== */
+.app-sidebar .sb-dd { margin-bottom: 6px; }
+.app-sidebar .sb-dd-head {
+    display: flex; align-items: center; gap: 11px; width: 100%;
+    text-align: left; padding: 10px 12px; border-radius: 10px; cursor: pointer;
+    font-size: 13px; font-weight: 700; color: rgba(255,255,255,.92);
+    background: transparent; border: none;
+    transition: background .15s, color .15s;
+}
+.app-sidebar .sb-dd-head:hover { background: rgba(255,255,255,.1); color: #fff; }
+.app-sidebar .sb-dd-head:focus-visible,
+.app-sidebar .sb-item:focus-visible { outline: 2px solid #f5d78e; outline-offset: -2px; }
+.app-sidebar .sb-dd-ic { width: 22px; text-align: center; font-size: 14px; color: #f5d78e; flex-shrink: 0; }
+.app-sidebar .sb-dd-title { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.app-sidebar .sb-dd-chev { font-size: 11px; opacity: .7; transition: transform .25s ease; flex-shrink: 0; }
+.app-sidebar .sb-dd.open > .sb-dd-head .sb-dd-chev { transform: rotate(180deg); }
+.app-sidebar .sb-dd.has-active > .sb-dd-head { color: #f5d78e; background: rgba(255,255,255,.06); }
+
+/* Isi dropdown: animasi tinggi tanpa JS (grid 0fr → 1fr) */
+.app-sidebar .sb-dd-body {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .26s ease;
+}
+.app-sidebar .sb-dd.open > .sb-dd-body { grid-template-rows: 1fr; }
+.app-sidebar .sb-dd-inner {
+    min-height: 0; overflow: hidden; visibility: hidden;
+    margin-left: 21px; padding-left: 8px;
+    border-left: 1px solid rgba(245,215,142,.28);
+    transition: visibility 0s linear .26s;
+}
+.app-sidebar .sb-dd.open > .sb-dd-body > .sb-dd-inner { visibility: visible; transition-delay: 0s; }
+.app-sidebar .sb-dd-inner .sb-item { padding: 8px 10px; font-size: 12.5px; font-weight: 600; }
+.app-sidebar .sb-dd-inner .sb-item:first-child { margin-top: 2px; }
+.app-sidebar .sb-dd-inner .sb-item:last-child { margin-bottom: 4px; }
+@media (prefers-reduced-motion: reduce) {
+    .app-sidebar .sb-dd-body, .app-sidebar .sb-dd-chev, .app-sidebar .sb-dd-inner { transition: none !important; }
+}

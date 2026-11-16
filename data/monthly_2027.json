@@ -1,0 +1,400 @@
+{
+  "103": {
+    "Jan": {
+      "saldoAwalCustom": 0,
+      "saldoReguler": 0,
+      "saldoKinerja": 0,
+      "saldoNonBOS": 0,
+      "saldoTunai": 0,
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 0
+      },
+      "documents": {},
+      "verifStatus": "Draft"
+    },
+    "Feb": {
+      "saldoAwalCustom": null,
+      "saldoReguler": null,
+      "saldoKinerja": null,
+      "saldoNonBOS": null,
+      "saldoTunai": null,
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 0
+      },
+      "documents": {},
+      "verifStatus": "Draft"
+    },
+    "Mar": {
+      "saldoAwalCustom": null,
+      "saldoReguler": null,
+      "saldoKinerja": null,
+      "saldoNonBOS": null,
+      "saldoTunai": null,
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 0
+      },
+      "documents": {},
+      "verifStatus": "Draft"
+    },
+    "Apr": {
+      "saldoAwalCustom": null,
+      "saldoReguler": null,
+      "saldoKinerja": null,
+      "saldoNonBOS": null,
+      "saldoTunai": null,
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 0
+      },
+      "documents": {},
+      "verifStatus": "Draft"
+    },
+    "Mei": {
+      "saldoAwalCustom": null,
+      "saldoReguler": null,
+      "saldoKinerja": null,
+      "saldoNonBOS": null,
+      "saldoTunai": null,
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 0
+      },
+      "documents": {},
+      "verifStatus": "Draft"
+    },
+    "Jun": {
+      "saldoAwalCustom": null,
+      "saldoReguler": null,
+      "saldoKinerja": null,
+      "saldoNonBOS": null,
+      "saldoTunai": null,
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 0
+      },
+      "documents": {},
+      "verifStatus": "Draft"
+    },
+    "Jul": {
+      "saldoAwalCustom": null,
+      "saldoReguler": null,
+      "saldoKinerja": null,
+      "saldoNonBOS": null,
+      "saldoTunai": null,
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 0
+      },
+      "documents": {},
+      "verifStatus": "Draft"
+    },
+    "Agus": {
+      "saldoAwalCustom": null,
+      "saldoReguler": null,
+      "saldoKinerja": null,
+      "saldoNonBOS": null,
+      "saldoTunai": null,
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 0
+      },
+      "documents": {},
+      "verifStatus": "Draft"
+    },
+    "Sep": {
+      "saldoAwalCustom": null,
+      "saldoReguler": null,
+      "saldoKinerja": null,
+      "saldoNonBOS": null,
+      "saldoTunai": null,
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 0
+      },
+      "documents": {},
+      "verifStatus": "Draft"
+    },
+    "Okt": {
+      "saldoAwalCustom": null,
+      "saldoReguler": null,
+      "saldoKinerja": null,
+      "saldoNonBOS": null,
+      "saldoTunai": null,
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 0
+      },
+      "documents": {},
+      "verifStatus": "Draft"
+    },
+    "Nov": {
+      "saldoAwalCustom": null,
+      "saldoReguler": null,
+      "saldoKinerja": null,
+      "saldoNonBOS": null,
+      "saldoTunai": null,
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 0
+      },
+      "documents": {},
+      "verifStatus": "Draft"
+    },
+    "Des": {
+      "saldoAwalCustom": null,
+      "saldoReguler": null,
+      "saldoKinerja": null,
+      "saldoNonBOS": null,
+      "saldoTunai": null,
+      "pendapatan": {
+        "reguler": 0,
+        "kinerja": 0,
+        "jagirMasuk": 0,
+        "setoranTunai": 0,
+        "lebihTransferMasuk": 0
+      },
+      "belanja": {
+        "pegawai": 0,
+        "barjasReg": 0,
+        "barjasKin": 0,
+        "pm": 0,
+        "pmKin": 0,
+        "atl": 0,
+        "atlKin": 0,
+        "jagirKeluar": 0,
+        "lebihTransferKeluar": 0
+      },
+      "rekon": {
+        "setoranSaldoTunai": 0,
+        "pengembalianBank": 0,
+        "setoranPajak2023": 0,
+        "saldoRCBank": 0
+      },
+      "documents": {},
+      "verifStatus": "Draft"
+    }
+  }
+}
